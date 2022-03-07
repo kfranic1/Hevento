@@ -5,7 +5,6 @@ class CustomRouteInformationParser extends RouteInformationParser<Configuration>
   @override
   Future<Configuration> parseRouteInformation(RouteInformation routeInformation) async {
     final uri = Uri.parse(routeInformation.location!);
-    print(uri);
 
     if (uri.pathSegments.isEmpty) return Configuration.home();
     return Configuration.otherPage(uri.pathSegments.join('/').toString());
