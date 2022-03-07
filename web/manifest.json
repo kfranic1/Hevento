@@ -1,11 +1,11 @@
 {
-    "name": "hevento",
-    "short_name": "hevento",
+    "name": "Hevento",
+    "short_name": "Hevento",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Iznajmljuješ prostor? Reklamiraj se na najboljoj platformi za iznajmljivanje prostora Hevento.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
