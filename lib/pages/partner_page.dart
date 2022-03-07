@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class PartnerPage extends StatelessWidget {
-  PartnerPage({Key? key}) : super(key: key);
+  final VoidCallback goToTest;
+  PartnerPage({Key? key, required this.goToTest}) : super(key: key);
 
   final TextEditingController _emailController = TextEditingController();
 
@@ -21,7 +22,7 @@ class PartnerPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: goToTest,
                 child: const Text("Pošalji"),
               ),
             ],

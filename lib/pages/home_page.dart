@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hevento/routes.dart';
+import 'package:hevento/custom_router_delegate.dart';
+import 'package:hevento/main.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -21,8 +22,15 @@ class LandingPage extends StatelessWidget {
             height: 10,
           ),
           TextButton(
-            onPressed: () => Navigator.pushNamed(context, Routes.partner),
+            onPressed: () => (MyApp.routerDelegate as CustomRouterDelegate).goToPartner(),
             child: const Text("Postani partner"),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          TextButton(
+            onPressed: () => (MyApp.routerDelegate as CustomRouterDelegate).goToTest(),
+            child: const Text("Test"),
           ),
         ],
       ),

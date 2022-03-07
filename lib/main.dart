@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hevento/pages/home_page.dart';
-import 'package:hevento/route_generator.dart';
-import 'package:hevento/routes.dart';
+import 'package:hevento/custom_router_delegate.dart';
 import 'package:url_strategy/url_strategy.dart';
+
+import 'custom_route_information_parser.dart';
 
 void main() {
   setPathUrlStrategy();
@@ -10,32 +10,21 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  static final RouteInformationParser<Object> routeInformationParser = CustomRouteInformationParser();
+  static final RouterDelegate<Object> routerDelegate = CustomRouterDelegate();
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
       debugShowCheckedModeBanner: false,
-      builder: (context, child) => Home(child!),
-      onGenerateRoute: RouteGenerator.generateRoute,
-      initialRoute: Routes.home,
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  Widget child;
-
-  Home(this.child, {Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: child,
+      routeInformationParser: routeInformationParser,
+      routerDelegate: routerDelegate,
     );
   }
 }
