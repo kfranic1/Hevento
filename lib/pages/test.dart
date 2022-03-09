@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hevento/custom_router_delegate.dart';
-import 'package:hevento/main.dart';
+import 'package:provider/provider.dart';
 
 class Testing extends StatelessWidget {
   const Testing({Key? key}) : super(key: key);
@@ -9,7 +9,7 @@ class Testing extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: TextButton(
-        onPressed: () => (MyApp.routerDelegate as CustomRouterDelegate).goToHome(),
+        onPressed: () => (Provider.of<RouterDelegate<Object>>(context, listen: false) as CustomRouterDelegate).goToHome(),
         child: const Text("Home"),
       ),
     );

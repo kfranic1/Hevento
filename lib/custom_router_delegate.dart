@@ -34,7 +34,7 @@ class CustomRouterDelegate extends RouterDelegate<Configuration> with ChangeNoti
                 body: Builder(builder: (context) {
                   switch (_configuration.pathName) {
                     case Routes.partner:
-                      return PartnerPage(goToTest: goToTest);
+                      return PartnerPage();
                     case Routes.test:
                       return const Testing();
                     default:

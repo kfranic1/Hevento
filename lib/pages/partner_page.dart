@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../custom_router_delegate.dart';
 
 class PartnerPage extends StatelessWidget {
-  final VoidCallback goToTest;
-  PartnerPage({Key? key, required this.goToTest}) : super(key: key);
+  PartnerPage({Key? key}) : super(key: key);
 
   final TextEditingController _emailController = TextEditingController();
 
@@ -22,7 +24,16 @@ class PartnerPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: goToTest,
+                onPressed: () {
+                  print("ok");
+                  try {
+                    Provider.of<FirebaseFirestore>(context, listen: false)
+                        .collection("mails")
+                        .add({"mail": _emailController.text}).whenComplete(() => (Provider.of<RouterDelegate<Object>>(context, listen: false) as CustomRouterDelegate).goToTest());
+                  } catch (e) {
+                    print(e);
+                  }
+                },
                 child: const Text("Pošalji"),
               ),
             ],
