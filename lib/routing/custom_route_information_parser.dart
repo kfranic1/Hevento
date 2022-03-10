@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hevento/configuraiton.dart';
+import 'package:hevento/routing/configuraiton.dart';
 
 class CustomRouteInformationParser extends RouteInformationParser<Configuration> {
   @override

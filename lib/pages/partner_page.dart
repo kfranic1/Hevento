@@ -1,12 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hevento/services/auth_service.dart';
 import 'package:provider/provider.dart';
-import '../custom_router_delegate.dart';
 
 class PartnerPage extends StatelessWidget {
   PartnerPage({Key? key}) : super(key: key);
 
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -18,21 +19,24 @@ class PartnerPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextFormField(
+                decoration: const InputDecoration(hintText: "name"),
+                controller: _nameController,
+                keyboardType: TextInputType.emailAddress,
+              ),
+              TextFormField(
                 decoration: const InputDecoration(hintText: "email"),
                 controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(hintText: "password"),
+                controller: _passwordController,
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  print("ok");
-                  try {
-                    Provider.of<FirebaseFirestore>(context, listen: false)
-                        .collection("mails")
-                        .add({"mail": _emailController.text}).whenComplete(() => (Provider.of<RouterDelegate<Object>>(context, listen: false) as CustomRouterDelegate).goToTest());
-                  } catch (e) {
-                    print(e);
-                  }
+                  Provider.of<AuthService>(context, listen: false).signUpSpace(_emailController.text, _passwordController.text, _nameController.text);
                 },
                 child: const Text("Pošalji"),
               ),
