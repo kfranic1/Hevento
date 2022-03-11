@@ -3,7 +3,8 @@ import 'package:hevento/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
 class PartnerPage extends StatelessWidget {
-  PartnerPage({Key? key}) : super(key: key);
+  final String? params;
+  PartnerPage({Key? key, this.params}) : super(key: key);
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -40,6 +41,8 @@ class PartnerPage extends StatelessWidget {
                 },
                 child: const Text("Pošalji"),
               ),
+              const SizedBox(height: 20),
+              Text(params ?? "null"),
             ],
           ),
         ),

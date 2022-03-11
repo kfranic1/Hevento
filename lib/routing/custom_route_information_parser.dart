@@ -7,7 +7,7 @@ class CustomRouteInformationParser extends RouteInformationParser<Configuration>
     final uri = Uri.parse(routeInformation.location!);
 
     if (uri.pathSegments.isEmpty) return Configuration.home();
-    return Configuration.otherPage(uri.pathSegments.join('/').toString());
+    return Configuration.otherPage(uri.toString().substring(1));
   }
 
   @override

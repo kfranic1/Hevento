@@ -4,6 +4,8 @@ import 'package:hevento/pages/partner_page.dart';
 import 'package:hevento/pages/test.dart';
 import 'package:hevento/routing/routes.dart';
 import 'package:provider/provider.dart';
+import 'package:hevento/services/extensions/map_extensions.dart';
+import 'package:hevento/services/extensions/string_extension.dart';
 
 import '../pages/home_page.dart';
 
@@ -32,9 +34,9 @@ class CustomRouterDelegate extends RouterDelegate<Configuration> with ChangeNoti
               MaterialPage(
                 key: ValueKey(_configuration.pathName),
                 child: Builder(builder: (context) {
-                  switch (_configuration.pathName) {
+                  switch (_configuration.pathName!.removeUrl()) {
                     case Routes.partner:
-                      return PartnerPage();
+                      return PartnerPage(params: _configuration.pathParams.toString());
                     case Routes.test:
                       return Testing();
                     default:
@@ -60,20 +62,20 @@ class CustomRouterDelegate extends RouterDelegate<Configuration> with ChangeNoti
   }
 
   @override
-  void goToHome() {
+  void goToHome({Map<String, String>? params}) {
     setNewRoutePath(Configuration.home());
     notifyListeners();
   }
 
   @override
-  void goToPartner() {
-    setNewRoutePath(Configuration.otherPage(Routes.partner));
+  void goToPartner({Map<String, String>? params}) {
+    setNewRoutePath(Configuration.otherPage(Routes.partner + params.toStringFromParams()));
     notifyListeners();
   }
 
   @override
-  void goToTest() {
-    setNewRoutePath(Configuration.otherPage(Routes.test));
+  void goToTest({Map<String, String>? params}) {
+    setNewRoutePath(Configuration.otherPage(Routes.test + params.toStringFromParams()));
     notifyListeners();
   }
 }

@@ -3,9 +3,9 @@ abstract class Routes {
   static const String partner = "partner";
   static const String test = "partner/test";
 
-  void goToHome() {}
+  void goToHome({Map<String,String>? params}) {}
 
-  void goToPartner() {}
+  void goToPartner({Map<String,String>? params}) {}
 
-  void goToTest() {}
+  void goToTest({Map<String,String>? params}) {}
 }

@@ -20,9 +20,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  static final RouteInformationParser<Object> _routeInformationParser = CustomRouteInformationParser();
-  static final RouterDelegate<Object> _routerDelegate = CustomRouterDelegate();
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -35,11 +32,11 @@ class MyApp extends StatelessWidget {
           create: (context) => context.read<AuthService>().authStateChanges,
           initialData: null,
         ),
-        Provider<RouteInformationParser<Object>>(
-          create: (context) => _routeInformationParser,
+        Provider<CustomRouteInformationParser>(
+          create: (context) => CustomRouteInformationParser(),
         ),
-        ListenableProvider<RouterDelegate<Object>>(
-          create: (context) => _routerDelegate,
+        ListenableProvider<CustomRouterDelegate>(
+          create: (context) => CustomRouterDelegate(),
         ),
       ],
       child: Builder(builder: (context) {
@@ -59,19 +56,19 @@ class MyApp extends StatelessWidget {
                     }),
             actions: [
               ElevatedButton(
-                onPressed: () => (Provider.of<RouterDelegate<Object>>(context, listen: false) as CustomRouterDelegate).goToHome(),
+                onPressed: () => context.read<CustomRouterDelegate>().goToHome(),
                 child: const Text("Home"),
               ),
               ElevatedButton(
-                onPressed: () => (Provider.of<RouterDelegate<Object>>(context, listen: false) as CustomRouterDelegate).goToPartner(),
+                onPressed: () => context.read<CustomRouterDelegate>().goToPartner(params: {'a': '1'}),
                 child: const Text("Postani partner"),
               ),
               ElevatedButton(
-                onPressed: () => (Provider.of<RouterDelegate<Object>>(context, listen: false) as CustomRouterDelegate).goToTest(),
+                onPressed: () => context.read<CustomRouterDelegate>().goToTest(),
                 child: const Text("Test"),
               ),
               ElevatedButton(
-                onPressed: () async => print(await Provider.of<AuthService>(context, listen: false).signOut()),
+                onPressed: () async => await Provider.of<AuthService>(context, listen: false).signOut(),
                 child: const Text("logout"),
               ),
             ],
@@ -82,8 +79,8 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.green,
             ),
             debugShowCheckedModeBanner: false,
-            routeInformationParser: _routeInformationParser,
-            routerDelegate: _routerDelegate,
+            routeInformationParser: context.read<CustomRouteInformationParser>(),
+            routerDelegate: context.read<CustomRouterDelegate>(),
           ),
         );
       }),

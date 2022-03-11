@@ -6,7 +6,7 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child:  Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
           Text(
@@ -16,7 +16,6 @@ class LandingPage extends StatelessWidget {
               fontSize: 40,
             ),
           ),
-          
         ],
       ),
     );
