@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hevento/pages/landing_page.dart';
 import 'package:hevento/routing/configuraiton.dart';
 import 'package:hevento/pages/partner_page.dart';
-import 'package:hevento/pages/test.dart';
+import 'package:hevento/pages/sign_in_page.dart';
 import 'package:hevento/routing/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:hevento/services/extensions/map_extensions.dart';
 import 'package:hevento/services/extensions/string_extension.dart';
-
-import '../pages/home_page.dart';
 
 class CustomRouterDelegate extends RouterDelegate<Configuration> with ChangeNotifier, PopNavigatorRouterDelegateMixin<Configuration>, Routes {
   Configuration _configuration = Configuration.home();
@@ -34,11 +33,11 @@ class CustomRouterDelegate extends RouterDelegate<Configuration> with ChangeNoti
               MaterialPage(
                 key: ValueKey(_configuration.pathName),
                 child: Builder(builder: (context) {
-                  switch (_configuration.pathName!.removeUrl()) {
+                  switch (_configuration.pathName!.removeParams()) {
                     case Routes.partner:
                       return PartnerPage(params: _configuration.pathParams.toString());
                     case Routes.test:
-                      return Testing();
+                      return SignInPage();
                     default:
                       return const LandingPage();
                   }
@@ -62,7 +61,7 @@ class CustomRouterDelegate extends RouterDelegate<Configuration> with ChangeNoti
   }
 
   @override
-  void goToHome({Map<String, String>? params}) {
+  void goToHome() {
     setNewRoutePath(Configuration.home());
     notifyListeners();
   }

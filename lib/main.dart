@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hevento/generated/firebase_options.dart';
+import 'package:hevento/routing/custom_route_information_parser.dart';
+import 'package:hevento/routing/custom_router_delegate.dart';
 import 'package:hevento/services/auth_service.dart';
 import 'package:hevento/model/space.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
-import 'generated/firebase_options.dart';
-import 'routing/custom_route_information_parser.dart';
-import 'routing/custom_router_delegate.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,16 +60,16 @@ class MyApp extends StatelessWidget {
                 child: const Text("Home"),
               ),
               ElevatedButton(
-                onPressed: () => context.read<CustomRouterDelegate>().goToPartner(params: {'a': '1'}),
+                onPressed: () => context.read<CustomRouterDelegate>().goToPartner(),
                 child: const Text("Postani partner"),
               ),
               ElevatedButton(
                 onPressed: () => context.read<CustomRouterDelegate>().goToTest(),
-                child: const Text("Test"),
+                child: const Text("Sing In"),
               ),
               ElevatedButton(
                 onPressed: () async => await Provider.of<AuthService>(context, listen: false).signOut(),
-                child: const Text("logout"),
+                child: const Text("Sign out"),
               ),
             ],
           ),

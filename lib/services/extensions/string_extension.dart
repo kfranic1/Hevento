@@ -10,7 +10,7 @@ extension StringExt on String {
     return ret;
   }
 
-  String removeUrl() {
+  String removeParams() {
     if (!contains('?')) return this;
     return substring(0, indexOf('?'));
   }

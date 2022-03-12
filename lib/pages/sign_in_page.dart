@@ -3,11 +3,9 @@ import 'package:hevento/model/space.dart';
 import 'package:hevento/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
-class PartnerPage extends StatelessWidget {
-  final String? params;
-  PartnerPage({Key? key, this.params}) : super(key: key);
+class SignInPage extends StatelessWidget {
+  SignInPage({Key? key}) : super(key: key);
 
-  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -30,11 +28,6 @@ class PartnerPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextFormField(
-                      decoration: const InputDecoration(hintText: "name"),
-                      controller: _nameController,
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    TextFormField(
                       decoration: const InputDecoration(hintText: "email"),
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
@@ -47,13 +40,10 @@ class PartnerPage extends StatelessWidget {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        Provider.of<AuthService>(context, listen: false)
-                            .signUpSpace(_emailController.text, _passwordController.text, _nameController.text);
+                        Provider.of<AuthService>(context, listen: false).signInSpace(_emailController.text, _passwordController.text);
                       },
-                      child: const Text("Sign Up"),
+                      child: const Text("Sign In"),
                     ),
-                    const SizedBox(height: 20),
-                    Text(params ?? "null"),
                   ],
                 ),
               ),
