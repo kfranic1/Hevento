@@ -2,13 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hevento/generated/firebase_options.dart';
+import 'package:hevento/model/app_user.dart';
+import 'package:hevento/model/person.dart';
+import 'package:hevento/model/space.dart';
 import 'package:hevento/routing/custom_route_information_parser.dart';
 import 'package:hevento/routing/custom_router_delegate.dart';
 import 'package:hevento/services/auth_service.dart';
-import 'package:hevento/model/space.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         Provider<AuthService>(
           create: (context) => AuthService(FirebaseAuth.instance),
         ),
-        StreamProvider(
+        StreamProvider<AppUser?>(
           create: (context) => context.read<AuthService>().authStateChanges,
           initialData: null,
         ),
@@ -40,19 +41,19 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: Builder(builder: (context) {
-        Space? space = Provider.of<Space?>(context);
+        AppUser? appUser = Provider.of<AppUser?>(context);
         return Provider.value(
           value: AppBar(
-            title: space == null
+            title: appUser == null
                 ? const Text("Not logged in")
                 : StreamBuilder(
-                    stream: space.self,
+                    stream: appUser.self,
                     builder: (context, snapshot) {
                       return !snapshot.hasData
-                          ? const Center(
-                              child: LinearProgressIndicator(),
-                            )
-                          : Text((snapshot.data as Space).name);
+                          ? const Center(child: LinearProgressIndicator())
+                          : appUser is Person
+                              ? Text((snapshot.data as Person).name + " person")
+                              : Text((snapshot.data as Space).name + " space");
                     }),
             actions: [
               ElevatedButton(

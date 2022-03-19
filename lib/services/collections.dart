@@ -1,4 +1,4 @@
 abstract class Collections {
-  static const String spaces = "spaces";
-  static const String users = "users";
+  static const String space = "space";
+  static const String person = "person";
 }
