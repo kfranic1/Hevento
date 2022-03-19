@@ -3,8 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hevento/generated/firebase_options.dart';
 import 'package:hevento/model/app_user.dart';
-import 'package:hevento/model/person.dart';
-import 'package:hevento/model/space.dart';
 import 'package:hevento/routing/custom_route_information_parser.dart';
 import 'package:hevento/routing/custom_router_delegate.dart';
 import 'package:hevento/services/auth_service.dart';
@@ -44,17 +42,7 @@ class MyApp extends StatelessWidget {
         AppUser? appUser = Provider.of<AppUser?>(context);
         return Provider.value(
           value: AppBar(
-            title: appUser == null
-                ? const Text("Not logged in")
-                : StreamBuilder(
-                    stream: appUser.self,
-                    builder: (context, snapshot) {
-                      return !snapshot.hasData
-                          ? const Center(child: LinearProgressIndicator())
-                          : appUser is Person
-                              ? Text((snapshot.data as Person).name + " person")
-                              : Text((snapshot.data as Space).name + " space");
-                    }),
+            title: Image.asset('images/title.png'),
             actions: [
               ElevatedButton(
                 onPressed: () => context.read<CustomRouterDelegate>().goToHome(),
@@ -64,14 +52,22 @@ class MyApp extends StatelessWidget {
                 onPressed: () => context.read<CustomRouterDelegate>().goToPartner(),
                 child: const Text("Postani partner"),
               ),
-              ElevatedButton(
-                onPressed: () => context.read<CustomRouterDelegate>().goToTest(),
-                child: const Text("Sing In"),
-              ),
-              ElevatedButton(
-                onPressed: () async => await Provider.of<AuthService>(context, listen: false).signOut(),
-                child: const Text("Sign out"),
-              ),
+              //Expanded(child: Container()),
+              if (appUser == null)
+                ElevatedButton(
+                  onPressed: () => context.read<CustomRouterDelegate>().goToTest(),
+                  child: const Text("Log In"),
+                ),
+              if (appUser != null)
+                ElevatedButton(
+                  onPressed: () => context.read<CustomRouterDelegate>().goToTest(),
+                  child: const Text("Sing Up"),
+                ),
+              if (appUser == null)
+                ElevatedButton(
+                  onPressed: () async => await Provider.of<AuthService>(context, listen: false).signOut(),
+                  child: const Text("Sign out"),
+                ),
             ],
           ),
           child: MaterialApp.router(

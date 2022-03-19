@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hevento/pages/landing_page.dart';
 import 'package:hevento/routing/configuraiton.dart';
 import 'package:hevento/pages/partner_page.dart';
-import 'package:hevento/pages/sign_in_page.dart';
+import 'package:hevento/pages/log_in_page.dart';
 import 'package:hevento/routing/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:hevento/services/extensions/map_extensions.dart';
@@ -37,7 +37,7 @@ class CustomRouterDelegate extends RouterDelegate<Configuration> with ChangeNoti
                     case Routes.partner:
                       return PartnerPage(params: _configuration.pathParams.toString());
                     case Routes.test:
-                      return SignInPage();
+                      return LogInPage();
                     default:
                       return const LandingPage();
                   }

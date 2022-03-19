@@ -6,8 +6,8 @@ import 'package:hevento/services/auth_service.dart';
 import 'package:hevento/services/enums/user_type.dart';
 import 'package:provider/provider.dart';
 
-class SignInPage extends StatelessWidget {
-  SignInPage({Key? key}) : super(key: key);
+class LogInPage extends StatelessWidget {
+  LogInPage({Key? key}) : super(key: key);
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -23,7 +23,7 @@ class SignInPage extends StatelessWidget {
                   builder: (context, snapshot) {
                     return !snapshot.hasData
                         ? const LinearProgressIndicator()
-                        : Text("Already signed in as ${appUser is Space ? appUser.name : (appUser as Person).name}");
+                        : Text("Already logged in as ${appUser is Space ? appUser.name : (appUser as Person).name}");
                   }),
             )
           : Form(
@@ -32,7 +32,7 @@ class SignInPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Sign In"),
+                    const Text("Log In"),
                     TextFormField(
                       decoration: const InputDecoration(hintText: "email"),
                       controller: _emailController,
@@ -51,7 +51,7 @@ class SignInPage extends StatelessWidget {
                           onPressed: () {
                             Provider.of<AuthService>(context, listen: false).signIn(_emailController.text, _passwordController.text, UserType.space);
                           },
-                          child: const Text("Sign In as Space"),
+                          child: const Text("Log In as Space"),
                         ),
                         const SizedBox(
                           width: 20,
@@ -61,7 +61,7 @@ class SignInPage extends StatelessWidget {
                             await Provider.of<AuthService>(context, listen: false)
                                 .signIn(_emailController.text, _passwordController.text, UserType.person);
                           },
-                          child: const Text("Sign In as User"),
+                          child: const Text("Log In as User"),
                         ),
                       ],
                     ),
