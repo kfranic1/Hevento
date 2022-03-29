@@ -6,6 +6,7 @@ import 'package:hevento/model/app_user.dart';
 import 'package:hevento/routing/custom_route_information_parser.dart';
 import 'package:hevento/routing/custom_router_delegate.dart';
 import 'package:hevento/services/auth_service.dart';
+import 'package:hevento/services/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -42,32 +43,80 @@ class MyApp extends StatelessWidget {
         AppUser? appUser = Provider.of<AppUser?>(context);
         return Provider.value(
           value: AppBar(
+            elevation: 0,
+            bottom: PreferredSize(
+              child: Container(
+                color: Colors.black,
+                height: 4.0,
+              ),
+              preferredSize: const Size.fromHeight(4.0),
+            ),
+            backgroundColor: Colors.transparent,
             title: Image.asset('images/title.png'),
             actions: [
-              ElevatedButton(
+              /*TextButton(
                 onPressed: () => context.read<CustomRouterDelegate>().goToHome(),
-                child: const Text("Home"),
-              ),
-              ElevatedButton(
-                onPressed: () => context.read<CustomRouterDelegate>().goToPartner(),
-                child: const Text("Postani partner"),
-              ),
-              //Expanded(child: Container()),
-              if (appUser == null)
-                ElevatedButton(
-                  onPressed: () => context.read<CustomRouterDelegate>().goToTest(),
-                  child: const Text("Log In"),
+                child: const Text(
+                  "Home",
+                  style: TextStyle(color: Colors.black),
                 ),
+              ),*/
+              if (appUser == null)
+                TextButton(
+                  onPressed: () => context.read<CustomRouterDelegate>().goToTest(),
+                  child: const Text(
+                    "Imam profil",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              const SizedBox(width: 30),
+              if (appUser == null)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: 175,
+                    child: ElevatedButton(
+                      onPressed: () => context.read<CustomRouterDelegate>().goToTest(),
+                      child: const Text(
+                        "Registriraj se",
+                        //style: TextStyle(color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(primary: darkGreen),
+                    ),
+                  ),
+                ),
+              const SizedBox(width: 15),
               if (appUser != null)
-                ElevatedButton(
-                  onPressed: () => context.read<CustomRouterDelegate>().goToTest(),
-                  child: const Text("Sing Up"),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: 150,
+                    child: ElevatedButton(
+                      onPressed: () async => await Provider.of<AuthService>(context, listen: false).signOut(),
+                      child: const Text(
+                        "Sign out",
+                      ),
+                      style: ElevatedButton.styleFrom(primary: darkGreen),
+                    ),
+                  ),
                 ),
-              if (appUser == null)
-                ElevatedButton(
-                  onPressed: () async => await Provider.of<AuthService>(context, listen: false).signOut(),
-                  child: const Text("Sign out"),
+              const SizedBox(width: 15),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () => context.read<CustomRouterDelegate>().goToPartner(),
+                  child: const Center(
+                    child: SizedBox(
+                      width: 150,
+                      child: Text(
+                        "Postani partner",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(primary: darkGreen),
                 ),
+              ),
             ],
           ),
           child: MaterialApp.router(

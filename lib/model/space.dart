@@ -6,6 +6,7 @@ import 'package:hevento/services/collections.dart';
 
 class Space extends AppUser {
   late String name;
+  late String description;
   late Map<DateTime, List<Pair<String, String>>> calendar;
   late Map<String, String> contacts;
   late Map<String, dynamic> elements;
@@ -16,6 +17,9 @@ class Space extends AppUser {
   late int numberOfPeople;
   late Person owner;
   late double size;
+  late double ocijena;
+  late int numberOfReviews;
+  late List<String> tags;
 
   Space(String id) : super(id);
 
@@ -25,6 +29,8 @@ class Space extends AppUser {
   Space? getData(DocumentSnapshot data) {
     if (!data.exists) return null;
     name = data["name"];
+    description = data["description"];
+    maxPrice = data["maxPrice"];
     return this;
   }
 
