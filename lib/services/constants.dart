@@ -5,3 +5,5 @@ const double wide = 1440;
 
 Color darkGreen = const Color(0xff114032);
 Color lightGreen = const Color(0xffd1daa1);
+
+const Widget loader = Center(child: CircularProgressIndicator());

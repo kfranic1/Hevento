@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:hevento/model/filter.dart';
 import 'package:hevento/model/space.dart';
 import 'package:hevento/widgets/filters.dart';
 import 'package:hevento/widgets/space_list_item.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
 
   @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  final Filter filter = Filter();
+
+  int page = 0;
+
+  @override
   Widget build(BuildContext context) {
-    Space s1 = Space('1');
+    filter.addListener(() {
+      setState(() {});
+    });
+    /*Space s1 = Space('1');
     s1.name = "Prostor 1";
     s1.description =
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec vehicula leo. Aenean finibus vulputate porttitor. Vivamus ac ligula enim. Nunc in lobortis enim. Proin tincidunt risus purus, in pellentesque massa lacinia sit amet. Sed tempus interdum est, sit amet tincidunt augue cursus sit amet. Donec consectetur porttitor mauris, nec pulvinar ligula tempus mattis. Suspendisse malesuada cursus pellentesque. Etiam mollis mattis mauris, at maximus dolor pretium et. Praesent tempus vel justo a sagittis.";
@@ -41,33 +54,37 @@ class LandingPage extends StatelessWidget {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec vehicula leo. Aenean finibus vulputate porttitor. Vivamus ac ligula enim. Nunc in lobortis enim. Proin tincidunt risus purus, in pellentesque massa lacinia sit amet. Sed tempus interdum est, sit amet tincidunt augue cursus sit amet. Donec consectetur porttitor mauris, nec pulvinar ligula tempus mattis. Suspendisse malesuada cursus pellentesque. Etiam mollis mattis mauris, at maximus dolor pretium et. Praesent tempus vel justo a sagittis.";
     s4.maxPrice = 5000;
     s4.ocijena = 5.0;
-    s4.tags = ["#Maturalna"];
+    s4.tags = ["#Maturalna"];*/
     return Center(
-      child: Row(
-        children: [
-          Expanded(
-            flex: 5,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50.0),
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
-                children: [
-                  SpaceListItem(space: s1),
-                  SpaceListItem(space: s2),
-                  SpaceListItem(space: s3),
-                  SpaceListItem(space: s4),
-                ],
-              ),
-            ),
-          ),
-          const Expanded(
-            child: Filters(),
-            flex: 2,
-          ),
-        ],
-      ),
+      child: FutureBuilder(
+          future: Space.getSpaces(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            List<Space> spaces = snapshot.data as List<Space>;
+
+            return Row(
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 50.0),
+                    child: GridView.count(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20,
+                      children: spaces.map((e) => SpaceListItem(space: e)).toList(),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Filters(filter: filter),
+                  flex: 2,
+                ),
+              ],
+            );
+          }),
     );
   }
 }

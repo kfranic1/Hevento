@@ -51,31 +51,23 @@ class SpaceListItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Expanded(
-                        child: SizedBox(),
-                      ),
+                      const Expanded(child: SizedBox()),
                       Row(
                         children: space.tags.map((e) => Text(e + ' ')).toList(),
                       ),
-                      const Expanded(
-                        child: SizedBox(),
-                      ),
+                      const Expanded(child: SizedBox()),
                       Text(
                         space.name,
                         style: const TextStyle(fontSize: 30),
                       ),
-                      const Expanded(
-                        child: SizedBox(),
-                      ),
+                      const Expanded(child: SizedBox()),
                       Text(
                         "${space.ocijena}/5.0",
                         style: const TextStyle(fontSize: 20),
                       ),
-                      const Expanded(
-                        child: SizedBox(),
-                      ),
+                      const Expanded(child: SizedBox()),
                       Text(
-                        space.maxPrice.toString(),
+                        "from " + space.minPrice.toString() + " to " + space.maxPrice.toString(),
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       const Expanded(
@@ -93,9 +85,7 @@ class SpaceListItem extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const Expanded(
-                        child: SizedBox(),
-                      ),
+                      const Expanded(child: SizedBox()),
                     ],
                   ),
                 ),

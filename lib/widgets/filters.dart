@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hevento/model/filter.dart';
+import 'package:hevento/services/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Filters extends StatefulWidget {
-  const Filters({Key? key}) : super(key: key);
+  final Filter filter;
+  const Filters({Key? key, required this.filter}) : super(key: key);
 
   @override
   State<Filters> createState() => _FiltersState();
@@ -12,8 +15,8 @@ class _FiltersState extends State<Filters> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  double _currentSliderValue1 = 0;
-  double _currentSliderValue2 = 0;
+  double _currentSliderValue1 = 5000;
+  double _currentSliderValue2 = 300;
 
   bool _checkedValue1 = false;
   bool _checkedValue2 = false;
@@ -74,7 +77,7 @@ class _FiltersState extends State<Filters> {
             const SizedBox(
               height: 10,
             ),
-            const Text("Çijena"),
+            const Text("Cijena"),
             Slider(
               activeColor: Colors.white,
               value: _currentSliderValue1,
@@ -123,6 +126,17 @@ class _FiltersState extends State<Filters> {
                 });
               },
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: ElevatedButton(
+                child: const Text("Apply changes"),
+                onPressed: () =>
+                    widget.filter.setAll(selectedDay: _selectedDay, maxPrice: _currentSliderValue1, numberOfPeople: _currentSliderValue2),
+                style: ElevatedButton.styleFrom(primary: darkGreen),
+              ),
+            )
           ]),
         ),
       ),

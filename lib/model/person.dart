@@ -12,7 +12,6 @@ class Person extends AppUser {
 
   Person(String id) : super(id);
 
-  @override
   Stream<Person?> get self => FirebaseFirestore.instance.collection(Collections.person).doc(id).snapshots().map((data) => parseData(data));
 
   Person parseData(DocumentSnapshot data) {

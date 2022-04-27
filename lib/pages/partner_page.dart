@@ -19,14 +19,14 @@ class PartnerPage extends StatelessWidget {
     AppUser? appUser = Provider.of<AppUser?>(context);
     return Center(
       child: appUser != null
-          ? Center(
-              child: StreamBuilder(
+          ? const Center(
+              child: Text("Already signed in"),/*StreamBuilder(
                   stream: appUser.self,
                   builder: (context, snapshot) {
                     return !snapshot.hasData
                         ? const LinearProgressIndicator()
-                        : Text("Already signed in as ${appUser is Space ? appUser.name : (appUser as Person).name}");
-                  }),
+                        : const Text("Already signed in as ${appUser is Space ? appUser.name : (appUser as Person).name}");
+                  }),*/
             )
           : Row(
               mainAxisAlignment: MainAxisAlignment.center,

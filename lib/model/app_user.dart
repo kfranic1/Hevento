@@ -3,6 +3,4 @@ abstract class AppUser {
   //UserType userType;
 
   AppUser(this.id);
-
-  Stream<AppUser?> get self;
 }

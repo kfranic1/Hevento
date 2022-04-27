@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hevento/model/app_user.dart';
-import 'package:hevento/model/person.dart';
-import 'package:hevento/model/space.dart';
 import 'package:hevento/services/auth_service.dart';
 import 'package:hevento/services/enums/user_type.dart';
 import 'package:provider/provider.dart';
@@ -17,14 +15,15 @@ class LogInPage extends StatelessWidget {
     AppUser? appUser = Provider.of<AppUser?>(context);
     return Center(
       child: appUser != null
-          ? Center(
-              child: StreamBuilder(
-                  stream: appUser is Space ? appUser.self : (appUser as Person).self,
+          ? const Center(
+              child: Text(
+                  "Already signed in"), /*StreamBuilder(
+                  stream: appUser.self,
                   builder: (context, snapshot) {
                     return !snapshot.hasData
                         ? const LinearProgressIndicator()
-                        : Text("Already logged in as ${appUser is Space ? appUser.name : (appUser as Person).name}");
-                  }),
+                        : const Text("Already signed in as ${appUser is Space ? appUser.name : (appUser as Person).name}");
+                  }),*/
             )
           : Form(
               child: SizedBox(
