@@ -23,8 +23,7 @@ class _FiltersState extends State<Filters> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 400,
-      decoration: const BoxDecoration(color: Color(0xffd1daa1)),
+      color: lightGreen,
       child: Column(
         children: [
           const SizedBox(height: 75),
