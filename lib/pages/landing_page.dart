@@ -67,7 +67,6 @@ class _LandingPageState extends State<LandingPage> {
             return Row(
               children: [
                 Expanded(
-                  flex: 5,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 50.0),
                     child: GridView.count(
@@ -78,10 +77,7 @@ class _LandingPageState extends State<LandingPage> {
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Filters(filter: filter),
-                  flex: 2,
-                ),
+                Filters(filter: filter),
               ],
             );
           }),
