@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hevento/generated/firebase_options.dart';
 import 'package:hevento/model/app_user.dart';
+import 'package:hevento/model/filter.dart';
 import 'package:hevento/routing/custom_route_information_parser.dart';
 import 'package:hevento/routing/custom_router_delegate.dart';
 import 'package:hevento/services/auth_service.dart';
@@ -36,6 +37,9 @@ class MyApp extends StatelessWidget {
         ),
         ListenableProvider<CustomRouterDelegate>(
           create: (context) => CustomRouterDelegate(),
+        ),
+        ListenableProvider<Filter>(
+          create: (context) => Filter(),
         ),
       ],
       child: Builder(builder: (context) {

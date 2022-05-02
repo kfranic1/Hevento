@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hevento/model/app_user.dart';
+import 'package:hevento/model/filter.dart';
 import 'package:hevento/model/person.dart';
 import 'package:hevento/services/collections.dart';
 
@@ -16,7 +17,7 @@ class Space extends AppUser {
   late int numberOfPeople;
   late Person owner;
   late double size;
-  late double ocijena;
+  late double ocjena;
   late int numberOfReviews;
   late List<String> tags;
 
@@ -29,10 +30,8 @@ class Space extends AppUser {
     try {
       name = data["name"];
       description = data["description"];
-      calendar = (data["calendar"] as Map<String, dynamic>).map((key, value) =>
-          MapEntry(key, (value as List<dynamic>).map((e) => (e as Map<String, dynamic>).map((key, value) => MapEntry(key, value as String))).toList()
-//            [{'a':'a'}],
-              ));
+      calendar = (data["calendar"] as Map<String, dynamic>).map((key, value) => MapEntry(
+          key, (value as List<dynamic>).map((e) => (e as Map<String, dynamic>).map((key, value) => MapEntry(key, value as String))).toList()));
       contacts = (data["contacts"] as Map<String, dynamic>).map((key, value) => MapEntry(key, value as String?));
       elements = data["elements"];
       location = data["location"] as GeoPoint;
@@ -42,13 +41,19 @@ class Space extends AppUser {
       numberOfPeople = data["numberOfPeople"];
       owner = Person(data["owner"]);
       size = data["size"];
-      ocijena = data["ocijena"];
+      ocjena = data["ocijena"];
       numberOfReviews = data["numberOfReviews"];
       tags = (data["tags"] as List<dynamic>).map((e) => e as String).toList();
     } catch (e) {
       return null;
     }
     return this;
+  }
+
+  bool pass(Filter filter) {
+    if (filter.maxPrice < minPrice * 1.1) return false;
+    if (filter.numberOfPeople > numberOfPeople * 1.1) return false;
+    return true;
   }
 
   static Future<void> createSpace(Space space) async {
