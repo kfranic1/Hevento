@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hevento/model/app_user.dart';
 import 'package:hevento/model/filter.dart';
 import 'package:hevento/model/person.dart';
 import 'package:hevento/services/collections.dart';
 
-class Space extends AppUser {
+class Space {
+  String id;
   late String name;
   late String description;
   late Map<String, List<Map<String, String>>> calendar;
@@ -21,7 +21,7 @@ class Space extends AppUser {
   late int numberOfReviews;
   late List<String> tags;
 
-  Space(String id) : super(id);
+  Space(this.id);
 
   Future<Space?> get self => FirebaseFirestore.instance.collection(Collections.space).doc(id).get().then((value) => getData(value));
 

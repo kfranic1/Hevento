@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hevento/model/space.dart';
+import 'package:hevento/pages/register_page.dart';
 import 'package:hevento/pages/space_page.dart';
 import 'package:hevento/widgets/custom_app_bar.dart';
 import 'package:hevento/pages/home_page.dart';
@@ -12,7 +13,7 @@ import 'package:hevento/services/extensions/string_extension.dart';
 import 'package:hevento/widgets/custom_scroll_behavior.dart';
 import 'package:provider/provider.dart';
 
-class CustomRouterDelegate extends RouterDelegate<Configuration> with ChangeNotifier, PopNavigatorRouterDelegateMixin<Configuration>, Routes {
+class CustomRouterDelegate extends RouterDelegate<Configuration> with ChangeNotifier, PopNavigatorRouterDelegateMixin<Configuration> implements Routes {
   Configuration _configuration = Configuration.home();
 
   @override
@@ -55,10 +56,12 @@ class CustomRouterDelegate extends RouterDelegate<Configuration> with ChangeNoti
                               switch (_configuration.pathName!.removeParams()) {
                                 case Routes.partner:
                                   return PartnerPage(params: _configuration.pathParams.toString());
-                                case Routes.test:
+                                case Routes.login:
                                   return LogInPage();
                                 case Routes.space:
                                   return SpacePage(space: spaces.firstWhere((element) => element.id == _configuration.pathParams!["id"]));
+                                case Routes.register:
+                                  return RegisterPage();
                                 default:
                                   return const HomePage();
                               }
@@ -98,14 +101,20 @@ class CustomRouterDelegate extends RouterDelegate<Configuration> with ChangeNoti
   }
 
   @override
-  void goToTest({Map<String, String>? params}) {
-    setNewRoutePath(Configuration.otherPage(Routes.test + params.toStringFromParams()));
+  void goToLogin({Map<String, String>? params}) {
+    setNewRoutePath(Configuration.otherPage(Routes.login + params.toStringFromParams()));
     notifyListeners();
   }
 
   @override
   void goToSpace({Map<String, String>? params = const {"id": "0"}}) {
     setNewRoutePath(Configuration.otherPage(Routes.space + params.toStringFromParams()));
+    notifyListeners();
+  }
+
+  @override
+  void goToRegister({Map<String, String>? params}) {
+    setNewRoutePath(Configuration.otherPage(Routes.register + params.toStringFromParams()));
     notifyListeners();
   }
 }

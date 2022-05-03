@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hevento/model/app_user.dart';
 import 'package:hevento/model/space.dart';
 import 'package:hevento/services/collections.dart';
 
-class Person extends AppUser {
+class Person {
+  String id;
   late String name;
   late String lastname;
   late String username;
   late String email;
   late List<Space> mySpaces;
 
-  Person(String id) : super(id);
+  Person(this.id);
 
   Stream<Person?> get self => FirebaseFirestore.instance.collection(Collections.person).doc(id).snapshots().map((data) => parseData(data));
 

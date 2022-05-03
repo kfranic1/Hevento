@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hevento/model/app_user.dart';
+import 'package:hevento/model/person.dart';
 import 'package:hevento/services/auth_service.dart';
-import 'package:hevento/services/enums/user_type.dart';
 import 'package:provider/provider.dart';
 
 class LogInPage extends StatelessWidget {
@@ -12,7 +11,7 @@ class LogInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppUser? appUser = Provider.of<AppUser?>(context);
+    Person? appUser = Provider.of<Person?>(context);
     return Scaffold(
       body: Center(
         child: appUser != null
@@ -35,24 +34,16 @@ class LogInPage extends StatelessWidget {
                         obscureText: true,
                       ),
                       const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Provider.of<AuthService>(context, listen: false).signIn(_emailController.text, _passwordController.text, UserType.space);
-                            },
-                            child: const Text("Log In as Space"),
-                          ),
-                          const SizedBox(width: 20),
-                          ElevatedButton(
-                            onPressed: () async {
-                              await Provider.of<AuthService>(context, listen: false)
-                                  .signIn(_emailController.text, _passwordController.text, UserType.person);
-                            },
-                            child: const Text("Log In as User"),
-                          ),
-                        ],
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            await Provider.of<AuthService>(context, listen: false).signIn(
+                              _emailController.text,
+                              _passwordController.text,
+                            );
+                          },
+                          child: const Text("Log In as User"),
+                        ),
                       ),
                     ],
                   ),

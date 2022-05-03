@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:hevento/model/app_user.dart';
+import 'package:hevento/model/person.dart';
 import 'package:hevento/routing/custom_router_delegate.dart';
 import 'package:hevento/services/auth_service.dart';
 import 'package:hevento/services/constants.dart';
@@ -13,7 +13,7 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppUser? appUser = Provider.of<AppUser?>(context);
+    Person? appUser = Provider.of<Person?>(context);
     return LayoutBuilder(
       builder: (context, constraints) {
         return constraints.maxWidth < kNarrow
@@ -35,12 +35,10 @@ class CustomAppBar extends StatelessWidget {
                                   child: Image.asset('./assets/images/title.png'),
                                   onTap: () => context.read<CustomRouterDelegate>().goToHome(),
                                 ),
-                                const Expanded(
-                                  child: SizedBox(),
-                                ),
+                                const Expanded(child: SizedBox()),
                                 if (appUser == null)
                                   TextButton(
-                                    onPressed: () => context.read<CustomRouterDelegate>().goToTest(),
+                                    onPressed: () => context.read<CustomRouterDelegate>().goToLogin(),
                                     child: const Text(
                                       "Imam profil",
                                       style: TextStyle(color: Colors.black),
@@ -63,11 +61,8 @@ class CustomAppBar extends StatelessWidget {
                                   child: SizedBox(
                                     width: 175,
                                     child: ElevatedButton(
-                                      onPressed: () => context.read<CustomRouterDelegate>().goToTest(),
-                                      child: const Text(
-                                        "Registriraj se",
-                                        //style: TextStyle(color: Colors.white),
-                                      ),
+                                      onPressed: () => context.read<CustomRouterDelegate>().goToRegister(),
+                                      child: const Text("Registriraj se"),
                                       style: ElevatedButton.styleFrom(primary: darkGreen),
                                     ),
                                   ),
@@ -79,9 +74,7 @@ class CustomAppBar extends StatelessWidget {
                                     width: 175,
                                     child: ElevatedButton(
                                       onPressed: () async => await Provider.of<AuthService>(context, listen: false).signOut(),
-                                      child: const Text(
-                                        "Sign out",
-                                      ),
+                                      child: const Text("Sign out"),
                                       style: ElevatedButton.styleFrom(primary: darkGreen),
                                     ),
                                   ),
