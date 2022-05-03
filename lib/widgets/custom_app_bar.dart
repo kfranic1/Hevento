@@ -13,7 +13,7 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Person? appUser = Provider.of<Person?>(context);
+    Person? appUser = context.watch<Person?>();
     return LayoutBuilder(
       builder: (context, constraints) {
         return constraints.maxWidth < kNarrow
@@ -80,20 +80,26 @@ class CustomAppBar extends StatelessWidget {
                                   ),
                                 ),
                               const SizedBox(width: 15),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SizedBox(
-                                  width: 175,
-                                  child: ElevatedButton(
-                                    onPressed: () => context.read<CustomRouterDelegate>().goToPartner(),
-                                    style: ElevatedButton.styleFrom(primary: darkGreen),
-                                    child: const Text(
-                                      "Postani partner",
-                                      textAlign: TextAlign.center,
+                              if (appUser != null)
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    width: 175,
+                                    child: ElevatedButton(
+                                      onPressed: () => context.read<CustomRouterDelegate>().goToPartner(),
+                                      style: ElevatedButton.styleFrom(primary: darkGreen),
+                                      child: StreamBuilder(
+                                          stream: appUser.self,
+                                          builder: (context, snapshot) {
+                                            if (!snapshot.hasData) return const Center(child: LinearProgressIndicator());
+                                            return Text(
+                                              appUser.mySpaces.isEmpty ? "Postani partner" : "Nadzorna ploča",
+                                              textAlign: TextAlign.center,
+                                            );
+                                          }),
                                     ),
                                   ),
                                 ),
-                              ),
                             ],
                           ),
                         ),
