@@ -5,7 +5,6 @@ import 'package:hevento/services/collections.dart';
 class Person {
   String id;
   late String name;
-  late String lastname;
   late String username;
   late String email;
   late List<Space> mySpaces;
@@ -14,22 +13,21 @@ class Person {
 
   Stream<Person?> get self => FirebaseFirestore.instance.collection(Collections.person).doc(id).snapshots().map((data) => parseData(data));
 
-  Person parseData(DocumentSnapshot data) {
+  Person? parseData(DocumentSnapshot data) {
+    if (data.data() == null) return null;
     name = data["name"];
-    lastname = data["lastname"];
     username = data["username"];
     email = data["email"];
-    mySpaces = (data["mySpaces"] as List<dynamic>).map((e) => Space((e as DocumentReference).id)).toList();
+    mySpaces = (data["mySpaces"] as List<dynamic>).map((e) => Space((e as String))).toList();
     return this;
   }
 
   static Future<void> createPerson(Person person) async {
     await FirebaseFirestore.instance.collection(Collections.person).doc(person.id).set({
       "name": person.name,
-      "lastname": '', //person.lastname,
-      "email": '', //person.email,
-      "username": '', //person.username,
-      "mySpaces": [],
+      "email": person.email,
+      "username": person.username,
+      "mySpaces": List<String>.empty(),
     });
   }
 }
