@@ -12,23 +12,23 @@ class SpaceListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 500,
-      width: 500,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black,
-            blurRadius: 2.0,
-            spreadRadius: 0.0,
-            offset: Offset(2.0, 2.0), // shadow direction: bottom right
-          )
-        ],
-      ),
-      child: GestureDetector(
-        onTap: () => context.read<CustomRouterDelegate>().goToSpace(params: {"id": space.id}),
+    return GestureDetector(
+      onTap: () => context.read<CustomRouterDelegate>().goToSpace(params: {"id": space.id}),
+      child: Container(
+        height: 500,
+        width: 500,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black,
+              blurRadius: 2.0,
+              spreadRadius: 0.0,
+              offset: Offset(2.0, 2.0), // shadow direction: bottom right
+            )
+          ],
+        ),
         child: Row(
           children: [
             Expanded(

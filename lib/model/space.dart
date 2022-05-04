@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hevento/model/filter.dart';
 import 'package:hevento/model/person.dart';
 import 'package:hevento/services/collections.dart';
+import 'package:hevento/services/extensions/datetime_extension.dart';
 
 class Space {
   String id;
   late String name;
   late String description;
-  late Map<String, List<Map<String, String>>> calendar;
+  late Map<DateTime, String> calendar;
   late Map<String, String?> contacts;
   late Map<String, dynamic> elements;
   late GeoPoint location;
@@ -30,8 +31,8 @@ class Space {
     try {
       name = data["name"];
       description = data["description"];
-      calendar = (data["calendar"] as Map<String, dynamic>).map((key, value) => MapEntry(
-          key, (value as List<dynamic>).map((e) => (e as Map<String, dynamic>).map((key, value) => MapEntry(key, value as String))).toList()));
+      calendar = (data["calendar"] as Map<dynamic, dynamic>).map((key, value) => MapEntry(DateTime.parse(key), value as String));
+      //(value as List<dynamic>).map((e) => (e as Map<String, dynamic>).map((key, value) => MapEntry(key, value as String))).toList()));
       contacts = (data["contacts"] as Map<String, dynamic>).map((key, value) => MapEntry(key, value as String?));
       elements = data["elements"];
       location = data["location"] as GeoPoint;
@@ -44,7 +45,6 @@ class Space {
       rating = data["rating"];
       numberOfReviews = data["numberOfReviews"];
       tags = (data["tags"] as List<dynamic>).map((e) => e as String).toList();
-      
     } catch (e) {
       print(e.toString());
       return null;
@@ -56,6 +56,18 @@ class Space {
     if (filter.maxPrice < minPrice * 1.1) return false;
     if (filter.numberOfPeople > numberOfPeople * 1.1) return false;
     return true;
+  }
+
+  Future addEvent(DateTime dateTime, String description) async {
+    try {
+      calendar[dateTime.trim()] = description;
+      await FirebaseFirestore.instance
+          .collection(Collections.space)
+          .doc(id)
+          .update({"calendar": calendar.map((key, value) => MapEntry(key.toString(), value))});
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   static Future<void> createSpace(Person appUser, Space space) async {

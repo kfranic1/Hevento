@@ -22,9 +22,9 @@ class Person {
     return this;
   }
 
-  Future addSpace(String spaceId)async{
+  Future addSpace(String spaceId) async {
     mySpaces.add(Space(spaceId));
-    FirebaseFirestore.instance.collection(Collections.person).doc(id).update({"mySpaces": mySpaces.map((e) => e.id).toList()});
+    await FirebaseFirestore.instance.collection(Collections.person).doc(id).update({"mySpaces": mySpaces.map((e) => e.id).toList()});
   }
 
   static Future createPerson(Person person) async {

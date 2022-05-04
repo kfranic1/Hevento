@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hevento/model/space.dart';
 import 'package:hevento/services/constants.dart';
+import 'package:hevento/services/extensions/datetime_extension.dart';
 import 'package:hevento/services/static_functions.dart';
 import 'package:hevento/widgets/custom_divider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -180,10 +181,17 @@ class SpacePage extends StatelessWidget {
                 child: TableCalendar(
                   firstDay: DateTime.utc(2010, 10, 16),
                   lastDay: DateTime.utc(2030, 3, 14),
-                  focusedDay: DateTime.now(),
+                  focusedDay: DateTime.now().trim(),
+                  currentDay: DateTime.now().trim(),
+                  eventLoader: (day) => space.calendar.keys.any((element) => element.sameDay(day)) ? [("event")] : [],
                   shouldFillViewport: true,
                   availableCalendarFormats: const {CalendarFormat.month: "Month"},
                   headerStyle: const HeaderStyle(titleTextStyle: TextStyle(fontSize: 14)),
+                  calendarStyle: CalendarStyle(
+                    todayDecoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                    todayTextStyle: const TextStyle(),
+                    markerDecoration: BoxDecoration(color: darkGreen, shape: BoxShape.circle),
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
