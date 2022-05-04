@@ -74,7 +74,7 @@ class CustomAppBar extends StatelessWidget {
                                     width: 175,
                                     child: ElevatedButton(
                                       onPressed: () async => await Provider.of<AuthService>(context, listen: false).signOut(),
-                                      child: const Text("Sign out"),
+                                      child: const Text("Odjava"),
                                       style: ElevatedButton.styleFrom(primary: darkGreen),
                                     ),
                                   ),
