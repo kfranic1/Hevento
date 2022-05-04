@@ -11,38 +11,38 @@ class AuthService {
         return Person(user.uid);
       });
 
-  Future<String> signIn(String email, String password) async {
+  Future<String?> signIn(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return "OK";
-    } on FirebaseAuthException catch (e) {
-      return e.message!;
+      return null;
+    } on FirebaseAuthException {
+      return "Wrong email or password";
     } catch (e) {
       return e.toString();
     }
   }
 
-  Future<String> signUp(String email, String password, Person? person) async {
+  Future<String?> signUp(String email, String password, Person? person) async {
     try {
       await _auth.createUserWithEmailAndPassword(email: email, password: password).then((value) async {
         if (person == null) throw Exception("Person not provided");
-          person.id = value.user!.uid;
-          await Person.createPerson(person);
+        person.id = value.user!.uid;
+        await Person.createPerson(person);
       });
-      return "OK";
-    } on FirebaseAuthException catch (e) {
-      return e.message!;
+      return null;
+    } on FirebaseAuthException {
+      return "Wrong email or password";
     } catch (e) {
       return e.toString();
     }
   }
 
-  Future<String> signOut() async {
+  Future<String?> signOut() async {
     try {
       await _auth.signOut();
-      return "OK";
-    } on FirebaseAuthException catch (e) {
-      return e.message!;
+      return null;
+    } on FirebaseAuthException {
+      return "Wrong email or password";
     } catch (e) {
       return e.toString();
     }
