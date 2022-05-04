@@ -212,13 +212,15 @@ class SpacePage extends StatelessWidget {
                         children: [
                           //if (e.key == "mail") IconButton(onPressed: (), icon: const Icon(Icons.mail)),
                           Icon(
-                            e.key == "mail"
+                            e.key == "email"
                                 ? Icons.mail
                                 : e.key == "instagram"
                                     ? FontAwesomeIcons.instagram
                                     : e.key == "facebook"
                                         ? FontAwesomeIcons.facebook
-                                        : Icons.phone,
+                                        : e.key == "phone"
+                                            ? Icons.phone
+                                            : Icons.web,
                             color: darkGreen,
                           ),
                           Text(' ' + e.value!)

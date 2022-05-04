@@ -70,7 +70,11 @@ class SpaceListItem extends StatelessWidget {
                     ),
                     const Expanded(child: SizedBox()),
                     Text(
-                      "from " + space.minPrice.toString() + " to " + space.maxPrice.toString(),
+                      "minimal price: ${space.minPrice}",
+                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "maximal price: ${space.maxPrice}",
                       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const Expanded(child: SizedBox()),

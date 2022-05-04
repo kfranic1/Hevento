@@ -44,8 +44,9 @@ dependencies:
   table_calendar: ^3.0.5
   font_awesome_flutter: ^10.1.0
   flutter_layout_grid: ^1.0.3
-  jiffy: ^5.0.0
   flutter_rating_bar: ^4.0.0
+  image_picker: ^0.8.5
+  google_maps: ^6.1.0
 
 dev_dependencies:
   flutter_test:

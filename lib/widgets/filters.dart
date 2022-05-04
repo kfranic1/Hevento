@@ -144,16 +144,16 @@ class _FiltersState extends State<Filters> {
                   width: MediaQuery.of(context).size.width * 0.2,
                   child: Slider(
                     activeColor: darkGreen,
-                    value: widget.filter.maxPrice,
+                    value: widget.filter.price,
                     min: 1000,
                     max: 5000,
                     divisions: 20,
-                    label: widget.filter.maxPrice.round().toString(),
+                    label: widget.filter.price.round().toString(),
                     onChanged: (double value) {
                       /*setState(() {
                         _priceSlider = value;
                       });*/
-                      widget.filter.maxPrice = value;
+                      widget.filter.price = value;
                     },
                   ),
                 ),

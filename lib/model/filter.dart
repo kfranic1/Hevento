@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class Filter with ChangeNotifier {
   DateTime? _selectedDay;
-  double _maxPrice = 5000;
+  double _price = 5000;
   double _numberOfPeople = 300;
 
   DateTime? get selectedDay => _selectedDay;
-  double get maxPrice => _maxPrice;
+  double get price => _price;
   double get numberOfPeople => _numberOfPeople;
 
   set selectedDay(DateTime? value) {
@@ -14,8 +14,8 @@ class Filter with ChangeNotifier {
     notifyListeners();
   }
 
-  set maxPrice(double value) {
-    _maxPrice = value;
+  set price(double value) {
+    _price = value;
     notifyListeners();
   }
 
@@ -26,7 +26,7 @@ class Filter with ChangeNotifier {
 
   void setAll({required DateTime? selectedDay, required double maxPrice, required double numberOfPeople}) {
     _selectedDay = selectedDay;
-    _maxPrice = maxPrice;
+    _price = maxPrice;
     _numberOfPeople = numberOfPeople;
     notifyListeners();
   }

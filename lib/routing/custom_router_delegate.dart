@@ -67,7 +67,7 @@ class CustomRouterDelegate extends RouterDelegate<Configuration>
                                 case Routes.space:
                                   return SpacePage(space: spaces.firstWhere((element) => element.id == _configuration.pathParams!["id"]));
                                 case Routes.register:
-                                  return RegisterPage();
+                                  return const RegisterPage();
                                 default:
                                   return const HomePage();
                               }
