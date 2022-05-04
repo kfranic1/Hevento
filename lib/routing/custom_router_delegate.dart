@@ -11,9 +11,12 @@ import 'package:hevento/routing/routes.dart';
 import 'package:hevento/services/extensions/map_extensions.dart';
 import 'package:hevento/services/extensions/string_extension.dart';
 import 'package:hevento/widgets/custom_scroll_behavior.dart';
+import 'package:hevento/widgets/space_list_item.dart';
 import 'package:provider/provider.dart';
 
-class CustomRouterDelegate extends RouterDelegate<Configuration> with ChangeNotifier, PopNavigatorRouterDelegateMixin<Configuration> implements Routes {
+class CustomRouterDelegate extends RouterDelegate<Configuration>
+    with ChangeNotifier, PopNavigatorRouterDelegateMixin<Configuration>
+    implements Routes {
   Configuration _configuration = Configuration.home();
 
   @override
@@ -39,8 +42,11 @@ class CustomRouterDelegate extends RouterDelegate<Configuration> with ChangeNoti
                     return const Center(child: CircularProgressIndicator());
                   }
                   List<Space> spaces = snapshot.data as List<Space>;
-                  return Provider<List<Space>>(
-                    create: (context) => spaces,
+                  return MultiProvider(
+                    providers: [
+                      Provider<List<Space>>(create: (context) => spaces),
+                      Provider<List<SpaceListItem>>(create: (context) => spaces.map((e) => SpaceListItem(space: e)).toList()),
+                    ],
                     child: Navigator(
                       key: navigatorKey,
                       pages: [
@@ -57,7 +63,7 @@ class CustomRouterDelegate extends RouterDelegate<Configuration> with ChangeNoti
                                 case Routes.partner:
                                   return PartnerPage(params: _configuration.pathParams.toString());
                                 case Routes.login:
-                                  return LogInPage();
+                                  return const LogInPage();
                                 case Routes.space:
                                   return SpacePage(space: spaces.firstWhere((element) => element.id == _configuration.pathParams!["id"]));
                                 case Routes.register:

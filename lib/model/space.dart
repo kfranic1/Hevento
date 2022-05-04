@@ -17,7 +17,7 @@ class Space {
   late int numberOfPeople;
   late Person owner;
   late double size;
-  late double ocjena;
+  late double rating;
   late int numberOfReviews;
   late List<String> tags;
 
@@ -37,14 +37,16 @@ class Space {
       location = data["location"] as GeoPoint;
       minPrice = data["minPrice"];
       maxPrice = data["maxPrice"];
-      //priceDescription = data["priceDescription"];
+      priceDescription = data["priceDescription"];
       numberOfPeople = data["numberOfPeople"];
       owner = Person(data["owner"]);
       size = data["size"];
-      ocjena = data["ocijena"];
+      rating = data["rating"];
       numberOfReviews = data["numberOfReviews"];
       tags = (data["tags"] as List<dynamic>).map((e) => e as String).toList();
+      
     } catch (e) {
+      print(e.toString());
       return null;
     }
     return this;
@@ -56,10 +58,29 @@ class Space {
     return true;
   }
 
-  static Future<void> createSpace(Space space) async {
-    await FirebaseFirestore.instance.collection(Collections.space).doc(space.id).set({
-      "name": space.name,
-    });
+  static Future<void> createSpace(Person appUser, Space space) async {
+    try {
+      await FirebaseFirestore.instance.collection(Collections.space).add({
+        "name": space.name,
+        "description": space.description,
+        "calendar": <String, List<Map<String, String>>>{},
+        "contacts": space.contacts,
+        "elements": space.elements,
+        "location": const GeoPoint(0, 0),
+        "minPrice": space.minPrice,
+        "maxPrice": space.maxPrice,
+        "priceDescription": space.priceDescription,
+        "numberOfPeople": space.numberOfPeople,
+        "owner": space.owner.id,
+        "size": space.size,
+        "rating": space.rating,
+        "numberOfReviews": 0,
+        "tags": space.tags,
+        "mySpaces": [space.id],
+      }).then((space) async => await appUser.addSpace(space.id));
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   static Future<List<Space>> getSpaces() async {

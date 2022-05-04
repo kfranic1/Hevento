@@ -20,6 +20,10 @@ class _FiltersState extends State<Filters> {
   bool _checkedValue2 = false;
   @override
   Widget build(BuildContext context) {
+    widget.filter.addListener(() {
+      if (!mounted) return;
+      setState(() {});
+    });
     return Container(
       height: double.infinity,
       color: lightGreen,

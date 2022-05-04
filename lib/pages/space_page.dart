@@ -86,7 +86,7 @@ class SpacePage extends StatelessWidget {
                                 ),
                                 const Expanded(child: SizedBox()),
                                 Text(
-                                  "${space.ocjena}/10 ",
+                                  "${space.rating}/10 ",
                                   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                 ),
                                 Text(
