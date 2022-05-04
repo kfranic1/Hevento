@@ -154,7 +154,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                       setState(() {
                                         error = result;
                                       });
-                                      context.read<CustomRouterDelegate>().goToHome();
                                     },
                                     child: const Text(
                                       "Registriraj se",

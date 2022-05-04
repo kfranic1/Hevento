@@ -16,7 +16,7 @@ class AuthService {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       return null;
     } on FirebaseAuthException {
-      return "Wrong email or password";
+      return "Pogrešno unesena email adresa ili lozinka";
     } catch (e) {
       return e.toString();
     }
@@ -24,14 +24,14 @@ class AuthService {
 
   Future<String?> signUp(String email, String password, Person? person) async {
     try {
+      if (person == null) throw Exception("Person not provided");
       await _auth.createUserWithEmailAndPassword(email: email, password: password).then((value) async {
-        if (person == null) throw Exception("Person not provided");
         person.id = value.user!.uid;
         await Person.createPerson(person);
       });
       return null;
     } on FirebaseAuthException {
-      return "Wrong email or password";
+      return "Pogrešno unesena email adresa ili lozinka";
     } catch (e) {
       return e.toString();
     }
@@ -41,8 +41,6 @@ class AuthService {
     try {
       await _auth.signOut();
       return null;
-    } on FirebaseAuthException {
-      return "Wrong email or password";
     } catch (e) {
       return e.toString();
     }
