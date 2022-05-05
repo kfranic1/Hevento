@@ -88,8 +88,8 @@ class Space {
   }
 
   bool pass(Filter filter, {DateTime? day}) {
-    if (filter.price < maxPrice * 0.9) return false;
-    if (filter.numberOfPeople > numberOfPeople * 1.1) return false;
+    if (filter.price < maxPrice * 1.1) return false;
+    if (numberOfPeople * 1.5 > filter.numberOfPeople && filter.numberOfPeople > numberOfPeople * 0.9) return false;
     return true;
   }
 
