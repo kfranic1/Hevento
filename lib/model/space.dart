@@ -57,6 +57,8 @@ class Space {
           .fold<int?>(null, (previousValue, element) => previousValue == null || element! > previousValue ? element : previousValue) ??
       0;
 
+  bool get singlePrice => minPrice == maxPrice;
+
   double get rating => totalScore / max(numberOfReviews, 1);
 
   Space(this.id);
@@ -106,6 +108,25 @@ class Space {
   }
 
   Future updateSpace() async {}
+
+  Future addReview(int? rating, {int? oldRating, bool newReview = true}) async {
+    try {
+      FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot doc = await transaction.get(FirebaseFirestore.instance.collection(Collections.space).doc(id));
+        transaction.update(FirebaseFirestore.instance.collection(Collections.space).doc(id), {
+          "totalScore": doc["totalScore"] + (rating ?? 0) - (oldRating ?? 0),
+          "numberOfReviews": doc["numberOfReviews"] +
+              (((newReview && rating != null) || (oldRating == null && rating != null))
+                  ? 1
+                  : (rating == null && oldRating != null)
+                      ? -1
+                      : 0),
+        });
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   static Future<void> createSpace(Person appUser, Space space, {List<XFile>? images}) async {
     try {

@@ -30,7 +30,10 @@ class CustomRouterDelegate extends RouterDelegate<Configuration>
   Widget build(BuildContext context) {
     return MaterialApp(
       scrollBehavior: CustomScrollBehavior(),
-      theme: ThemeData(fontFamily: 'Roboto'),
+      theme: ThemeData(
+        fontFamily: 'Roboto',
+        primarySwatch: darkGreenMaterialColor,
+      ),
       debugShowCheckedModeBanner: false,
       home: FutureBuilder(
           future: Space.getSpaces(),
