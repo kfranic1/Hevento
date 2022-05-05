@@ -15,8 +15,8 @@ class SpaceListItem extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.read<CustomRouterDelegate>().goToSpace(params: {"id": space.id}),
       child: Container(
-        height: 500,
-        width: 500,
+        height: 350,
+        width: 650,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
           color: Colors.white,
@@ -57,37 +57,52 @@ class SpaceListItem extends StatelessWidget {
                     const Expanded(child: SizedBox()),
                     if (space.tags != null)
                       Row(
-                        children: space.tags!.map((e) => Text(e + ' ')).toList(),
+                        children: space.tags!
+                            .map((e) => Text(
+                                  "#" + e + ' ',
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                ))
+                            .toList(),
                       ),
-                    const Expanded(child: SizedBox()),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     Text(
                       space.name,
-                      style: const TextStyle(fontSize: 30),
+                      style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
-                    const Expanded(child: SizedBox()),
-                    Text(
-                      "${space.rating}/10",
-                      style: const TextStyle(fontSize: 20),
+                    const SizedBox(
+                      height: 10,
                     ),
-                    const Expanded(child: SizedBox()),
+                    RichText(
+                        text: TextSpan(
+                      children: [
+                        TextSpan(text: "${space.rating}/5.0  "),
+                        TextSpan(text: "${space.numberOfReviews} glasova", style: const TextStyle(color: Colors.grey, fontSize: 14))
+                      ],
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+                    )),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Text(
-                      "minimal price: ${space.minPrice}",
+                      space.singlePrice == true ? "${space.minPrice} HRK" : "Od ${space.minPrice} HRK",
                       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      "maximal price: ${space.maxPrice}",
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    const SizedBox(
+                      height: 15,
                     ),
-                    const Expanded(child: SizedBox()),
                     Expanded(
-                      flex: 5,
+                      flex: 3,
                       child: SizedBox(
                         width: 300,
                         child: Text(
                           space.description,
-                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          //overflow: TextOverflow.fade,
-                          maxLines: 10,
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 6,
                         ),
                       ),
                     ),

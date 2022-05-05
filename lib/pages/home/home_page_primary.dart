@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:hevento/model/filter.dart';
+import 'package:hevento/services/constants.dart';
 import 'package:hevento/widgets/space_list_item.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,11 @@ class _HomePagePrimaryState extends State<HomePagePrimary> {
       padding: const EdgeInsets.all(15),
       child: LayoutBuilder(builder: (context, constraints) {
         return spaces.isEmpty
-            ? const Text("No spaces fit the filters")
+            ? const Center(
+                child: Text(
+                "Nema prostora koji zadovoljavaju filtere",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              ))
             : SizedBox(
                 height: constraints.maxHeight,
                 width: constraints.maxWidth,
@@ -37,7 +42,11 @@ class _HomePagePrimaryState extends State<HomePagePrimary> {
                     columnSizes: constraints.maxWidth >= 1000 ? [1.fr, 1.fr] : [1.fr],
                     rowGap: 20, // equivalent to mainAxisSpacing
                     columnGap: 20,
-                    children: spaces,
+                    children: spaces
+                        .map((e) => Center(
+                              child: e,
+                            ))
+                        .toList(),
                   ),
                 ),
               );

@@ -41,7 +41,7 @@ class _FiltersState extends State<Filters> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(height: 15),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               Container(
                 width: 380,
                 height: 225,
