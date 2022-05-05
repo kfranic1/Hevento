@@ -217,6 +217,7 @@ class _FiltersState extends State<Filters> {
               SizedBox(
                 height: 35,
                 child: CheckboxListTile(
+                  activeColor: darkGreen,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 100),
                   title: const Text(
                     "Glazba",
@@ -233,6 +234,7 @@ class _FiltersState extends State<Filters> {
               SizedBox(
                 height: 35,
                 child: CheckboxListTile(
+                  activeColor: darkGreen,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 100),
                   title: const Text("Konobar", style: filterTxtStyle), //    <-- label
                   value: _waiter,
@@ -246,6 +248,7 @@ class _FiltersState extends State<Filters> {
               SizedBox(
                 height: 35,
                 child: CheckboxListTile(
+                  activeColor: darkGreen,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 100),
                   title: const Text("Piće", style: filterTxtStyle), //    <-- label
                   value: _drinks,
@@ -259,6 +262,7 @@ class _FiltersState extends State<Filters> {
               SizedBox(
                 height: 35,
                 child: CheckboxListTile(
+                  activeColor: darkGreen,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 100),
                   title: const Text("Hrana", style: filterTxtStyle), //    <-- label
                   value: _food,
@@ -272,6 +276,7 @@ class _FiltersState extends State<Filters> {
               SizedBox(
                 height: 35,
                 child: CheckboxListTile(
+                  activeColor: darkGreen,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 100),
                   title: const Text("Zaštitar", style: filterTxtStyle), //    <-- label
                   value: _security,
@@ -285,6 +290,7 @@ class _FiltersState extends State<Filters> {
               SizedBox(
                 height: 35,
                 child: CheckboxListTile(
+                  activeColor: darkGreen,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 100),
                   title: const Text("Specijalni efekti", style: filterTxtStyle), //    <-- label
                   value: _specialEffects,
@@ -296,6 +302,7 @@ class _FiltersState extends State<Filters> {
                 ),
               ),
               CheckboxListTile(
+                activeColor: darkGreen,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 100),
                 title: const Text("Pušenje", style: filterTxtStyle), //    <-- label
                 value: _smoking,
