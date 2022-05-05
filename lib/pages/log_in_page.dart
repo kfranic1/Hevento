@@ -50,7 +50,7 @@ class _LogInPageState extends State<LogInPage> {
                             children: [
                               const Text("Dobro došli !", style: titleStyle),
                               const Text("Prijavi se na svoj profil", style: subTitleStyle),
-                              const SizedBox(height: 210),
+                              const SizedBox(height: 170),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * (constraints.maxWidth > kNarrow ? 0.35 : 0.7),
                                 child: TextFormField(
@@ -86,9 +86,9 @@ class _LogInPageState extends State<LogInPage> {
                                   obscureText: true,
                                 ),
                               ),
-                              const SizedBox(height: 220),
+                              const SizedBox(height: 100),
                               Container(
-                                height: MediaQuery.of(context).size.height * 0.05,
+                                height: 50,
                                 width: max(MediaQuery.of(context).size.width * 0.1, 100),
                                 decoration: BoxDecoration(color: darkGreen, borderRadius: BorderRadius.circular(10)),
                                 child: ElevatedButton(

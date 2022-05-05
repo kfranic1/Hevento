@@ -135,10 +135,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                     controller: _passwordController,
                                   ),
                                 ),
-                                const SizedBox(height: 150),
+                                const SizedBox(height: 85),
                                 Container(
-                                  height: MediaQuery.of(context).size.height * 0.05,
-                                  width: max(MediaQuery.of(context).size.width * 0.1, 100),
+                                  height: 50,
+                                  width: max(MediaQuery.of(context).size.width * 0.2, 200),
                                   decoration: BoxDecoration(color: darkGreen, borderRadius: BorderRadius.circular(10)),
                                   child: ElevatedButton(
                                     onPressed: () async {
