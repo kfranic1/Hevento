@@ -27,6 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     _passwordVisible = false;
+    super.initState();
   }
 
   @override
@@ -175,11 +176,5 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       );
     });
-  }
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
   }
 }

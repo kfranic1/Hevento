@@ -44,7 +44,7 @@ class Space {
   late Person owner;
   late double totalScore;
   late int numberOfReviews;
-  late List<String> tags;
+  late List<String>? tags;
 
   int get minPrice =>
       price.values
@@ -78,7 +78,7 @@ class Space {
       owner = Person(data["owner"]);
       totalScore = data["totalScore"];
       numberOfReviews = data["numberOfReviews"];
-      tags = (data["tags"] as List<dynamic>).map((e) => e as String).toList();
+      tags = data["tags"] == null ? null : (data["tags"] as List<dynamic>).map((e) => e as String).toList();
       price = (data["price"] as Map<String, dynamic>).map((key, value) => MapEntry(key, value == null ? null : value as int));
     } catch (e) {
       print(e.toString());
@@ -105,7 +105,9 @@ class Space {
     }
   }
 
-  static Future<void> createSpace(Person appUser, Space space, List<XFile> images) async {
+  Future updateSpace() async {}
+
+  static Future<void> createSpace(Person appUser, Space space, {List<XFile>? images}) async {
     try {
       await FirebaseFirestore.instance.collection(Collections.space).add({
         "name": space.name,
@@ -124,7 +126,7 @@ class Space {
       }).then((value) async {
         await appUser.addSpace(value.id);
         space.id = value.id;
-        await space.addImages(images);
+        if (images != null) await space.addImages(images);
       });
     } catch (e) {
       print(e.toString());

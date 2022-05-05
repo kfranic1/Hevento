@@ -55,9 +55,10 @@ class SpaceListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Expanded(child: SizedBox()),
-                    Row(
-                      children: space.tags.map((e) => Text(e + ' ')).toList(),
-                    ),
+                    if (space.tags != null)
+                      Row(
+                        children: space.tags!.map((e) => Text(e + ' ')).toList(),
+                      ),
                     const Expanded(child: SizedBox()),
                     Text(
                       space.name,
