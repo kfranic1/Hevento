@@ -17,8 +17,16 @@ class _FiltersState extends State<Filters> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
-  bool _checkedValue1 = false;
-  bool _checkedValue2 = false;
+  double _priceSlider = 0;
+  double _numOfPeopleSlider = 0;
+
+  bool _music = false;
+  bool _waiter = false;
+  bool _drinks = false;
+  bool _food = false;
+  bool _security = false;
+  bool _specialEffects = false;
+  bool _smoking = false;
   double _rating = 0;
   @override
   Widget build(BuildContext context) {
@@ -92,13 +100,19 @@ class _FiltersState extends State<Filters> {
                   width: 15,
                 ),
                 _rating == 0
-                    ? const Text(
-                        'Ocjena        ',
-                        style: filterTxtStyle,
+                    ? const SizedBox(
+                        width: 80,
+                        child: Text(
+                          'Ocjena',
+                          style: filterTxtStyle,
+                        ),
                       )
-                    : Text(
-                        'Ocjena: ' + _rating.toString(),
-                        style: filterTxtStyle,
+                    : SizedBox(
+                        width: 80,
+                        child: Text(
+                          'Ocjena: ' + _rating.toString(),
+                          style: filterTxtStyle,
+                        ),
                       ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.05,
@@ -133,26 +147,26 @@ class _FiltersState extends State<Filters> {
                 const SizedBox(
                   width: 15,
                 ),
-                const Text(
-                  "Cijena",
-                  style: filterTxtStyle,
-                ),
-                const SizedBox(
-                  width: 60,
+                SizedBox(
+                  width: 120,
+                  child: Text(
+                    "Cijena: " + _priceSlider.toString() + " HRK",
+                    style: filterTxtStyle,
+                  ),
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.2,
+                  width: 250,
                   child: Slider(
                     activeColor: darkGreen,
                     value: widget.filter.price,
-                    min: 1000,
+                    min: 0,
                     max: 5000,
                     divisions: 20,
                     label: widget.filter.price.round().toString(),
                     onChanged: (double value) {
-                      /*setState(() {
+                      setState(() {
                         _priceSlider = value;
-                      });*/
+                      });
                       widget.filter.price = value;
                     },
                   ),
@@ -169,15 +183,15 @@ class _FiltersState extends State<Filters> {
                 const SizedBox(
                   width: 15,
                 ),
-                const Text(
-                  "Broj ljudi",
-                  style: filterTxtStyle,
-                ),
-                const SizedBox(
-                  width: 45,
+                SizedBox(
+                  width: 120,
+                  child: Text(
+                    "Broj ljudi: " + _numOfPeopleSlider.toString(),
+                    style: filterTxtStyle,
+                  ),
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.2,
+                  width: 250,
                   child: Slider(
                     activeColor: darkGreen,
                     value: widget.filter.numberOfPeople,
@@ -185,9 +199,9 @@ class _FiltersState extends State<Filters> {
                     divisions: 12,
                     label: widget.filter.numberOfPeople.round().toString(),
                     onChanged: (double value) {
-                      /*setState(() {
+                      setState(() {
                         _numOfPeopleSlider = value;
-                      });*/
+                      });
                       widget.filter.numberOfPeople = value;
                     },
                   ),
@@ -200,85 +214,108 @@ class _FiltersState extends State<Filters> {
                   color: Colors.grey,
                 ),
               ),
-              CheckboxListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 50),
-                title: const Text("Glazba"), //    <-- label
-                value: _checkedValue1,
-                onChanged: (newValue) {
-                  setState(() {
-                    _checkedValue1 = newValue!;
-                  });
-                },
+              SizedBox(
+                height: 35,
+                child: CheckboxListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 100),
+                  title: const Text(
+                    "Glazba",
+                    style: filterTxtStyle,
+                  ), //    <-- label
+                  value: _music,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _music = newValue!;
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 35,
+                child: CheckboxListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 100),
+                  title: const Text("Konobar", style: filterTxtStyle), //    <-- label
+                  value: _waiter,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _waiter = newValue!;
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 35,
+                child: CheckboxListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 100),
+                  title: const Text("Piće", style: filterTxtStyle), //    <-- label
+                  value: _drinks,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _drinks = newValue!;
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 35,
+                child: CheckboxListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 100),
+                  title: const Text("Hrana", style: filterTxtStyle), //    <-- label
+                  value: _food,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _food = newValue!;
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 35,
+                child: CheckboxListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 100),
+                  title: const Text("Zaštitar", style: filterTxtStyle), //    <-- label
+                  value: _security,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _security = newValue!;
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 35,
+                child: CheckboxListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 100),
+                  title: const Text("Specijalni efekti", style: filterTxtStyle), //    <-- label
+                  value: _specialEffects,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _specialEffects = newValue!;
+                    });
+                  },
+                ),
               ),
               CheckboxListTile(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 100),
-                title: const Text("Konobar"), //    <-- label
-                value: _checkedValue2,
+                title: const Text("Pušenje", style: filterTxtStyle), //    <-- label
+                value: _smoking,
                 onChanged: (newValue) {
                   setState(() {
-                    _checkedValue2 = newValue!;
+                    _smoking = newValue!;
                   });
                 },
               ),
-              CheckboxListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 100),
-                title: const Text("Piće"), //    <-- label
-                value: _checkedValue2,
-                onChanged: (newValue) {
-                  setState(() {
-                    _checkedValue2 = newValue!;
-                  });
-                },
+              const SizedBox(height: 20),
+              Center(
+                child: ElevatedButton(
+                  child: const Text("Filtriraj pretragu"),
+                  onPressed: () => widget.filter.setAll(selectedDay: _selectedDay, maxPrice: _priceSlider, numberOfPeople: _numOfPeopleSlider),
+                  style: ElevatedButton.styleFrom(primary: darkGreen),
+                ),
               ),
-              CheckboxListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 100),
-                title: const Text("Hrana"), //    <-- label
-                value: _checkedValue2,
-                onChanged: (newValue) {
-                  setState(() {
-                    _checkedValue2 = newValue!;
-                  });
-                },
-              ),
-              CheckboxListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 100),
-                title: const Text("Zaštitar"), //    <-- label
-                value: _checkedValue2,
-                onChanged: (newValue) {
-                  setState(() {
-                    _checkedValue2 = newValue!;
-                  });
-                },
-              ),
-              CheckboxListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 100),
-                title: const Text("Specijalni efekti"), //    <-- label
-                value: _checkedValue2,
-                onChanged: (newValue) {
-                  setState(() {
-                    _checkedValue2 = newValue!;
-                  });
-                },
-              ),
-              CheckboxListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 100),
-                title: const Text("Pušenje"), //    <-- label
-                value: _checkedValue2,
-                onChanged: (newValue) {
-                  setState(() {
-                    _checkedValue2 = newValue!;
-                  });
-                },
-              ),
-              /*const SizedBox(height: 20),
-                Center(
-                  child: ElevatedButton(
-                    child: const Text("Apply changes"),
-                    onPressed: () =>
-                        widget.filter.setAll(selectedDay: _selectedDay, maxPrice: _priceSlider, numberOfPeople: _numOfPeopleSlider),
-                    style: ElevatedButton.styleFrom(primary: darkGreen),
-                  ),
-                )*/
+              const SizedBox(
+                height: 20,
+              )
             ],
           ),
         ),

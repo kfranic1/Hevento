@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class Filter with ChangeNotifier {
   DateTime? _selectedDay;
-  double _price = 5000;
-  double _numberOfPeople = 300;
+  double _price = 0;
+  double _numberOfPeople = 0;
 
   DateTime? get selectedDay => _selectedDay;
   double get price => _price;
