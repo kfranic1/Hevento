@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hevento/model/person.dart';
 import 'package:hevento/model/space.dart';
 import 'package:hevento/services/collections.dart';
+import 'package:hevento/services/extensions/datetime_extension.dart';
 
 class Review {
   late String? id;
@@ -9,10 +9,11 @@ class Review {
   String spaceId;
   String? content;
   int? rating;
+  DateTime time;
 
-  Review({this.id, required this.personId, required this.spaceId, required this.content, required this.rating});
+  Review({this.id, required this.personId, required this.spaceId, required this.content, required this.rating, required this.time});
 
-  static Future<Review?> getReview(String personId, String spaceId) async {
+  static Future<Review?> getReview({required String personId, required String spaceId}) async {
     return await FirebaseFirestore.instance
         .collection(Collections.review)
         .where("personId", isEqualTo: personId)
@@ -26,23 +27,25 @@ class Review {
         spaceId: value.docs.first["spaceId"],
         content: value.docs.first["content"],
         rating: value.docs.first["rating"],
+        time: (value.docs.first["time"] as Timestamp).toDate(),
       );
       return ret;
     });
   }
 
-  static Future createReview(Person appUser, Space space, String? content, int? rating) async {
+  Future createReview(Space space) async {
     return await FirebaseFirestore.instance
         .collection(Collections.review)
-        .where("personId", isEqualTo: appUser.id)
-        .where("spaceId", isEqualTo: space.id)
+        .where("personId", isEqualTo: personId)
+        .where("spaceId", isEqualTo: spaceId)
         .get()
         .then((value) async {
       await FirebaseFirestore.instance.collection(Collections.review).doc(value.docs.isEmpty ? null : value.docs.first.id).set({
-        "spaceId": space.id,
-        "personId": appUser.id,
+        "spaceId": spaceId,
+        "personId": personId,
         "content": content,
         "rating": rating,
+        "time": DateTime.now().trim(),
       }).then((_) async {
         await space.addReview(
           rating,

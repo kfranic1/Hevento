@@ -1,25 +1,25 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hevento/model/filter.dart';
 import 'package:hevento/model/person.dart';
 import 'package:hevento/model/review.dart';
 import 'package:hevento/model/space.dart';
+import 'package:hevento/pages/space/review_dialog.dart';
 import 'package:hevento/services/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class SpacePageSecondary extends StatelessWidget {
-  const SpacePageSecondary({
-    Key? key,
-    required this.space,
-  }) : super(key: key);
+  const SpacePageSecondary({Key? key, required this.space}) : super(key: key);
 
   final Space space;
 
   @override
   Widget build(BuildContext context) {
+    Person? appUser = context.read<Person?>();
+    DateTime? selectedDay = context.read<Filter>().selectedDay;
     return LayoutBuilder(
       builder: (context, constraints) => SizedBox(
         width: max(constraints.maxWidth * 2 / 7, 400),
@@ -38,29 +38,28 @@ class SpacePageSecondary extends StatelessWidget {
                   child: TableCalendar(
                     firstDay: DateTime.now(),
                     lastDay: DateTime.utc(2030, 3, 14),
-                    focusedDay: DateTime.now(),
-                    currentDay: DateTime.now(),
+                    focusedDay: selectedDay ?? DateTime.now(),
+                    currentDay: selectedDay ?? DateTime.now(),
                     eventLoader: (day) => space.calendar.keys.any((element) => isSameDay(element, day)) ? [("event")] : [],
                     shouldFillViewport: true,
                     availableCalendarFormats: const {CalendarFormat.month: "Month"},
                     headerStyle: const HeaderStyle(
                         titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline, color: darkGreen)),
-                    calendarStyle: const CalendarStyle(
-                      todayDecoration: BoxDecoration(color: darkGreen, shape: BoxShape.circle),
-                      todayTextStyle: todayDateStyle,
-                      selectedDecoration: BoxDecoration(color: lightGreen, shape: BoxShape.circle),
+                    calendarStyle: CalendarStyle(
+                      todayDecoration: BoxDecoration(color: selectedDay == null ? Colors.white : lightGreen, shape: BoxShape.circle),
+                      todayTextStyle: selectedDay == null ? const TextStyle() : selectedDateStyle,
+                      selectedDecoration: const BoxDecoration(color: lightGreen, shape: BoxShape.circle),
                       selectedTextStyle: selectedDateStyle,
-                      cellMargin: EdgeInsets.all(2),
+                      cellMargin: const EdgeInsets.all(2),
                       rangeHighlightColor: lightGreen,
                     ),
+                    daysOfWeekStyle: const DaysOfWeekStyle(weekdayStyle: dayStyle, weekendStyle: dayStyle),
                   ),
                 ),
                 const SizedBox(height: 20),
                 Padding(
-                  padding: const EdgeInsets.only(
-                    //TODO ovo sam promjenio zbog overflowa
-                    left: 15,
-                  ),
+                  //TODO ovo sam promjenio zbog overflowa
+                  padding: const EdgeInsets.only(left: 15),
                   child: Column(
                     children: space.contacts.entries
                         .where((element) => element.value != null)
@@ -90,17 +89,27 @@ class SpacePageSecondary extends StatelessWidget {
                         .toList(),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () async => await showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            content: ReviewDialog(
-                              space: space,
-                            ),
-                          )),
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      content: SizedBox(
+                        height: 250,
+                        child: appUser == null
+                            ? const Center(child: Text("You have to be logged in in order to leave a review"))
+                            : FutureBuilder(
+                                future: Review.getReview(personId: appUser.id, spaceId: space.id),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState != ConnectionState.done) return loader;
+                                  return ReviewDialog(
+                                    space: space,
+                                    review: snapshot.hasData ? snapshot.data as Review : null,
+                                  );
+                                }),
+                      ),
+                    ),
+                  ),
                   child: const Text("Ostavi recenziju"),
                 ),
               ],
@@ -108,64 +117,6 @@ class SpacePageSecondary extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class ReviewDialog extends StatefulWidget {
-  final Space space;
-  const ReviewDialog({Key? key, required this.space}) : super(key: key);
-
-  @override
-  State<ReviewDialog> createState() => _ReviewDialogState();
-}
-
-class _ReviewDialogState extends State<ReviewDialog> {
-  int? _rating = 0;
-  final TextEditingController _content = TextEditingController();
-  @override
-  Widget build(BuildContext context) {
-    Person? appUser = context.read<Person?>();
-    return SizedBox(
-      height: 250,
-      child: appUser == null
-          ? const Center(child: Text("You have to be logged in in order to leave a review"))
-          : Column(children: [
-              TextFormField(
-                decoration: const InputDecoration(hintText: "Review"),
-                controller: _content,
-                maxLines: 5,
-              ),
-              const SizedBox(height: 10),
-              RatingBar.builder(
-                initialRating: 0,
-                minRating: 0,
-                direction: Axis.horizontal,
-                itemCount: 5,
-                itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                itemBuilder: (context, _) => const Icon(
-                  Icons.star,
-                  color: darkGreen,
-                ),
-                itemSize: 30,
-                onRatingUpdate: (rating) {
-                  setState(() {
-                    _rating = rating.round() == 0 ? null : rating.round();
-                  });
-                },
-              ),
-              const Expanded(child: SizedBox()),
-              ElevatedButton(
-                onPressed: () async => await Review.createReview(
-                  appUser,
-                  widget.space,
-                  _content.text,
-                  _rating,
-                ),
-                child: const Text("Finish"),
-              ),
-              const SizedBox(height: 10),
-            ]),
     );
   }
 }

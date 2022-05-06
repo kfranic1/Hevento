@@ -31,7 +31,7 @@ class SpacePagePrimary extends StatelessWidget {
                         ),
                         const Expanded(child: SizedBox()),
                         Text(
-                          "${space.rating}/10 ",
+                          "${space.rating}/5 ",
                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         Text(
