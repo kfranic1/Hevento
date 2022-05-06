@@ -25,7 +25,7 @@ class CustomAppBar extends StatelessWidget {
                   SizedBox(
                     width: constraints.maxWidth - max(constraints.maxWidth * 2 / 7, 400),
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 15),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -41,7 +41,13 @@ class CustomAppBar extends StatelessWidget {
                                 "Imam profil",
                                 style: TextStyle(color: Colors.black),
                               ),
-                            ),
+                            )
+                          else
+                            StreamBuilder(
+                                stream: appUser.self,
+                                builder: (context, snapshot) {
+                                  return Text(!snapshot.hasData ? "" : "Logged in as ${appUser.username}");
+                                })
                         ],
                       ),
                     ),
@@ -89,7 +95,7 @@ class CustomAppBar extends StatelessWidget {
                                 child: StreamBuilder(
                                     stream: appUser.self,
                                     builder: (context, snapshot) {
-                                      if (!snapshot.hasData) return const Center(child: LinearProgressIndicator());
+                                      if (!snapshot.hasData) return const Text("");
                                       return Text(
                                         appUser.mySpaces.isEmpty ? "Postani partner" : "Nadzorna ploča",
                                         textAlign: TextAlign.center,

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hevento/model/person.dart';
 import 'package:hevento/model/space.dart';
 import 'package:hevento/widgets/space_register/gallery_form.dart';
 import 'package:hevento/widgets/space_register/space_register_one.dart';
 import 'package:hevento/widgets/space_register/space_register_three.dart';
 import 'package:hevento/widgets/space_register/space_register_two.dart';
+import 'package:provider/provider.dart';
 
 class SpaceForm extends StatefulWidget {
   final Space? space;
@@ -35,6 +37,10 @@ class _SpaceFormState extends State<SpaceForm> {
 
   @override
   Widget build(BuildContext context) {
+    Person? appUser = context.watch<Person?>();
+    if (appUser == null) {
+      return const Center(child: Text("Log in to see the dashboard"));
+    }
     return Form(
       key: _formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,

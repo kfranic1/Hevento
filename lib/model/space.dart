@@ -106,7 +106,7 @@ class Space {
   }
 
   bool pass(Filter filter) {
-    if (filter.price < minPrice * 1.1) return false;
+    if (filter.price * 1.1 < minPrice) return false;
     if ((numberOfPeople * 1.5 < filter.numberOfPeople || filter.numberOfPeople < numberOfPeople * 0.9) && filter.numberOfPeople != 0) return false;
     if (filter.music && !elements["music"]!) return false;
     if (filter.drinks && !elements["drinks"]!) return false;
@@ -163,7 +163,7 @@ class Space {
         "contacts": space.contacts,
         "elements": space.elements,
         "location": const GeoPoint(0, 0),
-        "price": space.price,
+        "price": space.price.map((key, value) => MapEntry(key.toString(), value)),
         "numberOfPeople": space.numberOfPeople,
         "owner": appUser.id,
         "totalScore": 0,

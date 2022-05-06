@@ -7,7 +7,7 @@ class Person {
   late String name;
   late String username;
   late String email;
-  late List<Space> mySpaces;
+  List<Space> mySpaces = [];
 
   Person(this.id);
 

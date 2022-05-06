@@ -93,10 +93,10 @@ class _LogInPageState extends State<LogInPage> {
                                 decoration: BoxDecoration(color: darkGreen, borderRadius: BorderRadius.circular(10)),
                                 child: ElevatedButton(
                                   onPressed: () async {
-                                    String? result = await Provider.of<AuthService>(context, listen: false).signIn(
-                                      _emailController.text,
-                                      _passwordController.text,
-                                    );
+                                    String? result = await context.read<AuthService>().signIn(
+                                          _emailController.text,
+                                          _passwordController.text,
+                                        );
                                     if (result == null) context.read<CustomRouterDelegate>().goToHome();
                                     setState(() {
                                       error = result;

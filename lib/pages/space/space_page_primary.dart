@@ -19,7 +19,7 @@ class SpacePagePrimary extends StatelessWidget {
             padding: const EdgeInsets.all(defaultPadding),
             child: SingleChildScrollView(
               child: Column(
-                //controller: ScrollController(),
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
                     height: 80,
@@ -48,7 +48,6 @@ class SpacePagePrimary extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) => SizedBox(
                         height: 300,
-                        //width: 300,
                         child: Image.network(ids[index]),
                       ),
                       separatorBuilder: (context, index) => const SizedBox(width: 10),
@@ -56,7 +55,7 @@ class SpacePagePrimary extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 20
                   ),
                   /*const Divider(
                     color: darkGreen,

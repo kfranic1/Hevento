@@ -24,6 +24,7 @@ class PageWrapper extends StatelessWidget {
           Expanded(
             child: LayoutBuilder(builder: (context, constraints) {
               return Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(child: primary),
                   if (secondary != null && constraints.maxWidth > kNarrow)

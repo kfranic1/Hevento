@@ -159,7 +159,7 @@ class _FiltersState extends State<Filters> {
                     activeColor: darkGreen,
                     value: filter.numberOfPeople,
                     max: 300,
-                    divisions: 12,
+                    divisions: 60,
                     label: filter.numberOfPeople.round().toString(),
                     onChanged: (double value) {
                       setState(() {

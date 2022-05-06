@@ -7,7 +7,6 @@ import 'package:hevento/model/person.dart';
 import 'package:hevento/model/review.dart';
 import 'package:hevento/model/space.dart';
 import 'package:hevento/services/constants.dart';
-import 'package:hevento/services/extensions/datetime_extension.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -58,8 +57,9 @@ class SpacePageSecondary extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Padding(
-                  padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.11,
+                  padding: const EdgeInsets.only(
+                    //TODO ovo sam promjenio zbog overflowa
+                    left: 15,
                   ),
                   child: Column(
                     children: space.contacts.entries

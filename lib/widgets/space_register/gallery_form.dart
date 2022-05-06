@@ -69,11 +69,15 @@ class _GalleryFormState extends State<GalleryForm> {
           ElevatedButton(
             child: const Text('Finish'),
             onPressed: () async {
-              if (!widget.formKey.currentState!.validate()) {
-                setState(() => error = "Some data is missing or is wrongly formated");
-              } else {
-                await Space.createSpace(context.read<Person>(), widget.space, images: files);
-                Navigator.of(context).pop();
+              try {
+                if (!widget.formKey.currentState!.validate()) {
+                  setState(() => error = "Some data is missing or is wrongly formated");
+                } else {
+                  await Space.createSpace(context.read<Person?>()!, widget.space, images: files);
+                  Navigator.of(context).pop();
+                }
+              } catch (e) {
+                print(e.toString());
               }
             },
           ),
