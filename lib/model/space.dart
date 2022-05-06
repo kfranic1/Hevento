@@ -10,6 +10,7 @@ import 'package:hevento/services/constants.dart';
 import 'package:hevento/services/extensions/datetime_extension.dart';
 import 'package:hevento/services/static_functions.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class Space {
   String id;
@@ -33,14 +34,14 @@ class Space {
     "smoking": false,
     "specialEffects": false,
   };
-  Map<String, int?> price = {
-    "Monday": null,
-    "Tuesday": null,
-    "Wednesday": null,
-    "Thursday": null,
-    "Friday": null,
-    "Saturday": null,
-    "Sunday": null,
+  Map<int, int?> price = {
+    DateTime.monday: null,
+    DateTime.tuesday: null,
+    DateTime.wednesday: null,
+    DateTime.thursday: null,
+    DateTime.friday: null,
+    DateTime.saturday: null,
+    DateTime.sunday: null,
   };
   late GeoPoint location;
   late int numberOfPeople;
@@ -85,7 +86,7 @@ class Space {
       totalScore = data["totalScore"];
       numberOfReviews = data["numberOfReviews"];
       tags = data["tags"] == null ? null : (data["tags"] as List<dynamic>).map((e) => e as String).toList();
-      price = (data["price"] as Map<String, dynamic>).map((key, value) => MapEntry(key, value == null ? null : value as int));
+      price = (data["price"] as Map<String, dynamic>).map((key, value) => MapEntry(int.parse(key), value == null ? null : value as int));
       image = FutureBuilder(
           future: Functions.loadImage(id, "tileImage.jpg"),
           builder: (context, snapshot) {
@@ -104,10 +105,18 @@ class Space {
     return this;
   }
 
-  bool pass(Filter filter, {DateTime? day}) {
-    print(filter);
+  bool pass(Filter filter) {
     if (filter.price < minPrice * 1.1) return false;
     if ((numberOfPeople * 1.5 < filter.numberOfPeople || filter.numberOfPeople < numberOfPeople * 0.9) && filter.numberOfPeople != 0) return false;
+    if (filter.music && !elements["music"]!) return false;
+    if (filter.drinks && !elements["drinks"]!) return false;
+    if (filter.food && !elements["food"]!) return false;
+    if (filter.waiter && !elements["waiter"]!) return false;
+    if (filter.security && !elements["security"]!) return false;
+    if (filter.smoking && !elements["smoking"]!) return false;
+    if (filter.specialEffects && !elements["specialEffects"]!) return false;
+    if (filter.rating != 0 && rating < filter.rating) return false;
+    if (calendar.keys.any((day) => isSameDay(filter.selectedDay, day))) return false;
     return true;
   }
 

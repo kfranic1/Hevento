@@ -39,9 +39,9 @@ class SpacePageSecondary extends StatelessWidget {
                   child: TableCalendar(
                     firstDay: DateTime.utc(2010, 10, 16),
                     lastDay: DateTime.utc(2030, 3, 14),
-                    focusedDay: DateTime.now().trim(),
-                    currentDay: DateTime.now().trim(),
-                    eventLoader: (day) => space.calendar.keys.any((element) => element.sameDay(day)) ? [("event")] : [],
+                    focusedDay: DateTime.now(),
+                    currentDay: DateTime.now(),
+                    eventLoader: (day) => space.calendar.keys.any((element) => isSameDay(element, day)) ? [("event")] : [],
                     shouldFillViewport: true,
                     availableCalendarFormats: const {CalendarFormat.month: "Month"},
                     headerStyle: const HeaderStyle(titleTextStyle: TextStyle(fontSize: 14)),

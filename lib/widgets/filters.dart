@@ -13,28 +13,10 @@ class Filters extends StatefulWidget {
 }
 
 class _FiltersState extends State<Filters> {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
-
-  double _priceSlider = 0;
-  double _numOfPeopleSlider = 0;
-
-  bool _music = false;
-  bool _waiter = false;
-  bool _drinks = false;
-  bool _food = false;
-  bool _security = false;
-  bool _specialEffects = false;
-  bool _smoking = false;
-  double _rating = 0;
   @override
   Widget build(BuildContext context) {
-    widget.filter.addListener(() {
-      if (!mounted) return;
-      setState(() {});
-    });
     return LayoutBuilder(builder: (context, constraints) {
+      Filter filter = widget.filter;
       return Container(
         height: double.infinity,
         color: lightGreen,
@@ -47,45 +29,35 @@ class _FiltersState extends State<Filters> {
                 height: 225,
                 decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
                 child: TableCalendar(
+                  availableCalendarFormats: const {CalendarFormat.month: "Month"},
                   firstDay: DateTime.utc(2022, 1, 1),
                   lastDay: DateTime.now().add(const Duration(days: 365 * 3)),
-                  focusedDay: _focusedDay,
-                  calendarFormat: _calendarFormat,
+                  focusedDay: DateTime.now(),
+                  currentDay: filter.selectedDay,
+                  calendarFormat: CalendarFormat.month,
                   selectedDayPredicate: (day) {
                     // Use `selectedDayPredicate` to determine which day is currently selected.
                     // If this returns true, then `day` will be marked as selected.
 
                     // Using `isSameDay` is recommended to disregard
                     // the time-part of compared DateTime objects.
-                    return isSameDay(_selectedDay, day);
+                    return isSameDay(filter.selectedDay, day);
                   },
                   onDaySelected: (selectedDay, focusedDay) {
-                    if (!isSameDay(_selectedDay, selectedDay)) {
-                      // Call `setState()` when updating the selected day
-                      setState(() {
-                        _selectedDay = selectedDay;
-                        _focusedDay = focusedDay;
-                      });
-                    }
-                  },
-                  onFormatChanged: (format) {
-                    if (_calendarFormat != format) {
-                      // Call `setState()` when updating calendar format
-                      setState(() {
-                        _calendarFormat = format;
-                      });
-                    }
+                    setState(() {
+                      filter.selectedDay = isSameDay(filter.selectedDay, selectedDay) ? null : selectedDay;
+                    });
                   },
                   onPageChanged: (focusedDay) {
                     // No need to call `setState()` here
-                    _focusedDay = focusedDay;
+                    //_focusedDay = focusedDay;
                   },
                   shouldFillViewport: true,
                   headerStyle: const HeaderStyle(
                       titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline, color: darkGreen)),
                   calendarStyle: const CalendarStyle(
-                    todayDecoration: BoxDecoration(color: darkGreen, shape: BoxShape.circle),
-                    todayTextStyle: todayDateStyle,
+                    todayDecoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                    todayTextStyle: TextStyle(),
                     selectedDecoration: BoxDecoration(color: lightGreen, shape: BoxShape.circle),
                     selectedTextStyle: selectedDateStyle,
                     cellMargin: EdgeInsets.all(2),
@@ -96,10 +68,8 @@ class _FiltersState extends State<Filters> {
               ),
               const SizedBox(height: 20),
               Row(children: [
-                const SizedBox(
-                  width: 15,
-                ),
-                _rating == 0
+                const SizedBox(width: 15),
+                filter.rating == 0
                     ? const SizedBox(
                         width: 80,
                         child: Text(
@@ -110,13 +80,11 @@ class _FiltersState extends State<Filters> {
                     : SizedBox(
                         width: 80,
                         child: Text(
-                          'Ocjena: ' + _rating.toString(),
+                          'Ocjena: ' + filter.rating.toString(),
                           style: filterTxtStyle,
                         ),
                       ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.05,
-                ),
+                SizedBox(width: MediaQuery.of(context).size.width * 0.05),
                 RatingBar.builder(
                   initialRating: 0,
                   minRating: 0,
@@ -131,7 +99,7 @@ class _FiltersState extends State<Filters> {
                   itemSize: 30,
                   onRatingUpdate: (rating) {
                     setState(() {
-                      _rating = rating;
+                      filter.rating = rating;
                     });
                   },
                 ),
@@ -144,13 +112,11 @@ class _FiltersState extends State<Filters> {
                 ),
               ),
               Row(children: [
-                const SizedBox(
-                  width: 15,
-                ),
+                const SizedBox(width: 15),
                 SizedBox(
                   width: 120,
                   child: Text(
-                    "Cijena: " + widget.filter.price.toString() + " HRK",
+                    "Cijena: " + filter.price.toString() + " HRK",
                     style: filterTxtStyle,
                   ),
                 ),
@@ -158,15 +124,14 @@ class _FiltersState extends State<Filters> {
                   width: 250,
                   child: Slider(
                     activeColor: darkGreen,
-                    value: widget.filter.price,
+                    value: filter.price,
                     min: 0,
                     max: 5000,
                     divisions: 20,
-                    label: widget.filter.price.round().toString(),
+                    label: filter.price.round().toString(),
                     onChanged: (double value) {
                       setState(() {
-                        _priceSlider = value;
-                        widget.filter.price = value;
+                        filter.price = value;
                       });
                     },
                   ),
@@ -180,13 +145,11 @@ class _FiltersState extends State<Filters> {
                 ),
               ),
               Row(children: [
-                const SizedBox(
-                  width: 15,
-                ),
+                const SizedBox(width: 15),
                 SizedBox(
                   width: 120,
                   child: Text(
-                    "Broj ljudi: " + widget.filter.numberOfPeople.toString(),
+                    "Broj ljudi: " + filter.numberOfPeople.toString(),
                     style: filterTxtStyle,
                   ),
                 ),
@@ -194,14 +157,13 @@ class _FiltersState extends State<Filters> {
                   width: 250,
                   child: Slider(
                     activeColor: darkGreen,
-                    value: widget.filter.numberOfPeople,
+                    value: filter.numberOfPeople,
                     max: 300,
                     divisions: 12,
-                    label: widget.filter.numberOfPeople.round().toString(),
+                    label: filter.numberOfPeople.round().toString(),
                     onChanged: (double value) {
                       setState(() {
-                        _numOfPeopleSlider = value;
-                        widget.filter.numberOfPeople = value;
+                        filter.numberOfPeople = value;
                       });
                     },
                   ),
@@ -223,10 +185,10 @@ class _FiltersState extends State<Filters> {
                     "Glazba",
                     style: filterTxtStyle,
                   ), //    <-- label
-                  value: _music,
+                  value: filter.music,
                   onChanged: (newValue) {
                     setState(() {
-                      _music = newValue!;
+                      filter.music = newValue!;
                     });
                   },
                 ),
@@ -237,10 +199,10 @@ class _FiltersState extends State<Filters> {
                   activeColor: darkGreen,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 100),
                   title: const Text("Konobar", style: filterTxtStyle), //    <-- label
-                  value: _waiter,
+                  value: filter.waiter,
                   onChanged: (newValue) {
                     setState(() {
-                      _waiter = newValue!;
+                      filter.waiter = newValue!;
                     });
                   },
                 ),
@@ -251,10 +213,10 @@ class _FiltersState extends State<Filters> {
                   activeColor: darkGreen,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 100),
                   title: const Text("Piće", style: filterTxtStyle), //    <-- label
-                  value: _drinks,
+                  value: filter.drinks,
                   onChanged: (newValue) {
                     setState(() {
-                      _drinks = newValue!;
+                      filter.drinks = newValue!;
                     });
                   },
                 ),
@@ -265,10 +227,10 @@ class _FiltersState extends State<Filters> {
                   activeColor: darkGreen,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 100),
                   title: const Text("Hrana", style: filterTxtStyle), //    <-- label
-                  value: _food,
+                  value: filter.food,
                   onChanged: (newValue) {
                     setState(() {
-                      _food = newValue!;
+                      filter.food = newValue!;
                     });
                   },
                 ),
@@ -279,10 +241,10 @@ class _FiltersState extends State<Filters> {
                   activeColor: darkGreen,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 100),
                   title: const Text("Zaštitar", style: filterTxtStyle), //    <-- label
-                  value: _security,
+                  value: filter.security,
                   onChanged: (newValue) {
                     setState(() {
-                      _security = newValue!;
+                      filter.security = newValue!;
                     });
                   },
                 ),
@@ -293,10 +255,10 @@ class _FiltersState extends State<Filters> {
                   activeColor: darkGreen,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 100),
                   title: const Text("Specijalni efekti", style: filterTxtStyle), //    <-- label
-                  value: _specialEffects,
+                  value: filter.specialEffects,
                   onChanged: (newValue) {
                     setState(() {
-                      _specialEffects = newValue!;
+                      filter.specialEffects = newValue!;
                     });
                   },
                 ),
@@ -305,10 +267,10 @@ class _FiltersState extends State<Filters> {
                 activeColor: darkGreen,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 100),
                 title: const Text("Pušenje", style: filterTxtStyle), //    <-- label
-                value: _smoking,
+                value: filter.smoking,
                 onChanged: (newValue) {
                   setState(() {
-                    _smoking = newValue!;
+                    filter.smoking = newValue!;
                   });
                 },
               ),
@@ -316,7 +278,7 @@ class _FiltersState extends State<Filters> {
               Center(
                 child: ElevatedButton(
                   child: const Text("Filtriraj pretragu"),
-                  onPressed: () => widget.filter.setAll(selectedDay: _selectedDay, maxPrice: _priceSlider, numberOfPeople: _numOfPeopleSlider),
+                  onPressed: () => filter.apply(),
                   style: ElevatedButton.styleFrom(primary: darkGreen),
                 ),
               ),
