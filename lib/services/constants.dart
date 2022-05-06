@@ -18,6 +18,7 @@ const TextStyle todayDateStyle = TextStyle(color: Colors.white, fontSize: 16.0);
 const TextStyle selectedDateStyle = TextStyle(color: Colors.black, fontSize: 16.0);
 const TextStyle filterTxtStyle = TextStyle(fontWeight: FontWeight.bold, color: Colors.black);
 const TextStyle dayStyle = TextStyle(fontWeight: FontWeight.bold, color: darkGreen, fontSize: 16);
+const TextStyle priceDayStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 14);
 
 const Map<int, Color> darGreenColor = {
   50: Color.fromRGBO(17, 64, 50, .1),

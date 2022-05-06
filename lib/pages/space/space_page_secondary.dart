@@ -31,61 +31,67 @@ class SpacePageSecondary extends StatelessWidget {
             controller: ScrollController(),
             child: Column(
               children: [
-                const SizedBox(height: 75),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                 Container(
-                  width: 280,
-                  height: 280,
+                  width: 380,
+                  height: 225,
                   decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
                   child: TableCalendar(
-                    firstDay: DateTime.utc(2010, 10, 16),
+                    firstDay: DateTime.now(),
                     lastDay: DateTime.utc(2030, 3, 14),
                     focusedDay: DateTime.now(),
                     currentDay: DateTime.now(),
                     eventLoader: (day) => space.calendar.keys.any((element) => isSameDay(element, day)) ? [("event")] : [],
                     shouldFillViewport: true,
                     availableCalendarFormats: const {CalendarFormat.month: "Month"},
-                    headerStyle: const HeaderStyle(titleTextStyle: TextStyle(fontSize: 14)),
+                    headerStyle: const HeaderStyle(
+                        titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline, color: darkGreen)),
                     calendarStyle: const CalendarStyle(
-                      todayDecoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-                      todayTextStyle: TextStyle(),
-                      markerDecoration: BoxDecoration(color: darkGreen, shape: BoxShape.circle),
+                      todayDecoration: BoxDecoration(color: darkGreen, shape: BoxShape.circle),
+                      todayTextStyle: todayDateStyle,
+                      selectedDecoration: BoxDecoration(color: lightGreen, shape: BoxShape.circle),
+                      selectedTextStyle: selectedDateStyle,
+                      cellMargin: EdgeInsets.all(2),
+                      rangeHighlightColor: lightGreen,
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
-                const SizedBox(
-                  width: double.infinity,
-                  child: Text(
-                    "Contacts",
-                    style: TextStyle(fontSize: 20),
-                    textAlign: TextAlign.start,
+                const SizedBox(height: 20),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.11,
+                  ),
+                  child: Column(
+                    children: space.contacts.entries
+                        .where((element) => element.value != null)
+                        .map(
+                          (e) => Padding(
+                            padding: const EdgeInsets.only(bottom: 10.0),
+                            child: Row(
+                              children: [
+                                //if (e.key == "mail") IconButton(onPressed: (), icon: const Icon(Icons.mail)),
+                                Icon(
+                                  e.key == "email"
+                                      ? Icons.mail
+                                      : e.key == "instagram"
+                                          ? FontAwesomeIcons.instagram
+                                          : e.key == "facebook"
+                                              ? FontAwesomeIcons.facebook
+                                              : e.key == "phone"
+                                                  ? Icons.phone
+                                                  : Icons.web,
+                                  color: darkGreen,
+                                ),
+                                Text(' ' + e.value!)
+                              ],
+                            ),
+                          ),
+                        )
+                        .toList(),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Column(
-                  children: space.contacts.entries
-                      .where((element) => element.value != null)
-                      .map(
-                        (e) => Row(
-                          children: [
-                            //if (e.key == "mail") IconButton(onPressed: (), icon: const Icon(Icons.mail)),
-                            Icon(
-                              e.key == "email"
-                                  ? Icons.mail
-                                  : e.key == "instagram"
-                                      ? FontAwesomeIcons.instagram
-                                      : e.key == "facebook"
-                                          ? FontAwesomeIcons.facebook
-                                          : e.key == "phone"
-                                              ? Icons.phone
-                                              : Icons.web,
-                              color: darkGreen,
-                            ),
-                            Text(' ' + e.value!)
-                          ],
-                        ),
-                      )
-                      .toList(),
+                const SizedBox(
+                  height: 10,
                 ),
                 ElevatedButton(
                   onPressed: () async => await showDialog(
@@ -95,7 +101,7 @@ class SpacePageSecondary extends StatelessWidget {
                               space: space,
                             ),
                           )),
-                  child: const Text("Leave a review"),
+                  child: const Text("Ostavi recenziju"),
                 ),
               ],
             ),
