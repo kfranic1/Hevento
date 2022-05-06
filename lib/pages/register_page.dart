@@ -68,9 +68,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                   width: MediaQuery.of(context).size.width * (constraints.maxWidth > kNarrow ? 0.35 : 0.7),
                                   child: TextFormField(
                                     cursorColor: darkGreen,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         hintText: "Ime i prezime: ",
-                                        hintStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                        hintStyle: TextStyle(fontWeight: FontWeight.bold),
                                         enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
                                         focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0))),
                                     controller: _nameController,
@@ -83,9 +83,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                   width: MediaQuery.of(context).size.width * (constraints.maxWidth > kNarrow ? 0.35 : 0.7),
                                   child: TextFormField(
                                     cursorColor: darkGreen,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         hintText: "email: example@ex.com",
-                                        hintStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                        hintStyle: TextStyle(fontWeight: FontWeight.bold),
                                         enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
                                         focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0))),
                                     controller: _emailController,
@@ -99,9 +99,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                   width: MediaQuery.of(context).size.width * (constraints.maxWidth > kNarrow ? 0.35 : 0.7),
                                   child: TextFormField(
                                     cursorColor: darkGreen,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         hintText: "Korisničko ime",
-                                        hintStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                        hintStyle: TextStyle(fontWeight: FontWeight.bold),
                                         enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
                                         focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0))),
                                     controller: _usernameController,
@@ -118,8 +118,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                     decoration: InputDecoration(
                                       hintText: "Lozinka",
                                       hintStyle: const TextStyle(fontWeight: FontWeight.bold),
-                                      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
-                                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
+                                      enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
+                                      focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
                                       suffixIcon: IconButton(
                                         icon: Icon(
                                           _passwordVisible ? Icons.visibility : Icons.visibility_off,

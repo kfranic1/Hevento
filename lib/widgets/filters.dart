@@ -81,17 +81,17 @@ class _FiltersState extends State<Filters> {
                     _focusedDay = focusedDay;
                   },
                   shouldFillViewport: true,
-                  headerStyle: HeaderStyle(
+                  headerStyle: const HeaderStyle(
                       titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline, color: darkGreen)),
-                  calendarStyle: CalendarStyle(
+                  calendarStyle: const CalendarStyle(
                     todayDecoration: BoxDecoration(color: darkGreen, shape: BoxShape.circle),
                     todayTextStyle: todayDateStyle,
                     selectedDecoration: BoxDecoration(color: lightGreen, shape: BoxShape.circle),
                     selectedTextStyle: selectedDateStyle,
-                    cellMargin: const EdgeInsets.all(2),
+                    cellMargin: EdgeInsets.all(2),
                     rangeHighlightColor: lightGreen,
                   ),
-                  daysOfWeekStyle: DaysOfWeekStyle(weekdayStyle: dayStyle, weekendStyle: dayStyle),
+                  daysOfWeekStyle: const DaysOfWeekStyle(weekdayStyle: dayStyle, weekendStyle: dayStyle),
                 ),
               ),
               const SizedBox(height: 20),
@@ -124,7 +124,7 @@ class _FiltersState extends State<Filters> {
                   allowHalfRating: true,
                   itemCount: 5,
                   itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => Icon(
+                  itemBuilder: (context, _) => const Icon(
                     Icons.star,
                     color: darkGreen,
                   ),
@@ -150,7 +150,7 @@ class _FiltersState extends State<Filters> {
                 SizedBox(
                   width: 120,
                   child: Text(
-                    "Cijena: " + _priceSlider.toString() + " HRK",
+                    "Cijena: " + widget.filter.price.toString() + " HRK",
                     style: filterTxtStyle,
                   ),
                 ),
@@ -166,8 +166,8 @@ class _FiltersState extends State<Filters> {
                     onChanged: (double value) {
                       setState(() {
                         _priceSlider = value;
+                        widget.filter.price = value;
                       });
-                      widget.filter.price = value;
                     },
                   ),
                 ),
@@ -186,7 +186,7 @@ class _FiltersState extends State<Filters> {
                 SizedBox(
                   width: 120,
                   child: Text(
-                    "Broj ljudi: " + _numOfPeopleSlider.toString(),
+                    "Broj ljudi: " + widget.filter.numberOfPeople.toString(),
                     style: filterTxtStyle,
                   ),
                 ),
@@ -201,8 +201,8 @@ class _FiltersState extends State<Filters> {
                     onChanged: (double value) {
                       setState(() {
                         _numOfPeopleSlider = value;
+                        widget.filter.numberOfPeople = value;
                       });
-                      widget.filter.numberOfPeople = value;
                     },
                   ),
                 ),

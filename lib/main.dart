@@ -7,7 +7,6 @@ import 'package:hevento/model/person.dart';
 import 'package:hevento/routing/custom_route_information_parser.dart';
 import 'package:hevento/routing/custom_router_delegate.dart';
 import 'package:hevento/services/auth_service.dart';
-import 'package:hevento/services/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 

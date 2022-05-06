@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Filter with ChangeNotifier {
   DateTime? _selectedDay;
-  double _price = 0;
+  double _price = 5000;
   double _numberOfPeople = 0;
 
   DateTime? get selectedDay => _selectedDay;
@@ -29,5 +29,11 @@ class Filter with ChangeNotifier {
     _price = maxPrice;
     _numberOfPeople = numberOfPeople;
     notifyListeners();
+  }
+
+  @override
+  String toString() {
+    return "$price, $numberOfPeople)";
+    return super.toString();
   }
 }

@@ -45,9 +45,9 @@ class SpacePageSecondary extends StatelessWidget {
                     shouldFillViewport: true,
                     availableCalendarFormats: const {CalendarFormat.month: "Month"},
                     headerStyle: const HeaderStyle(titleTextStyle: TextStyle(fontSize: 14)),
-                    calendarStyle: CalendarStyle(
-                      todayDecoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-                      todayTextStyle: const TextStyle(),
+                    calendarStyle: const CalendarStyle(
+                      todayDecoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                      todayTextStyle: TextStyle(),
                       markerDecoration: BoxDecoration(color: darkGreen, shape: BoxShape.circle),
                     ),
                   ),

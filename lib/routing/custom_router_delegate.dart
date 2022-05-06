@@ -58,8 +58,8 @@ class CustomRouterDelegate extends RouterDelegate<Configuration>
                     ),
                     toolbarHeight: 80,
                     backgroundColor: lightGreen,
-                    bottom: PreferredSize(
-                      preferredSize: const Size(double.infinity, 2),
+                    bottom: const PreferredSize(
+                      preferredSize: Size(double.infinity, 2),
                       child: CustomDivider(
                         divider: Divider(
                           thickness: 2,
@@ -78,9 +78,9 @@ class CustomRouterDelegate extends RouterDelegate<Configuration>
                 key: navigatorKey,
                 pages: [
                   if (_configuration.isHomePage)
-                    const MaterialPage(
-                      key: ValueKey('HomePage'),
-                      child: HomePage(),
+                    MaterialPage(
+                      key: ValueKey(_configuration.pathName),
+                      child: const HomePage(),
                     ),
                   if (_configuration.isOtherPage)
                     MaterialPage(

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hevento/model/space.dart';
 import 'package:hevento/routing/custom_router_delegate.dart';
-import 'package:hevento/services/constants.dart';
-import 'package:hevento/services/static_functions.dart';
 import 'package:provider/provider.dart';
 
 class SpaceListItem extends StatelessWidget {
@@ -33,17 +31,7 @@ class SpaceListItem extends StatelessWidget {
           children: [
             Expanded(
               flex: 2,
-              child: FutureBuilder(
-                  future: Functions.loadImage(space.id, "tileImage.jpg"),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done) return loader;
-                    return Image.network(
-                      snapshot.data as String,
-                      height: double.infinity,
-                      width: double.infinity,
-                      fit: BoxFit.fill,
-                    );
-                  }),
+              child: space.image,
             ),
             const SizedBox(width: 20),
             Expanded(

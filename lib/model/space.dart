@@ -2,10 +2,13 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:hevento/model/filter.dart';
 import 'package:hevento/model/person.dart';
 import 'package:hevento/services/collections.dart';
+import 'package:hevento/services/constants.dart';
 import 'package:hevento/services/extensions/datetime_extension.dart';
+import 'package:hevento/services/static_functions.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Space {
@@ -45,6 +48,7 @@ class Space {
   late double totalScore;
   late int numberOfReviews;
   late List<String>? tags;
+  late Widget image;
 
   int get minPrice =>
       price.values
@@ -82,6 +86,17 @@ class Space {
       numberOfReviews = data["numberOfReviews"];
       tags = data["tags"] == null ? null : (data["tags"] as List<dynamic>).map((e) => e as String).toList();
       price = (data["price"] as Map<String, dynamic>).map((key, value) => MapEntry(key, value == null ? null : value as int));
+      image = FutureBuilder(
+          future: Functions.loadImage(id, "tileImage.jpg"),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) return loader;
+            return Image.network(
+              snapshot.data as String,
+              height: double.infinity,
+              width: double.infinity,
+              fit: BoxFit.fill,
+            );
+          });
     } catch (e) {
       print(e.toString());
       return null;
@@ -90,8 +105,9 @@ class Space {
   }
 
   bool pass(Filter filter, {DateTime? day}) {
-    if (filter.price < maxPrice * 1.1) return false;
-    if (numberOfPeople * 1.5 > filter.numberOfPeople && filter.numberOfPeople > numberOfPeople * 0.9) return false;
+    print(filter);
+    if (filter.price < minPrice * 1.1) return false;
+    if ((numberOfPeople * 1.5 < filter.numberOfPeople || filter.numberOfPeople < numberOfPeople * 0.9) && filter.numberOfPeople != 0) return false;
     return true;
   }
 

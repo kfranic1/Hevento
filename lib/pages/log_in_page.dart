@@ -55,14 +55,14 @@ class _LogInPageState extends State<LogInPage> {
                                 width: MediaQuery.of(context).size.width * (constraints.maxWidth > kNarrow ? 0.35 : 0.7),
                                 child: TextFormField(
                                   cursorColor: darkGreen,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     icon: Icon(
                                       Icons.person_add_alt,
                                       color: darkGreen,
                                       size: 30,
                                     ),
                                     hintText: "example@ex.com",
-                                    hintStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                    hintStyle: TextStyle(fontWeight: FontWeight.bold),
                                     enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
                                     focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
                                   ),
@@ -75,10 +75,10 @@ class _LogInPageState extends State<LogInPage> {
                                 width: MediaQuery.of(context).size.width * (constraints.maxWidth > kNarrow ? 0.35 : 0.7),
                                 child: TextFormField(
                                   cursorColor: darkGreen,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     icon: Icon(FontAwesomeIcons.lock, color: darkGreen),
                                     hintText: "Lozinka",
-                                    hintStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                    hintStyle: TextStyle(fontWeight: FontWeight.bold),
                                     enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
                                     focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
                                   ),
