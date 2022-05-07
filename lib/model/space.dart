@@ -50,6 +50,7 @@ class Space {
   late int numberOfReviews;
   late List<String>? tags;
   late Widget image;
+  late bool hidden;
 
   int get minPrice =>
       price.values
@@ -98,6 +99,7 @@ class Space {
               fit: BoxFit.fill,
             );
           });
+      hidden = data["hidden"];
     } catch (e) {
       print(e.toString());
       return null;
@@ -106,6 +108,7 @@ class Space {
   }
 
   bool pass(Filter filter) {
+    if (hidden) return false;
     if (filter.price * 1.1 < minPrice) return false;
     if ((numberOfPeople * 1.5 < filter.numberOfPeople || filter.numberOfPeople < numberOfPeople * 0.9) && filter.numberOfPeople != 0) return false;
     if (filter.music && !elements["music"]!) return false;
@@ -132,7 +135,28 @@ class Space {
     }
   }
 
-  Future updateSpace() async {}
+  Future updateSpace(String userId) async {
+    try {
+      await FirebaseFirestore.instance.collection(Collections.space).doc(id).update({
+        "name": name,
+        "description": description,
+        "address": address,
+        "calendar": calendar.map((key, value) => MapEntry(key.toString(), value)),
+        "contacts": contacts,
+        "elements": elements,
+        "location": location,
+        "price": price.map((key, value) => MapEntry(key.toString(), value)),
+        "numberOfPeople": numberOfPeople,
+        "owner": userId,
+        "totalScore": totalScore,
+        "numberOfReviews": numberOfReviews,
+        "tags": tags,
+        "hidden": hidden,
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   Future addReview(int? rating, {int? oldRating, bool newReview = true}) async {
     try {
@@ -169,6 +193,7 @@ class Space {
         "totalScore": 0,
         "numberOfReviews": 0,
         "tags": space.tags,
+        "hidden": false,
       }).then((value) async {
         await appUser.addSpace(value.id);
         space.id = value.id;
@@ -181,10 +206,12 @@ class Space {
 
   static Future<List<Space>> getSpaces() async {
     try {
-      return await FirebaseFirestore.instance
+      List<Space> ret = await FirebaseFirestore.instance
           .collection(Collections.space)
           .get()
           .then((value) => value.docs.map((e) => Space(e.id).getData(e)!).toList());
+      ret.shuffle();
+      return ret;
     } catch (e) {
       print(e.toString());
       return [];
