@@ -15,6 +15,7 @@ class CustomRouterDelegate extends RouterDelegate<Configuration>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<Configuration>
     implements Routes {
   Configuration _configuration = Configuration.home();
+  Configuration? lastConfiguration;
 
   @override
   GlobalKey<NavigatorState> get navigatorKey => GlobalKey<NavigatorState>();
@@ -67,7 +68,13 @@ class CustomRouterDelegate extends RouterDelegate<Configuration>
 
   @override
   Future<void> setNewRoutePath(Configuration configuration) async {
+    lastConfiguration = _configuration;
     _configuration = configuration;
+  }
+
+  void goToLastPage() {
+    setNewRoutePath(lastConfiguration ?? Configuration.home());
+    notifyListeners();
   }
 
   @override

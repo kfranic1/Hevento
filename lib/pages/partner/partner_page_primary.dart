@@ -3,6 +3,7 @@ import 'package:hevento/model/person.dart';
 import 'package:hevento/model/review.dart';
 import 'package:hevento/model/space.dart';
 import 'package:hevento/pages/space/review_dialog.dart';
+import 'package:hevento/routing/custom_router_delegate.dart';
 import 'package:hevento/services/constants.dart';
 import 'package:hevento/services/static_functions.dart';
 import 'package:hevento/widgets/space_register/space_form.dart';
@@ -18,7 +19,11 @@ class PartnerPagePrimary extends StatefulWidget {
 class _PartnerPagePrimaryState extends State<PartnerPagePrimary> {
   @override
   Widget build(BuildContext context) {
-    Person appUser = context.read<Person?>()!;
+    Person? appUser = context.watch<Person?>();
+    if (appUser == null) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) => context.read<CustomRouterDelegate>().goToHome());
+      return loader;
+    }
     List<Space> mySpaces = context.read<List<Space>>().where((element) => element.owner.id == appUser.id).toList();
     //? Ako zelimo da se sortira po tome jesu skriveni il ne => mySpaces.sort((a, b) => a.hidden ? 1 : 0);
     return Scaffold(

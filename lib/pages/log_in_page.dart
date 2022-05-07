@@ -21,14 +21,14 @@ class _LogInPageState extends State<LogInPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   String? error;
+  bool _passwordVisible = false;
 
   @override
   Widget build(BuildContext context) {
-    Person? appUser = Provider.of<Person?>(context);
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
         body: Center(
-          child: appUser != null
+          child: context.read<Person?>() != null
               ? const Center(child: Text("Already signed in"))
               : Row(children: [
                   if (constraints.maxWidth > kNarrow)
@@ -75,15 +75,26 @@ class _LogInPageState extends State<LogInPage> {
                                 width: MediaQuery.of(context).size.width * (constraints.maxWidth > kNarrow ? 0.35 : 0.7),
                                 child: TextFormField(
                                   cursorColor: darkGreen,
-                                  decoration: const InputDecoration(
-                                    icon: Icon(FontAwesomeIcons.lock, color: darkGreen),
+                                  decoration: InputDecoration(
+                                    icon: const Icon(FontAwesomeIcons.lock, color: darkGreen),
                                     hintText: "Lozinka",
-                                    hintStyle: TextStyle(fontWeight: FontWeight.bold),
-                                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
-                                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
+                                    hintStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                    enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
+                                    focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                                        color: Colors.grey,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _passwordVisible = !_passwordVisible;
+                                        });
+                                      },
+                                    ),
                                   ),
                                   controller: _passwordController,
-                                  obscureText: true,
+                                  obscureText: !_passwordVisible,
                                 ),
                               ),
                               const SizedBox(height: 100),
@@ -97,7 +108,7 @@ class _LogInPageState extends State<LogInPage> {
                                           _emailController.text,
                                           _passwordController.text,
                                         );
-                                    if (result == null) context.read<CustomRouterDelegate>().goToHome();
+                                    if (result == null) context.read<CustomRouterDelegate>().goToLastPage();
                                     setState(() {
                                       error = result;
                                     });
