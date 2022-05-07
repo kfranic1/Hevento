@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hevento/model/person.dart';
+import 'package:hevento/model/space.dart';
 import 'package:hevento/routing/custom_router_delegate.dart';
 import 'package:hevento/services/auth_service.dart';
 import 'package:hevento/services/constants.dart';
@@ -97,7 +98,9 @@ class CustomAppBar extends StatelessWidget {
                                     builder: (context, snapshot) {
                                       if (!snapshot.hasData) return const Text("");
                                       return Text(
-                                        appUser.mySpaces.isEmpty ? "Postani partner" : "Nadzorna ploča",
+                                        context.read<List<Space>>().any((element) => element.owner.id == appUser.id)
+                                            ? "Nadzorna ploča"
+                                            : "Postani partner",
                                         textAlign: TextAlign.center,
                                       );
                                     }),

@@ -195,7 +195,6 @@ class Space {
         "tags": space.tags,
         "hidden": space.hidden = false,
       }).then((value) async {
-        await appUser.addSpace(value.id);
         space.id = value.id;
         space.image = FutureBuilder(
             future: Functions.loadImage(space.id, "tileImage.jpg"),

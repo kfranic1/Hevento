@@ -28,7 +28,7 @@ class Filter with ChangeNotifier {
   double get rating => _rating;
 
   void reset() {
-    _selectedDay;
+    _selectedDay = null;
     _price = 5000;
     _numberOfPeople = 0;
     _music = false;

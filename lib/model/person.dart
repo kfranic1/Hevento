@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hevento/model/space.dart';
 import 'package:hevento/services/collections.dart';
 
 class Person {
@@ -7,7 +6,6 @@ class Person {
   late String name;
   late String username;
   late String email;
-  List<Space> mySpaces = [];
 
   Person(this.id);
 
@@ -18,13 +16,7 @@ class Person {
     name = data["name"];
     username = data["username"];
     email = data["email"];
-    mySpaces = (data["mySpaces"] as List<dynamic>).map((e) => Space((e as String))).toList();
     return this;
-  }
-
-  Future addSpace(String spaceId) async {
-    mySpaces.add(Space(spaceId));
-    await FirebaseFirestore.instance.collection(Collections.person).doc(id).update({"mySpaces": mySpaces.map((e) => e.id).toList()});
   }
 
   static Future createPerson(Person person) async {
