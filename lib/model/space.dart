@@ -118,7 +118,7 @@ class Space {
     if (filter.security && !elements["security"]!) return false;
     if (filter.smoking && !elements["smoking"]!) return false;
     if (filter.specialEffects && !elements["specialEffects"]!) return false;
-    if (filter.rating != 0 && rating < filter.rating) return false;
+    if (filter.rating != 0 && rating != 0 && rating < filter.rating) return false;
     if (calendar.keys.any((day) => isSameDay(filter.selectedDay, day))) return false;
     return true;
   }

@@ -85,7 +85,7 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                       ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.05),
                 RatingBar.builder(
-                  initialRating: 0,
+                  initialRating: filter.rating,
                   minRating: 0,
                   direction: Axis.horizontal,
                   allowHalfRating: true,
@@ -123,14 +123,14 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                   width: 250,
                   child: Slider(
                     activeColor: darkGreen,
-                    value: filter.price,
+                    value: filter.price.toDouble(),
                     min: 0,
                     max: 5000,
                     divisions: 20,
-                    label: filter.price.round().toString(),
+                    label: filter.price.toString(),
                     onChanged: (double value) {
                       setState(() {
-                        filter.price = value;
+                        filter.price = value.round();
                       });
                     },
                   ),
@@ -156,13 +156,13 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                   width: 250,
                   child: Slider(
                     activeColor: darkGreen,
-                    value: filter.numberOfPeople,
+                    value: filter.numberOfPeople.toDouble(),
                     max: 300,
                     divisions: 60,
-                    label: filter.numberOfPeople.round().toString(),
+                    label: filter.numberOfPeople.toString(),
                     onChanged: (double value) {
                       setState(() {
-                        filter.numberOfPeople = value;
+                        filter.numberOfPeople = value.round();
                       });
                     },
                   ),

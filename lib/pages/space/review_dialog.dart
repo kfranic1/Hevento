@@ -77,6 +77,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
             child: const Text("Finish"),
           ),
         const SizedBox(height: 10),
+        if (review.id != null) Center(child: Text("Review was left on ${review.time.day}/${review.time.month}/${review.time.year}"))
       ]),
     );
   }
