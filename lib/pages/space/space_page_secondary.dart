@@ -105,6 +105,7 @@ class SpacePageSecondary extends StatelessWidget {
                                   return ReviewDialog(
                                     space: space,
                                     review: snapshot.hasData ? snapshot.data as Review : null,
+                                    editable: true,
                                   );
                                 }),
                       ),

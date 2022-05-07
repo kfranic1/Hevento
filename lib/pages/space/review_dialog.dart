@@ -9,7 +9,8 @@ import 'package:provider/provider.dart';
 class ReviewDialog extends StatefulWidget {
   final Space space;
   final Review? review;
-  const ReviewDialog({Key? key, required this.space, required this.review}) : super(key: key);
+  final bool editable;
+  const ReviewDialog({Key? key, required this.space, required this.review, this.editable = false}) : super(key: key);
 
   @override
   State<ReviewDialog> createState() => _ReviewDialogState();
@@ -34,42 +35,49 @@ class _ReviewDialogState extends State<ReviewDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      TextFormField(
-        decoration: const InputDecoration(hintText: "Review"),
-        initialValue: review.content,
-        maxLines: 5,
-        onChanged: (value) => setState(() {
-          review.content = value;
-        }),
-      ),
-      const SizedBox(height: 10),
-      RatingBar.builder(
-        initialRating: review.rating?.toDouble() ?? 0.0,
-        minRating: 0,
-        direction: Axis.horizontal,
-        itemCount: 5,
-        itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-        itemBuilder: (context, _) => const Icon(
-          Icons.star,
-          color: darkGreen,
+    return SizedBox(
+      height: 250,
+      width: 250,
+      child: Column(children: [
+        TextFormField(
+          decoration: const InputDecoration(hintText: "Review"),
+          initialValue: review.content,
+          maxLines: 5,
+          onChanged: (value) => setState(() {
+            review.content = value;
+          }),
+          enabled: widget.editable,
         ),
-        itemSize: 30,
-        onRatingUpdate: (rating) {
-          setState(() {
-            review.rating = rating.round() == 0 ? null : rating.round();
-          });
-        },
-      ),
-      const Expanded(child: SizedBox()),
-      ElevatedButton(
-        onPressed: () async => await review.createReview(widget.space).whenComplete(() {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Review succesful")));
-          Navigator.of(context).pop();
-        }),
-        child: const Text("Finish"),
-      ),
-      const SizedBox(height: 10),
-    ]);
+        const SizedBox(height: 10),
+        RatingBar.builder(
+          initialRating: review.rating?.toDouble() ?? 0.0,
+          minRating: 0,
+          direction: Axis.horizontal,
+          itemCount: 5,
+          itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+          itemBuilder: (context, _) => const Icon(
+            Icons.star,
+            color: darkGreen,
+          ),
+          itemSize: 30,
+          ignoreGestures: (!widget.editable),
+          onRatingUpdate: (rating) {
+            setState(() {
+              review.rating = rating.round() == 0 ? null : rating.round();
+            });
+          },
+        ),
+        const Expanded(child: SizedBox()),
+        if (widget.editable)
+          ElevatedButton(
+            onPressed: () async => await review.createReview(widget.space).whenComplete(() {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Review succesful")));
+              Navigator.of(context).pop();
+            }),
+            child: const Text("Finish"),
+          ),
+        const SizedBox(height: 10),
+      ]),
+    );
   }
 }

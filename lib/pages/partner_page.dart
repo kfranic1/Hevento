@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hevento/model/person.dart';
+import 'package:hevento/model/review.dart';
+import 'package:hevento/model/space.dart';
+import 'package:hevento/pages/space/review_dialog.dart';
+import 'package:hevento/services/constants.dart';
+import 'package:hevento/services/static_functions.dart';
 import 'package:hevento/widgets/space_register/space_form.dart';
+import 'package:provider/provider.dart';
 
 class PartnerPage extends StatefulWidget {
   final String? params;
@@ -13,13 +20,75 @@ class PartnerPage extends StatefulWidget {
 class _PartnerPageState extends State<PartnerPage> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: TextButton(
-        onPressed: () async => await showDialog(
-          context: context,
-          builder: (context) => const AlertDialog(content: SpaceForm()),
-        ),
-        child: const Text("Stvori oglas"),
+    Person appUser = context.read<Person?>()!;
+    List<Space> mySpaces = context.read<List<Space>>().where((element) => element.owner.id == appUser.id).toList();
+    return Scaffold(
+      body: Column(
+        children: [
+          ListView.separated(
+            shrinkWrap: true,
+            itemCount: mySpaces.length,
+            itemBuilder: (BuildContext context, int index) {
+              Space space = mySpaces[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ExpansionTile(
+                  collapsedBackgroundColor: lightGreen,
+                  title: Text(space.name),
+                  subtitle: Text(space.address),
+                  trailing: TextButton(
+                    child: const Text("Edit"),
+                    onPressed: () async => await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(content: SpaceForm(space: space)),
+                    ),
+                  ),
+                  maintainState: true,
+                  expandedAlignment: Alignment.centerLeft,
+                  childrenPadding: const EdgeInsets.only(left: 15),
+                  children: [
+                    SizedBox(
+                      height: 250,
+                      child: FutureBuilder(
+                          future: Functions.getReviews(space.id),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState != ConnectionState.done) return loader;
+                            List<Review>? review = snapshot.data as List<Review>?;
+                            return review == null
+                                ? const Text("No reviews for this space")
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: review
+                                        .map((e) => Padding(
+                                            padding: const EdgeInsets.only(right: 10),
+                                            child: SizedBox(width: 250, child: ReviewDialog(space: space, review: e))))
+                                        .toList(),
+                                  );
+                          }),
+                    ),
+                  ],
+                ),
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) => const Divider(
+              height: 2,
+              thickness: 2,
+              color: darkGreen,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () async => await showDialog(
+                  context: context,
+                  builder: (context) => const AlertDialog(content: SpaceForm()),
+                ),
+                child: const Text("Stvori oglas"),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

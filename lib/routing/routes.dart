@@ -1,13 +1,13 @@
 abstract class Routes {
   static const String home = "";
-  static const String partner = "partner";
+  static const String dashboard = "dashboard";
   static const String space = "space";
   static const String login = "login";
   static const String register = "register";
 
   void goToHome() {}
 
-  void goToPartner({Map<String, String>? params}) {}
+  void goToDashboard({Map<String, String>? params}) {}
 
   void goToLogin({Map<String, String>? params}) {}
 

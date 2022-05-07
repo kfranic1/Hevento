@@ -12,7 +12,7 @@ class SpaceRegisterThree extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextFormField(
-            initialValue: space.id == "" ? null : space.price[DateTime.monday].toString(),
+            initialValue: space.id == "" ? null : space.price[DateTime.monday]?.toString(),
             controller: space.id == "" ? TextEditingController() : null,
             decoration: const InputDecoration(hintText: "Monday price"),
             onChanged: (value) => space.price[DateTime.monday] = int.tryParse(value),
@@ -22,7 +22,7 @@ class SpaceRegisterThree extends StatelessWidget {
             },
           ),
           TextFormField(
-            initialValue: space.id == "" ? null : space.price[DateTime.tuesday].toString(),
+            initialValue: space.id == "" ? null : space.price[DateTime.tuesday]?.toString(),
             controller: space.id == "" ? TextEditingController() : null,
             decoration: const InputDecoration(hintText: "Tuesday price"),
             onChanged: (value) => space.price[DateTime.tuesday] = int.tryParse(value),
@@ -32,7 +32,7 @@ class SpaceRegisterThree extends StatelessWidget {
             },
           ),
           TextFormField(
-            initialValue: space.id == "" ? null : space.price[DateTime.wednesday].toString(),
+            initialValue: space.id == "" ? null : space.price[DateTime.wednesday]?.toString(),
             controller: space.id == "" ? TextEditingController() : null,
             decoration: const InputDecoration(hintText: "Wednesday price"),
             onChanged: (value) => space.price[DateTime.wednesday] = int.parse(value),
@@ -42,7 +42,7 @@ class SpaceRegisterThree extends StatelessWidget {
             },
           ),
           TextFormField(
-            initialValue: space.id == "" ? null : space.price[DateTime.thursday].toString(),
+            initialValue: space.id == "" ? null : space.price[DateTime.thursday]?.toString(),
             controller: space.id == "" ? TextEditingController() : null,
             decoration: const InputDecoration(hintText: "Thursday price"),
             onChanged: (value) => space.price[DateTime.thursday] = int.tryParse(value),
@@ -52,7 +52,7 @@ class SpaceRegisterThree extends StatelessWidget {
             },
           ),
           TextFormField(
-            initialValue: space.id == "" ? null : space.price[DateTime.friday].toString(),
+            initialValue: space.id == "" ? null : space.price[DateTime.friday]?.toString(),
             controller: space.id == "" ? TextEditingController() : null,
             decoration: const InputDecoration(hintText: "Friday price"),
             onChanged: (value) => space.price[DateTime.friday] = int.tryParse(value),
@@ -62,7 +62,7 @@ class SpaceRegisterThree extends StatelessWidget {
             },
           ),
           TextFormField(
-            initialValue: space.id == "" ? null : space.price[DateTime.saturday].toString(),
+            initialValue: space.id == "" ? null : space.price[DateTime.saturday]?.toString(),
             controller: space.id == "" ? TextEditingController() : null,
             decoration: const InputDecoration(hintText: "Saturday price"),
             onChanged: (value) => space.price[DateTime.saturday] = int.tryParse(value),
@@ -72,7 +72,7 @@ class SpaceRegisterThree extends StatelessWidget {
             },
           ),
           TextFormField(
-            initialValue: space.id == "" ? null : space.price[DateTime.sunday].toString(),
+            initialValue: space.id == "" ? null : space.price[DateTime.sunday]?.toString(),
             controller: space.id == "" ? TextEditingController() : null,
             decoration: const InputDecoration(hintText: "Sunday price"),
             onChanged: (value) => space.price[DateTime.sunday] = int.tryParse(value),

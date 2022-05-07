@@ -90,7 +90,7 @@ class CustomAppBar extends StatelessWidget {
                             child: SizedBox(
                               width: 175,
                               child: ElevatedButton(
-                                onPressed: () => context.read<CustomRouterDelegate>().goToPartner(),
+                                onPressed: () => context.read<CustomRouterDelegate>().goToDashboard(),
                                 style: ElevatedButton.styleFrom(primary: darkGreen),
                                 child: StreamBuilder(
                                     stream: appUser.self,

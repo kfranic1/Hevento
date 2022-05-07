@@ -21,15 +21,7 @@ class Review {
         .get()
         .then((value) {
       if (value.docs.isEmpty) return null;
-      Review ret = Review(
-        id: value.docs.first.id,
-        personId: value.docs.first["personId"],
-        spaceId: value.docs.first["spaceId"],
-        content: value.docs.first["content"],
-        rating: value.docs.first["rating"],
-        time: (value.docs.first["time"] as Timestamp).toDate(),
-      );
-      return ret;
+      return parseToReview(value.docs.first);
     });
   }
 
@@ -54,5 +46,17 @@ class Review {
         );
       });
     });
+  }
+
+  static Review parseToReview(DocumentSnapshot data){
+    Review ret = Review(
+        id: data.id,
+        personId: data["personId"],
+        spaceId: data["spaceId"],
+        content: data["content"],
+        rating: data["rating"],
+        time: (data["time"] as Timestamp).toDate(),
+      );
+      return ret;
   }
 }

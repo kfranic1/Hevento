@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:hevento/model/space.dart';
 import 'package:hevento/pages/register_page.dart';
 import 'package:hevento/pages/space/space_page.dart';
@@ -37,12 +38,17 @@ class CustomRouterDelegate extends RouterDelegate<Configuration>
             key: ValueKey(_configuration.pathName),
             child: Builder(builder: (context) {
               switch (_configuration.pathName!.removeParams()) {
-                case Routes.partner:
+                case Routes.dashboard:
                   return PartnerPage(params: _configuration.pathParams.toString());
                 case Routes.login:
                   return const LogInPage();
                 case Routes.space:
-                  return SpacePage(space: context.read<List<Space>>().firstWhere((element) => element.id == _configuration.pathParams!["id"]));
+                  try {
+                    return SpacePage(space: context.read<List<Space>>().firstWhere((element) => element.id == _configuration.pathParams!["id"]));
+                  } catch (e) {
+                    WidgetsBinding.instance?.addPostFrameCallback((Duration duration) => goToHome());
+                    return const HomePage();
+                  }
                 case Routes.register:
                   return const RegisterPage();
                 default:
@@ -72,8 +78,8 @@ class CustomRouterDelegate extends RouterDelegate<Configuration>
   }
 
   @override
-  void goToPartner({Map<String, String>? params}) {
-    setNewRoutePath(Configuration.otherPage(Routes.partner + params.toStringFromParams()));
+  void goToDashboard({Map<String, String>? params}) {
+    setNewRoutePath(Configuration.otherPage(Routes.dashboard + params.toStringFromParams()));
     notifyListeners();
   }
 
