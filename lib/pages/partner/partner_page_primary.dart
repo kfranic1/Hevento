@@ -3,44 +3,66 @@ import 'package:hevento/model/person.dart';
 import 'package:hevento/model/review.dart';
 import 'package:hevento/model/space.dart';
 import 'package:hevento/pages/space/review_dialog.dart';
+import 'package:hevento/routing/custom_router_delegate.dart';
 import 'package:hevento/services/constants.dart';
 import 'package:hevento/services/static_functions.dart';
 import 'package:hevento/widgets/space_register/space_form.dart';
 import 'package:provider/provider.dart';
 
-class PartnerPage extends StatefulWidget {
-  final String? params;
-
-  const PartnerPage({Key? key, this.params}) : super(key: key);
+class PartnerPagePrimary extends StatefulWidget {
+  const PartnerPagePrimary({Key? key}) : super(key: key);
 
   @override
-  State<PartnerPage> createState() => _PartnerPageState();
+  State<PartnerPagePrimary> createState() => _PartnerPagePrimaryState();
 }
 
-class _PartnerPageState extends State<PartnerPage> {
+class _PartnerPagePrimaryState extends State<PartnerPagePrimary> {
   @override
   Widget build(BuildContext context) {
-    Person appUser = context.read<Person?>()!;
+    Person? appUser = context.watch<Person?>();
+    if (appUser == null) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) => context.read<CustomRouterDelegate>().goToHome());
+      return loader;
+    }
     List<Space> mySpaces = context.read<List<Space>>().where((element) => element.owner.id == appUser.id).toList();
+    //? Ako zelimo da se sortira po tome jesu skriveni il ne => mySpaces.sort((a, b) => a.hidden ? 1 : 0);
     return Scaffold(
-      body: Column(
-        children: [
-          ListView.separated(
-            shrinkWrap: true,
-            itemCount: mySpaces.length,
-            itemBuilder: (BuildContext context, int index) {
-              Space space = mySpaces[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ExpansionTile(
+      body: Padding(
+        padding: const EdgeInsets.all(defaultPadding),
+        child: Column(
+          children: [
+            ListView.separated(
+              shrinkWrap: true,
+              itemCount: mySpaces.length,
+              itemBuilder: (BuildContext context, int index) {
+                Space space = mySpaces[index];
+                return ExpansionTile(
                   collapsedBackgroundColor: lightGreen,
                   title: Text(space.name),
                   subtitle: Text(space.address),
-                  trailing: TextButton(
-                    child: const Text("Edit"),
-                    onPressed: () async => await showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(content: SpaceForm(space: space)),
+                  trailing: SizedBox(
+                    height: 80,
+                    width: 600,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          onPressed: () async {
+                            space.hidden = !space.hidden;
+                            await space.updateSpace(appUser.id);
+                            setState(() {});
+                          },
+                          icon: Icon(space.hidden ? Icons.visibility_off : Icons.visibility),
+                          tooltip: "Sakrij oglas",
+                        ),
+                        TextButton(
+                          child: const Text("Edit"),
+                          onPressed: () async => await showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(content: SpaceForm(space: space)),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   maintainState: true,
@@ -67,28 +89,32 @@ class _PartnerPageState extends State<PartnerPage> {
                           }),
                     ),
                   ],
-                ),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) => const Divider(
-              height: 2,
-              thickness: 2,
-              color: darkGreen,
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () async => await showDialog(
-                  context: context,
-                  builder: (context) => const AlertDialog(content: SpaceForm()),
-                ),
-                child: const Text("Stvori oglas"),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) => const Divider(
+                height: 10,
+                thickness: 2,
+                color: darkGreen,
               ),
-            ],
-          ),
-        ],
+            ),
+            const Expanded(child: SizedBox()),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (context) => const AlertDialog(content: SpaceForm()),
+                    );
+                    setState(() {});
+                  },
+                  child: const Text("Stvori novi oglas"),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

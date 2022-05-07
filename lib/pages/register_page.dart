@@ -22,21 +22,14 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   String? error;
-  late bool _passwordVisible;
-
-  @override
-  void initState() {
-    _passwordVisible = false;
-    super.initState();
-  }
+  bool _passwordVisible = false;
 
   @override
   Widget build(BuildContext context) {
-    Person? appUser = Provider.of<Person?>(context);
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
         body: Center(
-          child: appUser != null
+          child: context.read<Person?>() != null
               ? const Center(child: Text("Already signed in"))
               : Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -87,19 +87,17 @@ class MyApp extends StatelessWidget {
                   ),
                 ),
               ],
-              child: Builder(builder: (context) {
-                return MaterialApp.router(
-                  scrollBehavior: CustomScrollBehavior(),
-                  title: 'Hevento',
-                  debugShowCheckedModeBanner: false,
-                  routeInformationParser: context.read<CustomRouteInformationParser>(),
-                  routerDelegate: context.read<CustomRouterDelegate>(),
-                  theme: ThemeData(
-                    fontFamily: 'Roboto',
-                    primarySwatch: darkGreenMaterialColor,
-                  ),
-                );
-              }),
+              child: MaterialApp.router(
+                scrollBehavior: CustomScrollBehavior(),
+                title: 'Hevento',
+                debugShowCheckedModeBanner: false,
+                routeInformationParser: context.read<CustomRouteInformationParser>(),
+                routerDelegate: context.read<CustomRouterDelegate>(),
+                theme: ThemeData(
+                  fontFamily: 'Roboto',
+                  primarySwatch: darkGreenMaterialColor,
+                ),
+              ),
             );
           }),
     );

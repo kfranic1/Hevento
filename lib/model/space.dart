@@ -17,7 +17,7 @@ class Space {
   late String name;
   late String description;
   late String address;
-  late Map<DateTime, String> calendar;
+  Map<DateTime, String> calendar = <DateTime, String>{};
   Map<String, String?> contacts = {
     "phone": null,
     "email": null,
@@ -50,6 +50,7 @@ class Space {
   late int numberOfReviews;
   late List<String>? tags;
   late Widget image;
+  late bool hidden;
 
   int get minPrice =>
       price.values
@@ -98,6 +99,7 @@ class Space {
               fit: BoxFit.fill,
             );
           });
+      hidden = data["hidden"];
     } catch (e) {
       print(e.toString());
       return null;
@@ -106,6 +108,7 @@ class Space {
   }
 
   bool pass(Filter filter) {
+    if (hidden) return false;
     if (filter.price * 1.1 < minPrice) return false;
     if ((numberOfPeople * 1.5 < filter.numberOfPeople || filter.numberOfPeople < numberOfPeople * 0.9) && filter.numberOfPeople != 0) return false;
     if (filter.music && !elements["music"]!) return false;
@@ -115,7 +118,7 @@ class Space {
     if (filter.security && !elements["security"]!) return false;
     if (filter.smoking && !elements["smoking"]!) return false;
     if (filter.specialEffects && !elements["specialEffects"]!) return false;
-    if (filter.rating != 0 && rating < filter.rating) return false;
+    if (filter.rating != 0 && rating != 0 && rating < filter.rating) return false;
     if (calendar.keys.any((day) => isSameDay(filter.selectedDay, day))) return false;
     return true;
   }
@@ -132,7 +135,28 @@ class Space {
     }
   }
 
-  Future updateSpace() async {}
+  Future updateSpace(String userId) async {
+    try {
+      await FirebaseFirestore.instance.collection(Collections.space).doc(id).update({
+        "name": name,
+        "description": description,
+        "address": address,
+        "calendar": calendar.map((key, value) => MapEntry(key.toString(), value)),
+        "contacts": contacts,
+        "elements": elements,
+        "location": location,
+        "price": price.map((key, value) => MapEntry(key.toString(), value)),
+        "numberOfPeople": numberOfPeople,
+        "owner": userId,
+        "totalScore": totalScore,
+        "numberOfReviews": numberOfReviews,
+        "tags": tags,
+        "hidden": hidden,
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   Future addReview(int? rating, {int? oldRating, bool newReview = true}) async {
     try {
@@ -159,19 +183,30 @@ class Space {
         "name": space.name,
         "description": space.description,
         "address": space.address,
-        "calendar": <String, List<Map<String, String>>>{},
+        "calendar": space.calendar.map((key, value) => MapEntry(key.toString(), value)),
         "contacts": space.contacts,
         "elements": space.elements,
-        "location": const GeoPoint(0, 0),
+        "location": space.location = const GeoPoint(0, 0),
         "price": space.price.map((key, value) => MapEntry(key.toString(), value)),
         "numberOfPeople": space.numberOfPeople,
-        "owner": appUser.id,
-        "totalScore": 0,
-        "numberOfReviews": 0,
+        "owner": (space.owner = appUser).id,
+        "totalScore": space.totalScore = 0,
+        "numberOfReviews": space.numberOfReviews = 0,
         "tags": space.tags,
+        "hidden": space.hidden = false,
       }).then((value) async {
-        await appUser.addSpace(value.id);
         space.id = value.id;
+        space.image = FutureBuilder(
+            future: Functions.loadImage(space.id, "tileImage.jpg"),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) return loader;
+              return Image.network(
+                snapshot.data as String,
+                height: double.infinity,
+                width: double.infinity,
+                fit: BoxFit.fill,
+              );
+            });
         if (images != null) await space.addImages(images);
       });
     } catch (e) {
@@ -181,10 +216,12 @@ class Space {
 
   static Future<List<Space>> getSpaces() async {
     try {
-      return await FirebaseFirestore.instance
+      List<Space> ret = await FirebaseFirestore.instance
           .collection(Collections.space)
           .get()
           .then((value) => value.docs.map((e) => Space(e.id).getData(e)!).toList());
+      ret.shuffle();
+      return ret;
     } catch (e) {
       print(e.toString());
       return [];

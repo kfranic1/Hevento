@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:hevento/model/space.dart';
+import 'package:hevento/pages/partner/partner_page.dart';
 import 'package:hevento/pages/register_page.dart';
 import 'package:hevento/pages/space/space_page.dart';
 import 'package:hevento/pages/home/home_page.dart';
 import 'package:hevento/routing/configuraiton.dart';
-import 'package:hevento/pages/partner_page.dart';
 import 'package:hevento/pages/log_in_page.dart';
 import 'package:hevento/routing/routes.dart';
 import 'package:hevento/services/extensions/map_extensions.dart';
@@ -16,6 +15,7 @@ class CustomRouterDelegate extends RouterDelegate<Configuration>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<Configuration>
     implements Routes {
   Configuration _configuration = Configuration.home();
+  Configuration? lastConfiguration;
 
   @override
   GlobalKey<NavigatorState> get navigatorKey => GlobalKey<NavigatorState>();
@@ -39,7 +39,7 @@ class CustomRouterDelegate extends RouterDelegate<Configuration>
             child: Builder(builder: (context) {
               switch (_configuration.pathName!.removeParams()) {
                 case Routes.dashboard:
-                  return PartnerPage(params: _configuration.pathParams.toString());
+                  return const PartnerPage();
                 case Routes.login:
                   return const LogInPage();
                 case Routes.space:
@@ -68,7 +68,13 @@ class CustomRouterDelegate extends RouterDelegate<Configuration>
 
   @override
   Future<void> setNewRoutePath(Configuration configuration) async {
+    lastConfiguration = _configuration;
     _configuration = configuration;
+  }
+
+  void goToLastPage() {
+    setNewRoutePath(lastConfiguration ?? Configuration.home());
+    notifyListeners();
   }
 
   @override
