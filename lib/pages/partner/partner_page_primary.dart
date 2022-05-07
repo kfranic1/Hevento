@@ -97,10 +97,13 @@ class _PartnerPagePrimaryState extends State<PartnerPagePrimary> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () async => await showDialog(
-                    context: context,
-                    builder: (context) => const AlertDialog(content: SpaceForm()),
-                  ),
+                  onPressed: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (context) => const AlertDialog(content: SpaceForm()),
+                    );
+                    setState(() {});
+                  },
                   child: const Text("Stvori novi oglas"),
                 ),
               ],

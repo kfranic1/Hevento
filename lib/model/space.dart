@@ -17,7 +17,7 @@ class Space {
   late String name;
   late String description;
   late String address;
-  late Map<DateTime, String> calendar;
+  Map<DateTime, String> calendar = <DateTime, String>{};
   Map<String, String?> contacts = {
     "phone": null,
     "email": null,
@@ -183,20 +183,31 @@ class Space {
         "name": space.name,
         "description": space.description,
         "address": space.address,
-        "calendar": <String, List<Map<String, String>>>{},
+        "calendar": space.calendar.map((key, value) => MapEntry(key.toString(), value)),
         "contacts": space.contacts,
         "elements": space.elements,
-        "location": const GeoPoint(0, 0),
+        "location": space.location = const GeoPoint(0, 0),
         "price": space.price.map((key, value) => MapEntry(key.toString(), value)),
         "numberOfPeople": space.numberOfPeople,
-        "owner": appUser.id,
-        "totalScore": 0,
-        "numberOfReviews": 0,
+        "owner": (space.owner = appUser).id,
+        "totalScore": space.totalScore = 0,
+        "numberOfReviews": space.numberOfReviews = 0,
         "tags": space.tags,
-        "hidden": false,
+        "hidden": space.hidden = false,
       }).then((value) async {
         await appUser.addSpace(value.id);
         space.id = value.id;
+        space.image = FutureBuilder(
+            future: Functions.loadImage(space.id, "tileImage.jpg"),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) return loader;
+              return Image.network(
+                snapshot.data as String,
+                height: double.infinity,
+                width: double.infinity,
+                fit: BoxFit.fill,
+              );
+            });
         if (images != null) await space.addImages(images);
       });
     } catch (e) {

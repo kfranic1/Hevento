@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hevento/model/person.dart';
 import 'package:hevento/model/space.dart';
 import 'package:hevento/services/constants.dart';
+import 'package:hevento/widgets/space_list_item.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -74,6 +75,10 @@ class _GalleryFormState extends State<GalleryForm> {
                   setState(() => error = "Some data is missing or is wrongly formated");
                 } else {
                   await Space.createSpace(context.read<Person?>()!, widget.space, images: files);
+                  List<Space> spaces = context.read<List<Space>>();
+                  if (!spaces.any((element) => element.id == widget.space.id)) spaces.add(widget.space);
+                  List<SpaceListItem> spaceItems = context.read<List<SpaceListItem>>();
+                  if (!spaceItems.any((element) => element.space.id == widget.space.id)) spaceItems.add(SpaceListItem(space: widget.space));
                   Navigator.of(context).pop();
                 }
               } catch (e) {
