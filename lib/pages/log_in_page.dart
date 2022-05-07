@@ -34,7 +34,7 @@ class _LogInPageState extends State<LogInPage> {
                   if (constraints.maxWidth > kNarrow)
                     Expanded(
                       child: Image.asset(
-                        'images/loginImage.jpg',
+                        './assets/images/loginImage.jpg',
                         fit: BoxFit.cover,
                         height: MediaQuery.of(context).size.height,
                       ),

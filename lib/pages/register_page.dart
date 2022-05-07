@@ -44,7 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     if (constraints.maxWidth > kNarrow)
                       Expanded(
                         child: Image.asset(
-                          'images/registerImage.jpg',
+                          './assets/images/registerImage.jpg',
                           fit: BoxFit.cover,
                           height: MediaQuery.of(context).size.height,
                         ),
