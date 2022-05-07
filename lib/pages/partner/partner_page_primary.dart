@@ -8,16 +8,14 @@ import 'package:hevento/services/static_functions.dart';
 import 'package:hevento/widgets/space_register/space_form.dart';
 import 'package:provider/provider.dart';
 
-class PartnerPage extends StatefulWidget {
-  final String? params;
-
-  const PartnerPage({Key? key, this.params}) : super(key: key);
+class PartnerPagePrimary extends StatefulWidget {
+  const PartnerPagePrimary({Key? key}) : super(key: key);
 
   @override
-  State<PartnerPage> createState() => _PartnerPageState();
+  State<PartnerPagePrimary> createState() => _PartnerPagePrimaryState();
 }
 
-class _PartnerPageState extends State<PartnerPage> {
+class _PartnerPagePrimaryState extends State<PartnerPagePrimary> {
   @override
   Widget build(BuildContext context) {
     Person appUser = context.read<Person?>()!;

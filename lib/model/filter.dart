@@ -12,7 +12,7 @@ class Filter with ChangeNotifier {
   bool _specialEffects = false;
   bool _smoking = false;
   double _rating = 0;
-  
+
   bool notifyOnSet = false;
 
   DateTime? get selectedDay => _selectedDay;
@@ -26,7 +26,21 @@ class Filter with ChangeNotifier {
   bool get specialEffects => _specialEffects;
   bool get smoking => _smoking;
   double get rating => _rating;
-  
+
+  void reset() {
+    _selectedDay;
+    _price = 5000;
+    _numberOfPeople = 0;
+    _music = false;
+    _waiter = false;
+    _drinks = false;
+    _food = false;
+    _security = false;
+    _specialEffects = false;
+    _smoking = false;
+    _rating = 0;
+    notifyListeners();
+  }
 
   set selectedDay(DateTime? value) {
     _selectedDay = value;
