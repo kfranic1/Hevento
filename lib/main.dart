@@ -2,13 +2,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hevento/generated/firebase_options.dart';
+import 'package:hevento/model/filter.dart';
+import 'package:hevento/model/person.dart';
+import 'package:hevento/model/space.dart';
 import 'package:hevento/routing/custom_route_information_parser.dart';
 import 'package:hevento/routing/custom_router_delegate.dart';
 import 'package:hevento/services/auth_service.dart';
-import 'package:hevento/model/space.dart';
+import 'package:hevento/services/constants.dart';
+import 'package:hevento/widgets/custom_divider.dart';
+import 'package:hevento/widgets/custom_scroll_behavior.dart';
+import 'package:hevento/widgets/space_list_item.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +33,7 @@ class MyApp extends StatelessWidget {
         Provider<AuthService>(
           create: (context) => AuthService(FirebaseAuth.instance),
         ),
-        StreamProvider(
+        StreamProvider<Person?>(
           create: (context) => context.read<AuthService>().authStateChanges,
           initialData: null,
         ),
@@ -38,52 +43,65 @@ class MyApp extends StatelessWidget {
         ListenableProvider<CustomRouterDelegate>(
           create: (context) => CustomRouterDelegate(),
         ),
+        ListenableProvider<Filter>(
+          create: (context) => Filter(),
+        ),
+        //FutureProvider<List<Space>?>(create: (context) => Space.getSpaces(), initialData: null)
       ],
-      child: Builder(builder: (context) {
-        Space? space = Provider.of<Space?>(context);
-        return Provider.value(
-          value: AppBar(
-            title: space == null
-                ? const Text("Not logged in")
-                : StreamBuilder(
-                    stream: space.self,
-                    builder: (context, snapshot) {
-                      return !snapshot.hasData
-                          ? const Center(
-                              child: LinearProgressIndicator(),
-                            )
-                          : Text((snapshot.data as Space).name);
-                    }),
-            actions: [
-              ElevatedButton(
-                onPressed: () => context.read<CustomRouterDelegate>().goToHome(),
-                child: const Text("Home"),
-              ),
-              ElevatedButton(
-                onPressed: () => context.read<CustomRouterDelegate>().goToPartner(),
-                child: const Text("Postani partner"),
-              ),
-              ElevatedButton(
-                onPressed: () => context.read<CustomRouterDelegate>().goToTest(),
-                child: const Text("Sing In"),
-              ),
-              ElevatedButton(
-                onPressed: () async => await Provider.of<AuthService>(context, listen: false).signOut(),
-                child: const Text("Sign out"),
-              ),
-            ],
-          ),
-          child: MaterialApp.router(
-            title: 'Hevento',
-            theme: ThemeData(
-              primarySwatch: Colors.green,
-            ),
-            debugShowCheckedModeBanner: false,
-            routeInformationParser: context.read<CustomRouteInformationParser>(),
-            routerDelegate: context.read<CustomRouterDelegate>(),
-          ),
-        );
-      }),
+      child: FutureBuilder(
+          future: Space.getSpaces(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return loader;
+            }
+            List<Space> spaces = snapshot.data as List<Space>;
+            return MultiProvider(
+              providers: [
+                Provider<List<Space>>(create: (context) => spaces),
+                Provider<List<SpaceListItem>>(create: (context) => spaces.map((e) => SpaceListItem(space: e)).toList()),
+                Provider<AppBar>(
+                  create: (context) => AppBar(
+                    elevation: 0,
+                    automaticallyImplyLeading: false,
+                    centerTitle: false,
+                    leadingWidth: 0,
+                    title: GestureDetector(
+                      child: Image.asset('./assets/images/title.png'),
+                      onTap: () => context.read<CustomRouterDelegate>().goToHome(),
+                    ),
+                    toolbarHeight: 80,
+                    backgroundColor: lightGreen,
+                    bottom: const PreferredSize(
+                      preferredSize: Size(double.infinity, 2),
+                      child: CustomDivider(
+                        divider: Divider(
+                          thickness: 2,
+                          color: darkGreen,
+                          indent: 0,
+                          endIndent: 0,
+                          height: 2,
+                        ),
+                        right: lightGreen,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+              child: Builder(builder: (context) {
+                return MaterialApp.router(
+                  scrollBehavior: CustomScrollBehavior(),
+                  title: 'Hevento',
+                  debugShowCheckedModeBanner: false,
+                  routeInformationParser: context.read<CustomRouteInformationParser>(),
+                  routerDelegate: context.read<CustomRouterDelegate>(),
+                  theme: ThemeData(
+                    fontFamily: 'Roboto',
+                    primarySwatch: darkGreenMaterialColor,
+                  ),
+                );
+              }),
+            );
+          }),
     );
   }
 }

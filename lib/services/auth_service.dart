@@ -1,55 +1,46 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:hevento/model/space.dart';
+import 'package:hevento/model/person.dart';
 
 class AuthService {
   final FirebaseAuth _auth;
-  //UserType _userType = UserType.unknown;
 
   AuthService(this._auth);
 
-  Stream<Space?> get authStateChanges => _auth.authStateChanges().map((event) => event == null ? null : Space(event.uid));
+  Stream<Person?> get authStateChanges => _auth.authStateChanges().map((user) {
+        if (user == null || user.isAnonymous) return null;
+        return Person(user.uid);
+      });
 
-  Future<String> signInSpace(String email, String password) async {
+  Future<String?> signIn(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return "OK";
-    } on FirebaseAuthException catch (e) {
-      return e.message!;
+      return null;
+    } on FirebaseAuthException {
+      return "Pogrešno unesena email adresa ili lozinka";
     } catch (e) {
       return e.toString();
     }
   }
 
-  Future<String> signUpSpace(String email, String password, String spaceName) async {
+  Future<String?> signUp(String email, String password, Person? person) async {
     try {
-      await _auth
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) async => await Space.createSpace(value.user!.uid, spaceName));
-      return "OK";
-    } on FirebaseAuthException catch (e) {
-      return e.message!;
+      if (person == null) throw Exception("Person not provided");
+      await _auth.createUserWithEmailAndPassword(email: email, password: password).then((value) async {
+        person.id = value.user!.uid;
+        await Person.createPerson(person);
+      });
+      return null;
+    } on FirebaseAuthException {
+      return "Pogrešno unesena email adresa ili lozinka";
     } catch (e) {
       return e.toString();
     }
   }
 
-  Future<String> signUpPerson(String email, String password, String firstName, String lastName) async {
-    try {
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      return "OK";
-    } on FirebaseAuthException catch (e) {
-      return e.message!;
-    } catch (e) {
-      return e.toString();
-    }
-  }
-
-  Future<String> signOut() async {
+  Future<String?> signOut() async {
     try {
       await _auth.signOut();
-      return "OK";
-    } on FirebaseAuthException catch (e) {
-      return e.message!;
+      return null;
     } catch (e) {
       return e.toString();
     }

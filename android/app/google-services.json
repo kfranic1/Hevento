@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "655035274205",
+    "project_id": "hevento-7371e",
+    "storage_bucket": "hevento-7371e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:655035274205:android:c9ad51786d9cd3f9ed9c34",
+        "android_client_info": {
+          "package_name": "com.example.hevento"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "655035274205-4ld32kdnujjfso0edh18d63o790ltlk5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApNkCedCS1_2oMcbqwIT7wNMj2pkG8nhE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "655035274205-4ld32kdnujjfso0edh18d63o790ltlk5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
