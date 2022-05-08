@@ -9,6 +9,7 @@ import 'package:hevento/services/collections.dart';
 import 'package:hevento/services/constants.dart';
 import 'package:hevento/services/extensions/datetime_extension.dart';
 import 'package:hevento/services/static_functions.dart';
+import 'package:hevento/widgets/custom_network_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -50,6 +51,7 @@ class Space {
   late int numberOfReviews;
   late List<String>? tags;
   late Widget image;
+  late String? profileImage;
   late bool hidden;
 
   int get minPrice =>
@@ -89,7 +91,7 @@ class Space {
       tags = data["tags"] == null ? null : (data["tags"] as List<dynamic>).map((e) => e as String).toList();
       price = (data["price"] as Map<String, dynamic>).map((key, value) => MapEntry(int.parse(key), value == null ? null : value as int));
       image = FutureBuilder(
-          future: Functions.loadImage(id, "tileImage.jpg"),
+          future: Functions.getImageUrl(id, data["profileImage"]),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) return loader;
             return Image.network(
@@ -100,6 +102,7 @@ class Space {
             );
           });
       hidden = data["hidden"];
+      profileImage = data["profileImage"];
     } catch (e) {
       print(e.toString());
       return null;
@@ -136,7 +139,7 @@ class Space {
     }
   }
 
-  Future updateSpace() async {
+  Future updateSpace({List<XFile>? images}) async {
     try {
       await FirebaseFirestore.instance.collection(Collections.space).doc(id).update({
         "name": name,
@@ -153,6 +156,8 @@ class Space {
         "numberOfReviews": numberOfReviews,
         "tags": tags,
         "hidden": hidden,
+      }).then((value) async {
+        if (images != null) await addImages(images);
       });
     } catch (e) {
       print(e.toString());
@@ -178,7 +183,7 @@ class Space {
     }
   }
 
-  static Future<void> createSpace(Person appUser, Space space, {List<XFile>? images}) async {
+  static Future<void> createSpace(Person appUser, Space space, {List<XFile>? images, String? profileImage}) async {
     try {
       await FirebaseFirestore.instance.collection(Collections.space).add({
         "name": space.name,
@@ -195,19 +200,10 @@ class Space {
         "numberOfReviews": space.numberOfReviews = 0,
         "tags": space.tags,
         "hidden": space.hidden = false,
+        "profileImage": profileImage,
       }).then((value) async {
         space.id = value.id;
-        space.image = FutureBuilder(
-            future: Functions.loadImage(space.id, "tileImage.jpg"),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) return loader;
-              return Image.network(
-                snapshot.data as String,
-                height: double.infinity,
-                width: double.infinity,
-                fit: BoxFit.fill,
-              );
-            });
+        space.image = CustomNetworkImage(spaceId: space.id, imageName: profileImage);
         if (images != null) await space.addImages(images);
       });
     } catch (e) {
@@ -237,6 +233,15 @@ class Space {
             .child("$id/${image.name}")
             .putData(await image.readAsBytes(), SettableMetadata(contentType: "image/jpeg"));
       });
+    } catch (e) {
+      print(e.toString());
+      return [];
+    }
+  }
+
+  Future removeImage(String imageName) async {
+    try {
+      await FirebaseStorage.instance.ref().child("$id/$imageName").delete();
     } catch (e) {
       print(e.toString());
       return [];

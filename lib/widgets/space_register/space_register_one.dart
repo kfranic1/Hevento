@@ -12,6 +12,7 @@ class SpaceRegisterOne extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const Text("Osnovni podatci"),
           TextFormField(
             initialValue: space.id == "" ? null : space.name,
             controller: space.id == "" ? TextEditingController() : null,

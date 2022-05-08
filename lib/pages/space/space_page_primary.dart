@@ -11,7 +11,7 @@ class SpacePagePrimary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Functions.loadImages(space.id),
+        future: Functions.loadImagesUrls(space.id),
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) return loader;
           List<String> ids = snapshot.data as List<String>;
@@ -54,9 +54,7 @@ class SpacePagePrimary extends StatelessWidget {
                       itemCount: ids.length,
                     ),
                   ),
-                  const SizedBox(
-                    height: 20
-                  ),
+                  const SizedBox(height: 20),
                   /*const Divider(
                     color: darkGreen,
                     thickness: 3,

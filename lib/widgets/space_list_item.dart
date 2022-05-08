@@ -77,13 +77,15 @@ class SpaceListItem extends StatelessWidget {
                       const SizedBox(height: 15),
                       Expanded(
                         flex: 3,
-                        child: SizedBox(
-                          width: 300,
-                          child: Text(
-                            space.description,
-                            style: const TextStyle(fontSize: 14),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 6,
+                        child: SingleChildScrollView(
+                          child: SizedBox(
+                            width: 300,
+                            child: Text(
+                              space.description,
+                              style: const TextStyle(fontSize: 14),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 6,
+                            ),
                           ),
                         ),
                       ),

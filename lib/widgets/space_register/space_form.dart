@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hevento/model/person.dart';
 import 'package:hevento/model/space.dart';
+import 'package:hevento/services/constants.dart';
+import 'package:hevento/services/static_functions.dart';
+import 'package:hevento/widgets/custom_network_image.dart';
 import 'package:hevento/widgets/space_register/gallery_form.dart';
 import 'package:hevento/widgets/space_register/space_register_one.dart';
 import 'package:hevento/widgets/space_register/space_register_three.dart';
@@ -30,7 +33,16 @@ class _SpaceFormState extends State<SpaceForm> {
       SpaceRegisterOne(space: space),
       SpaceRegisterTwo(space: space),
       SpaceRegisterThree(space: space),
-      GalleryForm(space: space, formKey: _formKey),
+      FutureBuilder(
+          future: Functions.loadImagesUrls(space.id, returnName: true),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) return loader;
+            return GalleryForm(
+              space: space,
+              formKey: _formKey,
+              images: (snapshot.data as List<String>).map((e) => CustomNetworkImage(spaceId: space.id, imageName: e)).toList(),
+            );
+          }),
     ];
     super.initState();
   }
@@ -48,7 +60,6 @@ class _SpaceFormState extends State<SpaceForm> {
         width: 500,
         child: Column(
           children: [
-            Text("Create space${step + 1}/${steps.length}"),
             Expanded(
               child: IndexedStack(
                 index: step,
@@ -72,6 +83,7 @@ class _SpaceFormState extends State<SpaceForm> {
                 ),
               ],
             ),
+            Text("Korak ${step + 1}/${steps.length}"),
             //const SizedBox(height: 10),
           ],
         ),

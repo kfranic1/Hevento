@@ -80,9 +80,9 @@ class _PartnerPagePrimaryState extends State<PartnerPagePrimary> {
                           future: Functions.getReviews(space.id),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState != ConnectionState.done) return loader;
-                            List<Review>? review = snapshot.data as List<Review>?;
-                            return review == null
-                                ? const Center(child:  Text("Ovaj oglas nema niti jedanu recenziju"))
+                            List<Review> review = snapshot.data as List<Review>;
+                            return review.isEmpty
+                                ? const Center(child: Text("Ovaj oglas nema niti jedanu recenziju"))
                                 : Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: review

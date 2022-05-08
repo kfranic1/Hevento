@@ -12,13 +12,13 @@ class SpaceRegisterThree extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const Text("Cijene prostora"),
           TextFormField(
             initialValue: space.id == "" ? null : space.price[DateTime.monday]?.toString(),
             controller: space.id == "" ? TextEditingController() : null,
             decoration: const InputDecoration(hintText: "Monday price"),
             onChanged: (value) => space.price[DateTime.monday] = int.tryParse(value),
             validator: (value) {
-              if (space.price.values.every((element) => element == null)) return "Please define at least one price";
               if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
               return "Pogrešan format";
             },
@@ -70,6 +70,7 @@ class SpaceRegisterThree extends StatelessWidget {
             onChanged: (value) => space.price[DateTime.saturday] = int.tryParse(value),
             validator: (value) {
               if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
+              if (space.price.values.every((element) => element == null)) return "Please define at least one price";
               return "Pogrešan format";
             },
           ),
@@ -83,6 +84,8 @@ class SpaceRegisterThree extends StatelessWidget {
               return "Pogrešan format";
             },
           ),
+          const SizedBox(height: 20),
+          const Text("Dodatni podatci"),
           TextFormField(
             initialValue: space.id == "" ? null : space.numberOfPeople.toString(),
             controller: space.id == "" ? TextEditingController() : null,
