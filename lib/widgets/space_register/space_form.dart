@@ -4,10 +4,12 @@ import 'package:hevento/model/space.dart';
 import 'package:hevento/services/constants.dart';
 import 'package:hevento/services/static_functions.dart';
 import 'package:hevento/widgets/custom_network_image.dart';
+import 'package:hevento/widgets/space_list_item.dart';
 import 'package:hevento/widgets/space_register/gallery_form.dart';
 import 'package:hevento/widgets/space_register/space_register_one.dart';
 import 'package:hevento/widgets/space_register/space_register_three.dart';
 import 'package:hevento/widgets/space_register/space_register_two.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class SpaceForm extends StatefulWidget {
@@ -22,8 +24,10 @@ class _SpaceFormState extends State<SpaceForm> {
   late final Space space;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   int step = 0;
+  String? error;
 
   late List<Widget> steps;
+  List<XFile> newImages = [];
 
   @override
   void initState() {
@@ -41,6 +45,7 @@ class _SpaceFormState extends State<SpaceForm> {
               space: space,
               formKey: _formKey,
               images: (snapshot.data as List<String>).map((e) => CustomNetworkImage(spaceId: space.id, imageName: e)).toList(),
+              newImages: newImages,
             );
           }),
     ];
@@ -66,6 +71,33 @@ class _SpaceFormState extends State<SpaceForm> {
                 children: steps,
               ),
             ),
+            if (space.id != "" || step == 3)
+              ElevatedButton(
+                child: Text(space.id == "" ? "Stvori prostor" : "Uredi prostor"),
+                onPressed: () async {
+                  try {
+                    if (!_formKey.currentState!.validate()) {
+                      setState(() => error = "Nedostaju neki podatci ili su krivo formatirani.");
+                    } else {
+                      if (space.id == "") {
+                        await Space.createSpace(context.read<Person?>()!, space,
+                            images: newImages, profileImage: newImages.isEmpty ? null : newImages.first.name);
+                        List<Space> spaces = context.read<List<Space>>();
+                        if (!spaces.any((element) => element.id == space.id)) spaces.add(space);
+                        List<SpaceListItem> spaceItems = context.read<List<SpaceListItem>>();
+                        if (!spaceItems.any((element) => element.space.id == space.id)) spaceItems.add(SpaceListItem(space: space));
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Prostor uspješno stvoren.")));
+                      } else {
+                        await space.updateSpace(images: newImages);
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Promjene uspješno spremljene.")));
+                      }
+                      Navigator.of(context).pop(true);
+                    }
+                  } catch (e) {
+                    print(e.toString());
+                  }
+                },
+              ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

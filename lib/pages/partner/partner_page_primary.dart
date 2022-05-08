@@ -31,78 +31,83 @@ class _PartnerPagePrimaryState extends State<PartnerPagePrimary> {
         padding: const EdgeInsets.all(defaultPadding),
         child: Column(
           children: [
-            ListView.separated(
-              shrinkWrap: true,
-              itemCount: mySpaces.length,
-              itemBuilder: (BuildContext context, int index) {
-                Space space = mySpaces[index];
-                return ExpansionTile(
-                  collapsedBackgroundColor: lightGreen,
-                  title: Text(space.name),
-                  subtitle: Text(space.address),
-                  trailing: SizedBox(
-                    height: 80,
-                    width: 600,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          onPressed: () async {
-                            space.hidden = !space.hidden;
-                            await space.updateSpace();
-                            setState(() {});
-                          },
-                          icon: Icon(space.hidden ? Icons.visibility_off : Icons.visibility),
-                          tooltip: "Sakrij oglas",
-                        ),
-                        TextButton(
-                          child: const Text("Uredi"),
-                          onPressed: () async => await showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(content: SpaceForm(space: space)),
-                          ).then((value) {
-                            if (value == null || (!(value as bool))) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(content: Text("Promjene su zabilježene, ali nisu spremljene.")));
-                            }
-                          }),
-                        ),
-                      ],
+            Expanded(
+              child: ListView.separated(
+                shrinkWrap: true,
+                itemCount: mySpaces.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Space space = mySpaces[index];
+                  return ExpansionTile(
+                    collapsedBackgroundColor: lightGreen,
+                    title: Text(space.name),
+                    subtitle: Text(space.address),
+                    trailing: SizedBox(
+                      height: 80,
+                      width: 100,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            onPressed: () async {
+                              space.hidden = !space.hidden;
+                              await space.updateSpace();
+                              setState(() {});
+                            },
+                            icon: Icon(space.hidden ? Icons.visibility_off : Icons.visibility),
+                            tooltip: "Sakrij oglas",
+                          ),
+                          TextButton(
+                            child: const Text("Uredi"),
+                            onPressed: () async => await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(content: SpaceForm(space: space)),
+                            ).then((value) {
+                              if (value == null || (!(value as bool))) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(content: Text("Promjene su zabilježene, ali nisu spremljene.")));
+                              }
+                            }),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  maintainState: true,
-                  expandedAlignment: Alignment.centerLeft,
-                  childrenPadding: const EdgeInsets.only(left: 15),
-                  children: [
-                    SizedBox(
-                      height: 250,
-                      child: FutureBuilder(
-                          future: Functions.getReviews(space.id),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState != ConnectionState.done) return loader;
-                            List<Review> review = snapshot.data as List<Review>;
-                            return review.isEmpty
-                                ? const Center(child: Text("Ovaj oglas nema niti jedanu recenziju"))
-                                : Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: review
-                                        .map((e) => Padding(
-                                            padding: const EdgeInsets.only(right: 10),
-                                            child: SizedBox(width: 250, child: ReviewDialog(space: space, review: e))))
-                                        .toList(),
-                                  );
-                          }),
-                    ),
-                  ],
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) => const Divider(
-                height: 10,
-                thickness: 2,
-                color: darkGreen,
+                    maintainState: true,
+                    expandedAlignment: Alignment.centerLeft,
+                    childrenPadding: const EdgeInsets.only(left: 15),
+                    children: [
+                      SizedBox(
+                        height: 250,
+                        child: FutureBuilder(
+                            future: Functions.getReviews(space.id),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState != ConnectionState.done) return loader;
+                              List<Review> review = snapshot.data as List<Review>;
+                              return review.isEmpty
+                                  ? const Center(child: Text("Ovaj oglas nema niti jedanu recenziju"))
+                                  : SingleChildScrollView(
+                                      controller: ScrollController(),
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: review
+                                            .map((e) => Padding(
+                                                padding: const EdgeInsets.only(right: 10),
+                                                child: SizedBox(width: 250, child: ReviewDialog(space: space, review: e))))
+                                            .toList(),
+                                      ),
+                                    );
+                            }),
+                      ),
+                    ],
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) => const Divider(
+                  height: 10,
+                  thickness: 2,
+                  color: darkGreen,
+                ),
               ),
             ),
-            const Expanded(child: SizedBox()),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
