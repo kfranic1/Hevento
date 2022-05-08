@@ -27,6 +27,11 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
           child: Column(
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              TextFormField(
+                decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: "Pretraži po imenu"),
+                onChanged: (value) => filter.name = value,
+              ),
+              const SizedBox(height: 10),
               Container(
                 width: 380,
                 height: 225,
@@ -35,9 +40,10 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                   availableCalendarFormats: const {CalendarFormat.month: "Month"},
                   firstDay: DateTime.now(),
                   lastDay: DateTime.now().add(const Duration(days: 365 * 3)),
-                  focusedDay: DateTime.now(),
+                  focusedDay: filter.selectedDay ?? DateTime.now(),
                   currentDay: filter.selectedDay,
                   calendarFormat: CalendarFormat.month,
+                  startingDayOfWeek: StartingDayOfWeek.monday,
                   selectedDayPredicate: (day) {
                     // Use `selectedDayPredicate` to determine which day is currently selected.
                     // If this returns true, then `day` will be marked as selected.
@@ -52,8 +58,13 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                     });
                   },
                   shouldFillViewport: true,
-                  headerStyle: const HeaderStyle(
-                      titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline, color: darkGreen)),
+                  headerStyle: HeaderStyle(
+                    titleTextStyle:
+                        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline, color: darkGreen),
+                    titleTextFormatter: (DateTime date, dynamic locale) {
+                      return "${months[date.month - 1]} ${date.year}";
+                    },
+                  ),
                   calendarStyle: const CalendarStyle(
                     todayDecoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
                     todayTextStyle: TextStyle(),
@@ -62,9 +73,15 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                     cellMargin: EdgeInsets.all(2),
                     rangeHighlightColor: lightGreen,
                   ),
-                  daysOfWeekStyle: const DaysOfWeekStyle(weekdayStyle: dayStyle, weekendStyle: dayStyle),
+                  daysOfWeekStyle: DaysOfWeekStyle(
+                      weekdayStyle: dayStyle,
+                      weekendStyle: dayStyle,
+                      dowTextFormatter: (DateTime date, dynamic locale) {
+                        return days[date.weekday - 1];
+                      }),
                 ),
               ),
+
               const SizedBox(height: 20),
               Row(children: [
                 const SizedBox(width: 15),

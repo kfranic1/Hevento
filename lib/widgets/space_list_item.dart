@@ -50,7 +50,7 @@ class SpaceListItem extends StatelessWidget {
                         Row(
                           children: space.tags!
                               .map((e) => Text(
-                                    "#" + e + ' ',
+                                    e + ' ',
                                     style: const TextStyle(fontWeight: FontWeight.bold),
                                   ))
                               .toList(),

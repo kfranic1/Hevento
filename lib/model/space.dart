@@ -108,6 +108,7 @@ class Space {
   }
 
   bool pass(Filter filter) {
+    if (filter.name != null && filter.name!.isNotEmpty && !name.toLowerCase().contains(filter.name!.toLowerCase())) return false;
     if (hidden) return false;
     if (filter.price * 1.1 < minPrice) return false;
     if ((numberOfPeople * 1.5 < filter.numberOfPeople || filter.numberOfPeople < numberOfPeople * 0.9) && filter.numberOfPeople != 0) return false;
@@ -135,7 +136,7 @@ class Space {
     }
   }
 
-  Future updateSpace(String userId) async {
+  Future updateSpace() async {
     try {
       await FirebaseFirestore.instance.collection(Collections.space).doc(id).update({
         "name": name,
@@ -147,7 +148,7 @@ class Space {
         "location": location,
         "price": price.map((key, value) => MapEntry(key.toString(), value)),
         "numberOfPeople": numberOfPeople,
-        "owner": userId,
+        "owner": owner.id,
         "totalScore": totalScore,
         "numberOfReviews": numberOfReviews,
         "tags": tags,

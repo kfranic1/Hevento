@@ -96,8 +96,7 @@ class SpaceRegisterThree extends StatelessWidget {
           TextFormField(
             initialValue: space.id == "" ? null : space.tags?.join(", "),
             controller: space.id == "" ? TextEditingController() : null,
-            decoration: const InputDecoration(
-                hintText: "Tags(party, prom, birthday, wedding...) split separate tags with comma and space => party, prom, birthday"),
+            decoration: const InputDecoration(hintText: "Tags(#party #prom #birthday #wedding...)"),
             onChanged: (value) => space.tags = value.split(', '),
           ),
         ],

@@ -34,3 +34,20 @@ const Map<int, Color> darGreenColor = {
 };
 
 const MaterialColor darkGreenMaterialColor = MaterialColor(0xFF114032, darGreenColor);
+
+const List<String> months = [
+  "Siječanj",
+  "Veljača",
+  "Ožujak",
+  "Travanj",
+  "Svibanj",
+  "Lipanj",
+  "Srpanj",
+  "Kolovoz",
+  "Rujan",
+  "Listopad",
+  "Studeni",
+  "Prosinac"
+];
+
+const List<String> days = ["Pon", "Uto", "Sri", "Čet", "Pet", "Sub", "Ned"];

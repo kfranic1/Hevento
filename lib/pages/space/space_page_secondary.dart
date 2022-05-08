@@ -43,8 +43,14 @@ class SpacePageSecondary extends StatelessWidget {
                     eventLoader: (day) => space.calendar.keys.any((element) => isSameDay(element, day)) ? [("event")] : [],
                     shouldFillViewport: true,
                     availableCalendarFormats: const {CalendarFormat.month: "Month"},
-                    headerStyle: const HeaderStyle(
-                        titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline, color: darkGreen)),
+                    startingDayOfWeek: StartingDayOfWeek.monday,
+                    headerStyle: HeaderStyle(
+                      titleTextStyle:
+                          const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline, color: darkGreen),
+                      titleTextFormatter: (DateTime date, dynamic locale) {
+                        return "${months[date.month - 1]} ${date.year}";
+                      },
+                    ),
                     calendarStyle: CalendarStyle(
                       todayDecoration: BoxDecoration(color: selectedDay == null ? Colors.white : lightGreen, shape: BoxShape.circle),
                       todayTextStyle: selectedDay == null ? const TextStyle() : selectedDateStyle,
@@ -53,7 +59,13 @@ class SpacePageSecondary extends StatelessWidget {
                       cellMargin: const EdgeInsets.all(2),
                       rangeHighlightColor: lightGreen,
                     ),
-                    daysOfWeekStyle: const DaysOfWeekStyle(weekdayStyle: dayStyle, weekendStyle: dayStyle),
+                    daysOfWeekStyle: DaysOfWeekStyle(
+                      weekdayStyle: dayStyle,
+                      weekendStyle: dayStyle,
+                      dowTextFormatter: (DateTime date, dynamic locale) {
+                        return days[date.weekday - 1];
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -111,7 +123,7 @@ class SpacePageSecondary extends StatelessWidget {
                       ),
                     ),
                   ),
-                  child: const Text("Ostavi recenziju"),
+                  child: const Text("Napiši recenziju"),
                 ),
               ],
             ),

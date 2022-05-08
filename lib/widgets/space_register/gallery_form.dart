@@ -50,7 +50,7 @@ class _GalleryFormState extends State<GalleryForm> {
       child: Column(
         children: [
           ElevatedButton(
-              child: const Text('Find Images'),
+              child: const Text('Dodaj slike'),
               onPressed: () async {
                 List<XFile>? newFiles = await ImagePicker().pickMultiImage(maxHeight: 1080, maxWidth: 1920);
                 if (newFiles != null) {
@@ -68,18 +68,24 @@ class _GalleryFormState extends State<GalleryForm> {
           ),
           const Expanded(child: SizedBox()),
           ElevatedButton(
-            child: const Text('Finish'),
+            child: Text(widget.space.id == "" ? "Stvori prostor" : "Uredi prostor"),
             onPressed: () async {
               try {
                 if (!widget.formKey.currentState!.validate()) {
-                  setState(() => error = "Some data is missing or is wrongly formated");
+                  setState(() => error = "Nedostaju neki podatci ili su krivo formatirani.");
                 } else {
-                  await Space.createSpace(context.read<Person?>()!, widget.space, images: files);
-                  List<Space> spaces = context.read<List<Space>>();
-                  if (!spaces.any((element) => element.id == widget.space.id)) spaces.add(widget.space);
-                  List<SpaceListItem> spaceItems = context.read<List<SpaceListItem>>();
-                  if (!spaceItems.any((element) => element.space.id == widget.space.id)) spaceItems.add(SpaceListItem(space: widget.space));
-                  Navigator.of(context).pop();
+                  if (widget.space.id == "") {
+                    await Space.createSpace(context.read<Person?>()!, widget.space, images: files);
+                    List<Space> spaces = context.read<List<Space>>();
+                    if (!spaces.any((element) => element.id == widget.space.id)) spaces.add(widget.space);
+                    List<SpaceListItem> spaceItems = context.read<List<SpaceListItem>>();
+                    if (!spaceItems.any((element) => element.space.id == widget.space.id)) spaceItems.add(SpaceListItem(space: widget.space));
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Prostor uspješno stvoren.")));
+                  } else {
+                    await widget.space.updateSpace();
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Promjene uspješno spremljene.")));
+                  }
+                  Navigator.of(context).pop(true);
                 }
               } catch (e) {
                 print(e.toString());

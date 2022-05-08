@@ -21,7 +21,7 @@ class _PartnerPagePrimaryState extends State<PartnerPagePrimary> {
   Widget build(BuildContext context) {
     Person? appUser = context.watch<Person?>();
     if (appUser == null) {
-      WidgetsBinding.instance?.addPostFrameCallback((_) => context.read<CustomRouterDelegate>().goToHome());
+      WidgetsBinding.instance?.addPostFrameCallback((_) => context.read<CustomRouterDelegate>().goToLogin());
       return loader;
     }
     List<Space> mySpaces = context.read<List<Space>>().where((element) => element.owner.id == appUser.id).toList();
@@ -49,7 +49,7 @@ class _PartnerPagePrimaryState extends State<PartnerPagePrimary> {
                         IconButton(
                           onPressed: () async {
                             space.hidden = !space.hidden;
-                            await space.updateSpace(appUser.id);
+                            await space.updateSpace();
                             setState(() {});
                           },
                           icon: Icon(space.hidden ? Icons.visibility_off : Icons.visibility),
@@ -60,7 +60,12 @@ class _PartnerPagePrimaryState extends State<PartnerPagePrimary> {
                           onPressed: () async => await showDialog(
                             context: context,
                             builder: (context) => AlertDialog(content: SpaceForm(space: space)),
-                          ),
+                          ).then((value) {
+                            if (value == null || (!(value as bool))) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(content: Text("Promjene su zabilježene, ali nisu spremljene.")));
+                            }
+                          }),
                         ),
                       ],
                     ),
