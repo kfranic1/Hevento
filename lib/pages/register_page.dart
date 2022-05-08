@@ -150,7 +150,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       });
                                     },
                                     child: const Text(
-                                      "Registriraj se",
+                                      "Kreiraj profil",
                                       style: buttonTxtStyle,
                                     ),
                                     style: ButtonStyle(backgroundColor: MaterialStateProperty.all(darkGreen)),

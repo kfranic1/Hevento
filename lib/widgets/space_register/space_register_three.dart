@@ -19,7 +19,7 @@ class SpaceRegisterThree extends StatelessWidget {
             validator: (value) {
               if (space.price.values.every((element) => element == null)) return "Please define at least one price";
               if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
-              return "Wrong format";
+              return "Pogrešan format";
             },
           ),
           TextFormField(
@@ -29,7 +29,7 @@ class SpaceRegisterThree extends StatelessWidget {
             onChanged: (value) => space.price[DateTime.tuesday] = int.tryParse(value),
             validator: (value) {
               if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
-              return "Wrong format";
+              return "Pogrešan format";
             },
           ),
           TextFormField(
@@ -39,7 +39,7 @@ class SpaceRegisterThree extends StatelessWidget {
             onChanged: (value) => space.price[DateTime.wednesday] = int.parse(value),
             validator: (value) {
               if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
-              return "Wrong format";
+              return "Pogrešan format";
             },
           ),
           TextFormField(
@@ -49,7 +49,7 @@ class SpaceRegisterThree extends StatelessWidget {
             onChanged: (value) => space.price[DateTime.thursday] = int.tryParse(value),
             validator: (value) {
               if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
-              return "Wrong format";
+              return "Pogrešan format";
             },
           ),
           TextFormField(
@@ -59,7 +59,7 @@ class SpaceRegisterThree extends StatelessWidget {
             onChanged: (value) => space.price[DateTime.friday] = int.tryParse(value),
             validator: (value) {
               if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
-              return "Wrong format";
+              return "Pogrešan format";
             },
           ),
           TextFormField(
@@ -69,7 +69,7 @@ class SpaceRegisterThree extends StatelessWidget {
             onChanged: (value) => space.price[DateTime.saturday] = int.tryParse(value),
             validator: (value) {
               if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
-              return "Wrong format";
+              return "Pogrešan format";
             },
           ),
           TextFormField(
@@ -79,7 +79,7 @@ class SpaceRegisterThree extends StatelessWidget {
             onChanged: (value) => space.price[DateTime.sunday] = int.tryParse(value),
             validator: (value) {
               if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
-              return "Wrong format";
+              return "Pogrešan format";
             },
           ),
           TextFormField(
@@ -88,9 +88,9 @@ class SpaceRegisterThree extends StatelessWidget {
             decoration: const InputDecoration(hintText: "Number of people"),
             onChanged: (value) => space.numberOfPeople = int.parse(value),
             validator: (value) {
-              if (value == null || value.isEmpty) return "Field is empty";
+              if (value == null || value.isEmpty) return "Polje ne smije biti prazno";
               if (int.tryParse(value) != null) return null;
-              return "Wrong format";
+              return "Pogrešan format";
             },
           ),
           TextFormField(

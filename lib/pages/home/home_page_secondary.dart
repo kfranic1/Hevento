@@ -28,6 +28,7 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
             children: [
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               TextFormField(
+                initialValue: filter.name,
                 decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: "Pretraži po imenu"),
                 onChanged: (value) => filter.name = value,
               ),
@@ -85,21 +86,13 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
               const SizedBox(height: 20),
               Row(children: [
                 const SizedBox(width: 15),
-                filter.rating == 0
-                    ? const SizedBox(
-                        width: 80,
-                        child: Text(
-                          'Ocjena',
-                          style: filterTxtStyle,
-                        ),
-                      )
-                    : SizedBox(
-                        width: 80,
-                        child: Text(
-                          'Ocjena: ' + filter.rating.toString(),
-                          style: filterTxtStyle,
-                        ),
-                      ),
+                SizedBox(
+                  width: 80,
+                  child: Text(
+                    'Ocjena' + (filter.rating == 0 ? '' : ": " + filter.rating.toString()),
+                    style: filterTxtStyle,
+                  ),
+                ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.05),
                 RatingBar.builder(
                   initialRating: filter.rating,
@@ -304,7 +297,7 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                 onPressed: () => setState(() {
                   filter.reset();
                 }),
-                child: const Text("Reset filter"),
+                child: const Text("Poništi filter"),
               ),
               const SizedBox(height: 20),
             ],

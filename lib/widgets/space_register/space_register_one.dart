@@ -16,7 +16,7 @@ class SpaceRegisterOne extends StatelessWidget {
             controller: space.id == "" ? TextEditingController() : null,
             decoration: const InputDecoration(hintText: "name"),
             onChanged: (value) => space.name = value,
-            validator: (value) => value == null || value.isEmpty ? "The field is empty" : null,
+            validator: (value) => value == null || value.isEmpty ? "Polje ne smije biti prazno" : null,
           ),
           TextFormField(
             initialValue: space.id == "" ? null : space.description,
@@ -24,14 +24,14 @@ class SpaceRegisterOne extends StatelessWidget {
             decoration: const InputDecoration(hintText: "description"),
             maxLines: 10,
             onChanged: (value) => space.description = value,
-            validator: (value) => value == null || value.isEmpty ? "The field is empty" : null,
+            validator: (value) => value == null || value.isEmpty ? "Polje ne smije biti prazno" : null,
           ),
           TextFormField(
             initialValue: space.id == "" ? null : space.address,
             controller: space.id == "" ? TextEditingController() : null,
             decoration: const InputDecoration(hintText: "adresa"),
             onChanged: (value) => space.address = value,
-            validator: (value) => value == null || value.isEmpty ? "The field is empty" : null,
+            validator: (value) => value == null || value.isEmpty ? "Polje ne smije biti prazno" : null,
           ),
           TextFormField(
             initialValue: space.id == "" ? null : space.contacts["phone"],

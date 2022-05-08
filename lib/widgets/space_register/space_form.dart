@@ -39,7 +39,7 @@ class _SpaceFormState extends State<SpaceForm> {
   Widget build(BuildContext context) {
     Person? appUser = context.watch<Person?>();
     if (appUser == null) {
-      return const Center(child: Text("Log in to see the dashboard"));
+      return const Center(child: Text("Prijavi se kako bi vidio nadzornu ploču."));
     }
     return Form(
       key: _formKey,

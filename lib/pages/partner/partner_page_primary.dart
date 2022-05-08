@@ -56,7 +56,7 @@ class _PartnerPagePrimaryState extends State<PartnerPagePrimary> {
                           tooltip: "Sakrij oglas",
                         ),
                         TextButton(
-                          child: const Text("Edit"),
+                          child: const Text("Uredi"),
                           onPressed: () async => await showDialog(
                             context: context,
                             builder: (context) => AlertDialog(content: SpaceForm(space: space)),
@@ -82,7 +82,7 @@ class _PartnerPagePrimaryState extends State<PartnerPagePrimary> {
                             if (snapshot.connectionState != ConnectionState.done) return loader;
                             List<Review>? review = snapshot.data as List<Review>?;
                             return review == null
-                                ? const Text("No reviews for this space")
+                                ? const Center(child:  Text("Ovaj oglas nema niti jedanu recenziju"))
                                 : Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: review

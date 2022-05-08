@@ -109,7 +109,7 @@ class SpacePageSecondary extends StatelessWidget {
                       content: SizedBox(
                         height: 250,
                         child: appUser == null
-                            ? const Center(child: Text("You have to be logged in in order to leave a review"))
+                            ? const Center(child: Text("Potrebno je biti prijavljen kako bi ostavio recenziju."))
                             : FutureBuilder(
                                 future: Review.getReview(personId: appUser.id, spaceId: space.id),
                                 builder: (context, snapshot) {

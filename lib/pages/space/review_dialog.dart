@@ -40,7 +40,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
       width: 250,
       child: Column(children: [
         TextFormField(
-          decoration: const InputDecoration(hintText: "Review"),
+          decoration: const InputDecoration(hintText: "Komentar(opcionalno)"),
           initialValue: review.content,
           maxLines: 5,
           onChanged: (value) => setState(() {
@@ -71,13 +71,13 @@ class _ReviewDialogState extends State<ReviewDialog> {
         if (widget.editable)
           ElevatedButton(
             onPressed: () async => await review.createReview(widget.space).whenComplete(() {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Review succesful")));
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Recenzija uspješno poslana.")));
               Navigator.of(context).pop();
             }),
-            child: const Text("Finish"),
+            child: const Text("Pošalji"),
           ),
         const SizedBox(height: 10),
-        if (review.id != null) Center(child: Text("Review was left on ${review.time.day}/${review.time.month}/${review.time.year}"))
+        if (review.id != null) Center(child: Text("Datum: ${review.time.day}/${review.time.month}/${review.time.year}"))
       ]),
     );
   }

@@ -47,7 +47,7 @@ class CustomAppBar extends StatelessWidget {
                             StreamBuilder(
                                 stream: appUser.self,
                                 builder: (context, snapshot) {
-                                  return Text(!snapshot.hasData ? "" : "Logged in as ${appUser.username}");
+                                  return Text(!snapshot.hasData ? "" : "Prijavljen kao ${appUser.username}");
                                 })
                         ],
                       ),
