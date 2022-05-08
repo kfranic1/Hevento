@@ -3,27 +3,22 @@ import 'package:hevento/model/person.dart';
 import 'package:hevento/model/review.dart';
 import 'package:hevento/model/space.dart';
 import 'package:hevento/pages/space/review_dialog.dart';
-import 'package:hevento/routing/custom_router_delegate.dart';
 import 'package:hevento/services/constants.dart';
 import 'package:hevento/services/static_functions.dart';
 import 'package:hevento/widgets/space_register/space_form.dart';
 import 'package:provider/provider.dart';
 
-class PartnerPagePrimary extends StatefulWidget {
-  const PartnerPagePrimary({Key? key}) : super(key: key);
+class DashboardPagePrimary extends StatefulWidget {
+  const DashboardPagePrimary({Key? key}) : super(key: key);
 
   @override
-  State<PartnerPagePrimary> createState() => _PartnerPagePrimaryState();
+  State<DashboardPagePrimary> createState() => _DashboardPagePrimaryState();
 }
 
-class _PartnerPagePrimaryState extends State<PartnerPagePrimary> {
+class _DashboardPagePrimaryState extends State<DashboardPagePrimary> {
   @override
   Widget build(BuildContext context) {
-    Person? appUser = context.watch<Person?>();
-    if (appUser == null) {
-      WidgetsBinding.instance?.addPostFrameCallback((_) => context.read<CustomRouterDelegate>().goToLogin());
-      return loader;
-    }
+    Person appUser = context.read<Person?>()!;
     List<Space> mySpaces = context.read<List<Space>>().where((element) => element.owner.id == appUser.id).toList();
     //? Ako zelimo da se sortira po tome jesu skriveni il ne => mySpaces.sort((a, b) => a.hidden ? 1 : 0);
     return Scaffold(

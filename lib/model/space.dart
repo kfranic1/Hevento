@@ -127,9 +127,13 @@ class Space {
     return true;
   }
 
-  Future addEvent(DateTime dateTime, String description) async {
+  Future handleEvent(DateTime dateTime, String description, {bool remove = false}) async {
     try {
-      calendar[dateTime.trim()] = description;
+      if (remove) {
+        calendar.remove(dateTime.trim());
+      } else {
+        calendar[dateTime.trim()] = description;
+      }
       await FirebaseFirestore.instance
           .collection(Collections.space)
           .doc(id)

@@ -30,7 +30,7 @@ class SpacePageSecondary extends StatelessWidget {
             controller: ScrollController(),
             child: Column(
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                const SizedBox(height: 20),
                 Container(
                   width: 380,
                   height: 225,
@@ -110,16 +110,18 @@ class SpacePageSecondary extends StatelessWidget {
                         height: 250,
                         child: appUser == null
                             ? const Center(child: Text("Potrebno je biti prijavljen kako bi ostavio recenziju."))
-                            : FutureBuilder(
-                                future: Review.getReview(personId: appUser.id, spaceId: space.id),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState != ConnectionState.done) return loader;
-                                  return ReviewDialog(
-                                    space: space,
-                                    review: snapshot.hasData ? snapshot.data as Review : null,
-                                    editable: true,
-                                  );
-                                }),
+                            : appUser.id == space.owner.id
+                                ? const Center(child: Text("Ne možeš ostaviti recenziju na vlastiti oglas."))
+                                : FutureBuilder(
+                                    future: Review.getReview(personId: appUser.id, spaceId: space.id),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState != ConnectionState.done) return loader;
+                                      return ReviewDialog(
+                                        space: space,
+                                        review: snapshot.hasData ? snapshot.data as Review : null,
+                                        editable: true,
+                                      );
+                                    }),
                       ),
                     ),
                   ),

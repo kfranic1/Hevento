@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hevento/model/space.dart';
-import 'package:hevento/pages/partner/partner_page.dart';
+import 'package:hevento/pages/dashboard/dashboard_page.dart';
 import 'package:hevento/pages/register_page.dart';
 import 'package:hevento/pages/space/space_page.dart';
 import 'package:hevento/pages/home/home_page.dart';
@@ -39,7 +39,7 @@ class CustomRouterDelegate extends RouterDelegate<Configuration>
             child: Builder(builder: (context) {
               switch (_configuration.pathName!.removeParams()) {
                 case Routes.dashboard:
-                  return const PartnerPage();
+                  return const DashboardPage();
                 case Routes.login:
                   return const LogInPage();
                 case Routes.space:

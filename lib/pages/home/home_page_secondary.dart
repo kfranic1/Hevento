@@ -15,6 +15,7 @@ class HomePageSecondary extends StatefulWidget {
 }
 
 class _HomePageSecondaryState extends State<HomePageSecondary> {
+  TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     Filter filter = context.read<Filter>();
@@ -24,13 +25,15 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
         height: constraints.maxHeight,
         color: lightGreen,
         child: SingleChildScrollView(
+          controller: ScrollController(),
           child: Column(
             children: [
-              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              const SizedBox(height: 20),
               TextFormField(
-                initialValue: filter.name,
+                //initialValue: filter.name,
+                controller: controller,
                 decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: "Pretraži po imenu"),
-                onChanged: (value) => filter.name = value,
+                onChanged: (value) => setState(() => filter.name = value),
               ),
               const SizedBox(height: 10),
               Container(
@@ -296,6 +299,7 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
               ElevatedButton(
                 onPressed: () => setState(() {
                   filter.reset();
+                  controller.clear();
                 }),
                 child: const Text("Poništi filter"),
               ),
