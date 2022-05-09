@@ -95,6 +95,7 @@ class _SpaceFormState extends State<SpaceForm> {
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Prostor uspješno stvoren.")));
                         setState(() {
                           step++;
+                          changed = true;
                         });
                       } else {
                         await space.updateSpace();

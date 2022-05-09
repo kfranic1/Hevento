@@ -223,163 +223,39 @@ class SpacePagePrimary extends StatelessWidget {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: ExpansionTile(
-                                  childrenPadding: const EdgeInsets.only(left: 50),
                                   collapsedBackgroundColor: lightGreen,
                                   title: const Text("Info"),
                                   children: [
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          child: Text(
-                                            "Glazba",
-                                            style: priceDayStyle,
-                                          ),
-                                          width: 80,
-                                        )),
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          width: 10,
-                                        )),
-                                        TextSpan(text: space.elements["music"] == true ? "Da" : "Ne")
-                                      ])),
-                                    ),
+                                    infoText("music", context),
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          child: Text(
-                                            "Konobar",
-                                            style: priceDayStyle,
-                                          ),
-                                          width: 80,
-                                        )),
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          width: 10,
-                                        )),
-                                        TextSpan(text: space.elements["waiter"] == true ? "Da" : "Ne")
-                                      ])),
-                                    ),
+                                    infoText("waiter", context),
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          child: Text(
-                                            "Piće",
-                                            style: priceDayStyle,
-                                          ),
-                                          width: 80,
-                                        )),
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          width: 10,
-                                        )),
-                                        TextSpan(text: space.elements["drinks"] == true ? "Da" : "Ne")
-                                      ])),
-                                    ),
+                                    infoText("drinks", context),
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          child: Text(
-                                            "Hrana",
-                                            style: priceDayStyle,
-                                          ),
-                                          width: 80,
-                                        )),
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          width: 10,
-                                        )),
-                                        TextSpan(text: space.elements["food"] == true ? "Da" : "Ne")
-                                      ])),
-                                    ),
+                                    infoText("food", context),
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          child: Text(
-                                            "Zaštitar",
-                                            style: priceDayStyle,
-                                          ),
-                                          width: 80,
-                                        )),
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          width: 10,
-                                        )),
-                                        TextSpan(text: space.elements["security"] == true ? "Da" : "Ne")
-                                      ])),
-                                    ),
+                                    infoText("security", context),
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          child: Text(
-                                            "Specijalni efekti",
-                                            style: priceDayStyle,
-                                          ),
-                                          width: 80,
-                                        )),
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          width: 10,
-                                        )),
-                                        TextSpan(text: space.elements["specialEffects"] == true ? "Da" : "Ne")
-                                      ])),
-                                    ),
+                                    infoText("specialEffects", context),
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          child: Text(
-                                            "Pušenje",
-                                            style: priceDayStyle,
-                                          ),
-                                          width: 80,
-                                        )),
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          width: 10,
-                                        )),
-                                        TextSpan(text: space.elements["smoking"] == true ? "Da" : "Ne")
-                                      ])),
+                                    infoText("smoking", context),
+                                    const SizedBox(
+                                      height: 5,
                                     ),
                                   ],
                                 ),
@@ -433,5 +309,58 @@ class SpacePagePrimary extends StatelessWidget {
             ),
           );
         });
+  }
+
+  Widget infoText(String data, BuildContext context) {
+    String showData = "";
+    switch (data) {
+      case "music":
+        showData = "Glazba";
+        break;
+      case "waiter":
+        showData = "Konobar";
+        break;
+      case "drinks":
+        showData = "Piće";
+        break;
+      case "food":
+        showData = "Hrana";
+        break;
+      case "security":
+        showData = "Zaštitar";
+        break;
+      case "specialEffects":
+        showData = "Specijalni efekti";
+        break;
+      case "smoking":
+        showData = "Pušenje";
+        break;
+      default:
+    }
+    return Align(
+      alignment: Alignment.topLeft,
+      child: RichText(
+          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
+        WidgetSpan(
+            child: SizedBox(
+          child: Text(
+            showData,
+            style: priceDayStyle,
+          ),
+          width: 60,
+        )),
+        WidgetSpan(child: SizedBox(width: MediaQuery.of(context).size.width * 0.1)),
+        WidgetSpan(
+            child: space.elements[data] == true
+                ? const Icon(
+                    Icons.check,
+                    color: darkGreen,
+                  )
+                : const Icon(
+                    Icons.cancel,
+                    color: lightGreen,
+                  ))
+      ])),
+    );
   }
 }
