@@ -71,9 +71,13 @@ class _SpaceFormState extends State<SpaceForm> {
                 children: steps,
               ),
             ),
-            if ((space.id == "" && step == 2) || (space.id != "" && step != 3))
+            if ((space.id != "" || step == 2))
               ElevatedButton(
-                child: Text(space.id == "" ? "Stvori prostor" : "Uredi prostor"),
+                child: Text(space.id == ""
+                    ? "Stvori prostor"
+                    : changed
+                        ? "Spremi promjene"
+                        : "Zatvori"),
                 onPressed: () async {
                   try {
                     if (!_formKey.currentState!.validate()) {
