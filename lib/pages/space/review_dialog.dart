@@ -21,10 +21,9 @@ class _ReviewDialogState extends State<ReviewDialog> {
   late Person appUser;
   @override
   void initState() {
-    appUser = context.read<Person?>()!;
     review = widget.review ??
         Review(
-          personId: appUser.id,
+          personId: context.read<Person?>()!.id,
           spaceId: widget.space.id,
           content: null,
           rating: null,
@@ -40,7 +39,7 @@ class _ReviewDialogState extends State<ReviewDialog> {
       width: 250,
       child: Column(children: [
         TextFormField(
-          decoration: const InputDecoration(hintText: "Komentar(opcionalno)"),
+          decoration: InputDecoration(hintText: widget.editable ? "Komentar(opcionalno)" : ''),
           initialValue: review.content,
           maxLines: 5,
           onChanged: (value) => setState(() {

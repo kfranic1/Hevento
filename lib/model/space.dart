@@ -124,6 +124,7 @@ class Space {
     if (filter.specialEffects && !elements["specialEffects"]!) return false;
     if (filter.rating != 0 && rating != 0 && rating < filter.rating) return false;
     if (calendar.keys.any((day) => isSameDay(filter.selectedDay, day))) return false;
+    if (filter.selectedDay != null && price[filter.selectedDay!.weekday] == null) return false;
     return true;
   }
 

@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hevento/model/filter.dart';
 import 'package:hevento/model/person.dart';
@@ -10,6 +12,7 @@ import 'package:hevento/pages/space/review_dialog.dart';
 import 'package:hevento/services/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SpacePageSecondary extends StatelessWidget {
   const SpacePageSecondary({Key? key, required this.space}) : super(key: key);
@@ -71,34 +74,82 @@ class SpacePageSecondary extends StatelessWidget {
                 const SizedBox(height: 20),
                 Padding(
                   //TODO ovo sam promjenio zbog overflowa
-                  padding: const EdgeInsets.only(left: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Column(
-                    children: space.contacts.entries
-                        .where((element) => element.value != null)
-                        .map(
-                          (e) => Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0),
-                            child: Row(
-                              children: [
-                                //if (e.key == "mail") IconButton(onPressed: (), icon: const Icon(Icons.mail)),
-                                Icon(
-                                  e.key == "email"
-                                      ? Icons.mail
-                                      : e.key == "instagram"
-                                          ? FontAwesomeIcons.instagram
-                                          : e.key == "facebook"
-                                              ? FontAwesomeIcons.facebook
-                                              : e.key == "phone"
-                                                  ? Icons.phone
-                                                  : Icons.web,
-                                  color: darkGreen,
-                                ),
-                                Text(' ' + e.value!)
-                              ],
-                            ),
+                    children: [
+                      if (space.contacts["email"] != null)
+                        GestureDetector(
+                          onTap: () async => await launchUrl(Uri.parse("mailto:${space.contacts["email"]}")),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.mail,
+                                color: darkGreen,
+                              ),
+                              Text(' ' + space.contacts["email"]!)
+                            ],
                           ),
-                        )
-                        .toList(),
+                        ),
+                      if (space.contacts["phone"] != null)
+                        GestureDetector(
+                          onTapDown: (details) async {
+                            if (kIsWeb) {
+                              Clipboard.setData(ClipboardData(text: space.contacts["phone"]));
+                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Broj kopiran u međuspremnik")));
+                            } else {
+                              await launchUrl(Uri.parse("tel:${space.contacts["phone"]}"));
+                            }
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.phone,
+                                color: darkGreen,
+                              ),
+                              Text(' ' + space.contacts["phone"]!)
+                            ],
+                          ),
+                        ),
+                      if (space.contacts["facebook"] != null)
+                        GestureDetector(
+                          onTap: () async => await launchUrl(Uri.parse("https:${space.contacts["facebook"]}")),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                FontAwesomeIcons.facebook,
+                                color: darkGreen,
+                              ),
+                              Text(' ' + space.contacts["facebook"]!)
+                            ],
+                          ),
+                        ),
+                      if (space.contacts["instagram"] != null)
+                        GestureDetector(
+                          onTap: () async => await launchUrl(Uri.parse("https:${space.contacts["instagram"]}")),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                FontAwesomeIcons.instagram,
+                                color: darkGreen,
+                              ),
+                              Text(' ' + space.contacts["instagram"]!)
+                            ],
+                          ),
+                        ),
+                      if (space.contacts["website"] != null)
+                        GestureDetector(
+                          onTap: () async => await launchUrl(Uri.parse("https:${space.contacts["website"]}")),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.web,
+                                color: darkGreen,
+                              ),
+                              Text(' ' + space.contacts["website"]!)
+                            ],
+                          ),
+                        ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 10),

@@ -70,29 +70,27 @@ class _DashboardPagePrimaryState extends State<DashboardPagePrimary> {
                     expandedAlignment: Alignment.centerLeft,
                     childrenPadding: const EdgeInsets.only(left: 15),
                     children: [
-                      SizedBox(
-                        height: 250,
-                        child: FutureBuilder(
-                            future: Functions.getReviews(space.id),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState != ConnectionState.done) return loader;
-                              List<Review> review = snapshot.data as List<Review>;
-                              return review.isEmpty
-                                  ? const Center(child: Text("Ovaj oglas nema niti jedanu recenziju"))
-                                  : SingleChildScrollView(
-                                      controller: ScrollController(),
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: review
-                                            .map((e) => Padding(
+                      FutureBuilder(
+                          future: Functions.getReviews(space.id),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState != ConnectionState.done) return loader;
+                            List<Review> review = snapshot.data as List<Review>;
+                            return review.isEmpty
+                                ? const Center(child: Text("Ovaj oglas nema niti jedanu recenziju"))
+                                : SingleChildScrollView(
+                                    controller: ScrollController(),
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: review
+                                          .map((e) => Padding(
                                                 padding: const EdgeInsets.only(right: 10),
-                                                child: SizedBox(width: 250, child: ReviewDialog(space: space, review: e))))
-                                            .toList(),
-                                      ),
-                                    );
-                            }),
-                      ),
+                                                child: ReviewDialog(space: space, review: e),
+                                              ))
+                                          .toList(),
+                                    ),
+                                  );
+                          }),
                     ],
                   );
                 },
