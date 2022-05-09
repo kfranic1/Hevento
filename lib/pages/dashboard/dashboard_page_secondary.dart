@@ -25,8 +25,8 @@ class _DashboardPageSecondaryState extends State<DashboardPageSecondary> {
     List<Space> mySpaces = context.read<List<Space>>().where((element) => element.owner.id == appUser.id).toList();
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
-        width: max(constraints.maxWidth * 2 / 7, 400),
         height: constraints.maxHeight,
+        width: 400,
         color: lightGreen,
         child: SingleChildScrollView(
           child: Column(children: [
@@ -47,8 +47,8 @@ class _DashboardPageSecondaryState extends State<DashboardPageSecondary> {
             ),
             const SizedBox(height: 20),
             Container(
-              width: 380,
               height: 225,
+              width: constraints.maxWidth * 0.8,
               decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
               child: TableCalendar(
                 availableCalendarFormats: const {CalendarFormat.month: "Month"},

@@ -12,23 +12,22 @@ class SpaceListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      //added because of boxShadow offset(line 29)
+      //added because of boxShadow offset
       padding: const EdgeInsets.only(right: 3, bottom: 3),
       child: GestureDetector(
         onTap: () => context.read<CustomRouterDelegate>().goToSpace(params: {"id": space.id}),
         child: Container(
-          height: 350,
-          width: 650,
+          height: 300,
+          width: 600,
           decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.black,
+                color: Colors.black12,
                 blurRadius: 2.0,
                 spreadRadius: 0.0,
                 offset: Offset(2.0, 2.0), // shadow direction: bottom right
-              )
+              ),
             ],
           ),
           child: Row(

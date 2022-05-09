@@ -12,6 +12,7 @@ import 'package:hevento/services/constants.dart';
 import 'package:hevento/widgets/custom_divider.dart';
 import 'package:hevento/widgets/custom_scroll_behavior.dart';
 import 'package:hevento/widgets/space_list_item.dart';
+import 'package:hevento/widgets/title_image.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
@@ -46,7 +47,6 @@ class MyApp extends StatelessWidget {
         ListenableProvider<Filter>(
           create: (context) => Filter(),
         ),
-        //FutureProvider<List<Space>?>(create: (context) => Space.getSpaces(), initialData: null)
       ],
       child: FutureBuilder(
           future: Space.getSpaces(),
@@ -65,10 +65,7 @@ class MyApp extends StatelessWidget {
                     automaticallyImplyLeading: false,
                     centerTitle: false,
                     leadingWidth: 0,
-                    title: GestureDetector(
-                      child: Image.asset('./assets/images/title.png'),
-                      onTap: () => context.read<CustomRouterDelegate>().goToHome(),
-                    ),
+                    title: const TitleImage(),
                     toolbarHeight: 80,
                     backgroundColor: lightGreen,
                     bottom: const PreferredSize(

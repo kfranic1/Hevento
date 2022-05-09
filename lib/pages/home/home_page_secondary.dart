@@ -21,7 +21,7 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
     Filter filter = context.read<Filter>();
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
-        width: max(constraints.maxWidth * 2 / 7, 400),
+        width: 400,
         height: constraints.maxHeight,
         color: lightGreen,
         child: SingleChildScrollView(
@@ -29,17 +29,32 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              TextFormField(
-                //initialValue: filter.name,
-                controller: controller,
-                decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: "Pretraži po imenu"),
-                onChanged: (value) => setState(() => filter.name = value),
+              Center(
+                child: SizedBox(
+                  width: constraints.maxWidth * 0.8,
+                  child: TextFormField(
+                    controller: controller,
+                    decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: "Pretraži po imenu"),
+                    onChanged: (value) => setState(() => filter.name = value),
+                  ),
+                ),
               ),
               const SizedBox(height: 10),
               Container(
-                width: 380,
                 height: 225,
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
+                width: constraints.maxWidth * 0.8,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 2.0,
+                      spreadRadius: 0.0,
+                      offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                    ),
+                  ],
+                ),
                 child: TableCalendar(
                   availableCalendarFormats: const {CalendarFormat.month: "Month"},
                   firstDay: DateTime.now(),
@@ -85,109 +100,96 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                       }),
                 ),
               ),
-
               const SizedBox(height: 20),
-              Row(children: [
-                const SizedBox(width: 15),
-                SizedBox(
-                  width: 80,
-                  child: Text(
-                    'Ocjena' + (filter.rating == 0 ? '' : ": " + filter.rating.toString()),
-                    style: filterTxtStyle,
+              Center(
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+                  const SizedBox(width: 15),
+                  SizedBox(
+                    width: 80,
+                    child: Text(
+                      'Ocjena' + (filter.rating == 0 ? '' : ": " + filter.rating.toString()),
+                      style: filterTxtStyle,
+                    ),
                   ),
-                ),
-                SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                RatingBar.builder(
-                  initialRating: filter.rating,
-                  minRating: 0,
-                  direction: Axis.horizontal,
-                  allowHalfRating: true,
-                  itemCount: 5,
-                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => const Icon(
-                    Icons.star,
-                    color: darkGreen,
-                  ),
-                  itemSize: 30,
-                  onRatingUpdate: (rating) {
-                    setState(() {
-                      filter.rating = rating;
-                    });
-                  },
-                ),
-              ]),
-              const SizedBox(
-                height: 20,
-                child: Divider(
-                  thickness: 2,
-                  color: Colors.grey,
-                ),
-              ),
-              Row(children: [
-                const SizedBox(width: 15),
-                SizedBox(
-                  width: 120,
-                  child: Text(
-                    "Cijena: " + filter.price.toString() + " HRK",
-                    style: filterTxtStyle,
-                  ),
-                ),
-                SizedBox(
-                  width: 250,
-                  child: Slider(
-                    activeColor: darkGreen,
-                    value: filter.price.toDouble(),
-                    min: 0,
-                    max: 5000,
-                    divisions: 20,
-                    label: filter.price.toString(),
-                    onChanged: (double value) {
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+                  RatingBar.builder(
+                    initialRating: filter.rating,
+                    minRating: 0,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    itemBuilder: (context, _) => const Icon(
+                      Icons.star,
+                      color: darkGreen,
+                    ),
+                    itemSize: 30,
+                    onRatingUpdate: (rating) {
                       setState(() {
-                        filter.price = value.round();
+                        filter.rating = rating;
                       });
                     },
                   ),
-                ),
-              ]),
-              const SizedBox(
-                height: 10,
-                child: Divider(
-                  thickness: 2,
-                  color: Colors.grey,
-                ),
+                ]),
               ),
-              Row(children: [
-                const SizedBox(width: 15),
-                SizedBox(
-                  width: 120,
-                  child: Text(
-                    "Broj ljudi: " + filter.numberOfPeople.toString(),
-                    style: filterTxtStyle,
+              const SizedBox(height: 20),
+              Center(
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+                  const SizedBox(width: 15),
+                  SizedBox(
+                    width: 120,
+                    child: Text(
+                      "Cijena: " + filter.price.toString() + " HRK",
+                      style: filterTxtStyle,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 250,
-                  child: Slider(
-                    activeColor: darkGreen,
-                    value: filter.numberOfPeople.toDouble(),
-                    max: 300,
-                    divisions: 60,
-                    label: filter.numberOfPeople.toString(),
-                    onChanged: (double value) {
-                      setState(() {
-                        filter.numberOfPeople = value.round();
-                      });
-                    },
+                  SizedBox(
+                    width: 250,
+                    child: Slider(
+                      activeColor: darkGreen,
+                      value: filter.price.toDouble(),
+                      min: 0,
+                      max: 5000,
+                      divisions: 20,
+                      label: filter.price.toString(),
+                      onChanged: (double value) {
+                        setState(() {
+                          filter.price = value.round();
+                        });
+                      },
+                    ),
                   ),
-                ),
-              ]),
-              const SizedBox(
-                height: 10,
-                child: Divider(
-                  thickness: 2,
-                  color: Colors.grey,
-                ),
+                ]),
               ),
+              const SizedBox(height: 10),
+              Center(
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+                  const SizedBox(width: 15),
+                  SizedBox(
+                    width: 120,
+                    child: Text(
+                      "Broj ljudi" + (filter.numberOfPeople != 0 ? ": " + filter.numberOfPeople.toString() : ""),
+                      style: filterTxtStyle,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 250,
+                    child: Slider(
+                      activeColor: darkGreen,
+                      value: filter.numberOfPeople.toDouble(),
+                      max: 300,
+                      divisions: 60,
+                      label: filter.numberOfPeople.toString(),
+                      onChanged: (double value) {
+                        setState(() {
+                          filter.numberOfPeople = value.round();
+                        });
+                      },
+                    ),
+                  ),
+                ]),
+              ),
+              const SizedBox(height: 10),
               SizedBox(
                 height: 35,
                 child: CheckboxListTile(
@@ -287,21 +289,27 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                 },
               ),
               const SizedBox(height: 20),
-              Center(
-                child: ElevatedButton(
-                  child: const Text("Filtriraj pretragu"),
-                  onPressed: () => filter.apply(),
-                  style: ElevatedButton.styleFrom(primary: darkGreen),
-                ),
+              ElevatedButton(
+                child: const SizedBox(
+                    width: 100,
+                    child: Text(
+                      "Filtriraj pretragu",
+                      textAlign: TextAlign.center,
+                    )),
+                onPressed: () => filter.apply(),
               ),
               const SizedBox(height: 20),
-              //const Expanded(child: SizedBox()),
               ElevatedButton(
                 onPressed: () => setState(() {
                   filter.reset();
                   controller.clear();
                 }),
-                child: const Text("Poništi filter"),
+                child: const SizedBox(
+                    width: 100,
+                    child: Text(
+                      "Poništi filter",
+                      textAlign: TextAlign.center,
+                    )),
               ),
               const SizedBox(height: 20),
             ],

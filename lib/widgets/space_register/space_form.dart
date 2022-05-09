@@ -79,7 +79,7 @@ class _SpaceFormState extends State<SpaceForm> {
             if ((space.id != "" || step == 2))
               ElevatedButton(
                 child: Text(space.id == ""
-                    ? "Stvori prostor"
+                    ? "Stvori oglas"
                     : changed
                         ? "Spremi promjene"
                         : "Zatvori"),

@@ -7,6 +7,7 @@ import 'package:hevento/routing/custom_router_delegate.dart';
 import 'package:hevento/services/auth_service.dart';
 import 'package:hevento/services/constants.dart';
 import 'package:hevento/widgets/custom_divider.dart';
+import 'package:hevento/widgets/title_image.dart';
 import 'package:provider/provider.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -30,9 +31,10 @@ class CustomAppBar extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          GestureDetector(
-                            child: Image.asset('./assets/images/title.png'),
-                            onTap: () => context.read<CustomRouterDelegate>().goToHome(),
+                          Padding(
+                            //TODO remove 0 *
+                            padding: EdgeInsets.only(left: 0 * constraints.maxWidth * 0.02),
+                            child: const TitleImage(),
                           ),
                           const Expanded(child: SizedBox()),
                           if (appUser == null)
