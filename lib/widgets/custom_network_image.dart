@@ -13,12 +13,17 @@ class CustomNetworkImage extends StatelessWidget {
       future: Functions.getImageUrl(spaceId, imageName),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) return loader;
-        return Image.network(
-          snapshot.data as String,
-          height: double.infinity,
-          //width: double.infinity,
-          fit: BoxFit.fill,
-        );
+        return Image.network(snapshot.data as String,
+            height: double.infinity,
+            //width: double.infinity,
+            fit: BoxFit.fill, loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Center(
+            child: CircularProgressIndicator(
+              value: loadingProgress.expectedTotalBytes != null ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null,
+            ),
+          );
+        });
       },
     );
   }

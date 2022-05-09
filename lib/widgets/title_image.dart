@@ -18,7 +18,7 @@ class TitleImage extends StatelessWidget {
         child: GestureDetector(
           child: Image.asset(
             './assets/images/title.png',
-            height: 50,
+            height: 40,
             fit: BoxFit.fitHeight,
           ),
           onTap: () => context.read<CustomRouterDelegate>().goToHome(),

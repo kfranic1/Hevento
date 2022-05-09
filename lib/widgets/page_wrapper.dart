@@ -18,7 +18,7 @@ class PageWrapper extends StatelessWidget {
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
         appBar: constraints.maxWidth <= kNarrow && shouldDisplayAppBar ? context.read<AppBar>() : null,
-        endDrawer: SizedBox(width: 400, child: secondary),
+        endDrawer: constraints.maxWidth <= kNarrow ? SizedBox(width: 400, child: secondary) : null,
         body: Column(children: [
           if (constraints.maxWidth > kNarrow && shouldDisplayAppBar && customAppBar != null) customAppBar!,
           Expanded(
