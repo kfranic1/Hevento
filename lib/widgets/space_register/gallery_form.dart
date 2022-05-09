@@ -64,16 +64,22 @@ class _GalleryFormState extends State<GalleryForm> {
                                   ),
                                 ],
                               ),
-                              TextButton(
-                                child: Text(
-                                  "Postavi kao glavnu sliku",
-                                  style: TextStyle(color: e.imageName == widget.space.profileImage ? darkGreen : Colors.black),
+                              if (widget.space.profileImage == e.imageName)
+                                const Text(
+                                  "Glavna slika",
+                                  style: TextStyle(color: darkGreen),
+                                )
+                              else
+                                TextButton(
+                                  child: const Text(
+                                    "Postavi kao glavnu sliku",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  onPressed: () => setState(() {
+                                    widget.space.profileImage = e.imageName;
+                                    widget.space.updateSpace();
+                                  }),
                                 ),
-                                onPressed: () => setState(() {
-                                  widget.space.profileImage = e.imageName;
-                                  widget.space.updateSpace();
-                                }),
-                              ),
                             ],
                           ),
                         ))

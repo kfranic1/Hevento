@@ -28,6 +28,7 @@ class _DashboardPagePrimaryState extends State<DashboardPagePrimary> {
           children: [
             Expanded(
               child: ListView.separated(
+                controller: ScrollController(),
                 shrinkWrap: true,
                 itemCount: mySpaces.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -105,8 +106,9 @@ class _DashboardPagePrimaryState extends State<DashboardPagePrimary> {
                     await showDialog(
                       context: context,
                       builder: (context) => const AlertDialog(content: SpaceForm()),
-                    );
-                    setState(() {});
+                    ).then((value) {
+                      if (value != null && value as bool) setState(() {});
+                    });
                   },
                   child: const Text("Stvori novi oglas"),
                 ),

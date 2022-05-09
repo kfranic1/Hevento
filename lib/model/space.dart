@@ -205,6 +205,10 @@ class Space {
             .child("$id/${image.name}")
             .putData(await image.readAsBytes(), SettableMetadata(contentType: "image/jpeg"));
       });
+      if (profileImage == "") {
+        profileImage = images[0].name;
+        await updateSpace();
+      }
     } catch (e) {
       print(e.toString());
       return;
@@ -214,20 +218,6 @@ class Space {
   Future removeImage(String imageName) async {
     try {
       await FirebaseStorage.instance.ref().child("$id/$imageName").delete();
-    } catch (e) {
-      print(e.toString());
-      return [];
-    }
-  }
-
-  static Future<List<Space>> getSpaces() async {
-    try {
-      List<Space> ret = await FirebaseFirestore.instance
-          .collection(Collections.space)
-          .get()
-          .then((value) => value.docs.map((e) => Space(e.id).getData(e)!).toList());
-      ret.shuffle();
-      return ret;
     } catch (e) {
       print(e.toString());
       return [];
