@@ -81,6 +81,7 @@ class SpaceListItem extends StatelessWidget {
                       Expanded(
                         flex: 3,
                         child: SingleChildScrollView(
+                          controller: ScrollController(),
                           child: SizedBox(
                             width: 300,
                             child: Text(

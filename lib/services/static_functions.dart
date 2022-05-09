@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hevento/model/review.dart';
+import 'package:hevento/model/space.dart';
 import 'package:hevento/services/collections.dart';
 
 abstract class Functions {
@@ -34,5 +35,19 @@ abstract class Functions {
       //if (value.docs.isEmpty) return null;
       return value.docs.map((e) => Review.parseToReview(e)).toList();
     });
+  }
+  
+  static Future<List<Space>> getSpaces() async {
+    try {
+      List<Space> ret = await FirebaseFirestore.instance
+          .collection(Collections.space)
+          .get()
+          .then((value) => value.docs.map((e) => Space(e.id).getData(e)!).toList());
+      ret.shuffle();
+      return ret;
+    } catch (e) {
+      print(e.toString());
+      return [];
+    }
   }
 }
