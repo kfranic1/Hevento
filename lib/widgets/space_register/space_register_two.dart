@@ -1,130 +1,99 @@
-import 'package:checkbox_formfield/checkbox_icon_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:hevento/model/space.dart';
-import 'package:hevento/services/constants.dart';
 
-class SpaceRegisterTwo extends StatefulWidget {
+import '../../services/constants.dart';
+
+class SpaceRegisterTwo extends StatelessWidget {
   final Space space;
   const SpaceRegisterTwo({Key? key, required this.space}) : super(key: key);
 
   @override
-  State<SpaceRegisterTwo> createState() => _SpaceRegisterTwoState();
-}
-
-class _SpaceRegisterTwoState extends State<SpaceRegisterTwo> {
-  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text("Usluge unutar prostora."),
-          const SizedBox(height: 10),
-          Row(children: [
-            const Text("Piće"),
-            CheckboxIconFormField(
-              initialValue: widget.space.elements["drinks"]!,
-              onChanged: (value) => setState(
-                () => widget.space.elements["drinks"] = value,
-              ),
-              trueIconColor: darkGreen,
-              padding: 0,
+        controller: ScrollController(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Kontakt",
+              style: titleStyle.copyWith(fontSize: 25),
             ),
-          ]),
-          Row(children: [
-            const Text("Hrana"),
-            CheckboxIconFormField(
-              initialValue: widget.space.elements["food"]!,
-              onChanged: (value) => setState(
-                () => widget.space.elements["food"] = value,
-              ),
-              trueIconColor: darkGreen,
-              padding: 0,
+            Text("Potreban je barem jedan konatkt", style: subTitleStyle.copyWith(fontSize: 12)),
+            const SizedBox(height: 15),
+            TextFormField(
+              initialValue: space.id == "" ? null : space.contacts["phone"],
+              controller: space.id == "" ? TextEditingController() : null,
+              decoration: inputFormDec("phone"),
+              onChanged: (value) => space.contacts["phone"] = value,
+              validator: (value) =>
+                  space.contacts.values.any((element) => element != null && element.isNotEmpty) ? null : "Potreban je barem jedan kontakt",
             ),
-          ]),
-          Row(children: [
-            const Text("Konobar"),
-            CheckboxIconFormField(
-              initialValue: widget.space.elements["waiter"]!,
-              onChanged: (value) => setState(
-                () => widget.space.elements["waiter"] = value,
-              ),
-              trueIconColor: darkGreen,
-              padding: 0,
+            const SizedBox(height: 15),
+            TextFormField(
+              initialValue: space.id == "" ? null : space.contacts["email"],
+              controller: space.id == "" ? TextEditingController() : null,
+              decoration: inputFormDec("email"),
+              onChanged: (value) => space.contacts["email"] = value,
             ),
-          ]),
-          Row(children: [
-            const Text("Zaštitar"),
-            CheckboxIconFormField(
-              initialValue: widget.space.elements["security"]!,
-              onChanged: (value) => setState(
-                () => widget.space.elements["security"] = value,
-              ),
-              trueIconColor: darkGreen,
-              padding: 0,
+            const SizedBox(height: 15),
+            TextFormField(
+              initialValue: space.id == "" ? null : space.contacts["facebook"],
+              controller: space.id == "" ? TextEditingController() : null,
+              decoration: inputFormDec("facebook"),
+              onChanged: (value) => space.contacts["facebook"] = value,
             ),
-          ]),
-          Row(children: [
-            const Text("DJ/Bend"),
-            CheckboxIconFormField(
-              initialValue: widget.space.elements["music"]!,
-              onChanged: (value) => setState(
-                () => widget.space.elements["music"] = value,
-              ),
-              trueIconColor: darkGreen,
-              padding: 0,
+            const SizedBox(height: 15),
+            TextFormField(
+              initialValue: space.id == "" ? null : space.contacts["instagram"],
+              controller: space.id == "" ? TextEditingController() : null,
+              decoration: inputFormDec("instagram"),
+              onChanged: (value) => space.contacts["instagram"] = value,
             ),
-          ]),
-          Row(children: [
-            const Text("Pušenje unutar prostora"),
-            CheckboxIconFormField(
-              initialValue: widget.space.elements["smoking"]!,
-              onChanged: (value) => setState(
-                () => widget.space.elements["smoking"] = value,
-              ),
-              trueIconColor: darkGreen,
-              padding: 0,
+            const SizedBox(height: 15),
+            TextFormField(
+              initialValue: space.id == "" ? null : space.contacts["website"],
+              controller: space.id == "" ? TextEditingController() : null,
+              decoration: inputFormDec("website"),
+              onChanged: (value) => space.contacts["website"] = value,
             ),
-          ]),
-          Row(children: [
-            const Text("Specijalni efekti"),
-            CheckboxIconFormField(
-              initialValue: widget.space.elements["specialEffects"]!,
-              onChanged: (value) => setState(
-                () => widget.space.elements["specialEffects"] = value,
-              ),
-              trueIconColor: darkGreen,
-              padding: 0,
-            ),
-          ]),
-          /*Row(children: [
-            const Text("Hrana"),
-            Checkbox(value: widget.space.elements["food"], onChanged: (value) => setState(() => widget.space.elements["food"] = value!)),
-          ]),
-          Row(children: [
-            const Text("Konobar"),
-            Checkbox(value: widget.space.elements["waiter"], onChanged: (value) => setState(() => widget.space.elements["waiter"] = value!)),
-          ]),
-          Row(children: [
-            const Text("Zaštitar"),
-            Checkbox(value: widget.space.elements["security"], onChanged: (value) => setState(() => widget.space.elements["security"] = value!)),
-          ]),
-          Row(children: [
-            const Text("DJ/Bend"),
-            Checkbox(value: widget.space.elements["music"], onChanged: (value) => setState(() => widget.space.elements["music"] = value!)),
-          ]),
-          Row(children: [
-            const Text("Pušenje unutar prostora"),
-            Checkbox(value: widget.space.elements["smoking"], onChanged: (value) => setState(() => widget.space.elements["smoking"] = value!)),
-          ]),
-          Row(children: [
-            const Text("Specijalni efekti"),
-            Checkbox(
-                value: widget.space.elements["specialEffects"],
-                onChanged: (value) => setState(() => widget.space.elements["specialEffects"] = value!)),
-          ]),*/
-        ],
-      ),
-    );
+          ],
+        ));
+  }
+
+  InputDecoration inputFormDec(String data) {
+    String txt = "";
+    switch (data) {
+      case "name":
+        txt = "Ime prostora";
+        break;
+      case "desc":
+        txt = "Opis";
+        break;
+      case "address":
+        txt = "Adresa";
+        break;
+      case "phone":
+        txt = "Broj mobitela (neobavezno)";
+        break;
+      case "email":
+        txt = "Email adresa (neobavezno)";
+        break;
+      case "facebook":
+        txt = "Facebook (neobavezno)";
+        break;
+      case "instagram":
+        txt = "Instagram (neobavezno)";
+        break;
+      case "website":
+        txt = "Link web stranice (neobavezno)";
+        break;
+      default:
+    }
+    return InputDecoration(
+        hintText: txt,
+        hintStyle: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 12),
+        enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
+        focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
+        errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red, width: 2.0)));
   }
 }

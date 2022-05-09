@@ -32,7 +32,15 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                 width: constraints.maxWidth * 0.8,
                 child: TextFormField(
                   controller: controller,
-                  decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: "Pretraži po imenu"),
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: darkGreen,
+                      ),
+                      hintText: "Pretraži po imenu",
+                      hintStyle: TextStyle(color: darkGreen),
+                      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
+                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0))),
                   onChanged: (value) => setState(() => filter.name = value),
                 ),
               ),
@@ -86,7 +94,7 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                     todayTextStyle: TextStyle(),
                     selectedDecoration: BoxDecoration(color: lightGreen, shape: BoxShape.circle),
                     selectedTextStyle: selectedDateStyle,
-                    cellMargin: EdgeInsets.all(2),
+                    cellMargin: EdgeInsets.all(0),
                     rangeHighlightColor: lightGreen,
                   ),
                   daysOfWeekStyle: DaysOfWeekStyle(

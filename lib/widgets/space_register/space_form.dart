@@ -6,8 +6,10 @@ import 'package:hevento/services/static_functions.dart';
 import 'package:hevento/widgets/custom_network_image.dart';
 import 'package:hevento/widgets/space_list_item.dart';
 import 'package:hevento/widgets/space_register/gallery_form.dart';
-import 'package:hevento/widgets/space_register/space_register_one.dart';
 import 'package:hevento/widgets/space_register/space_register_three.dart';
+import 'package:hevento/widgets/space_register/space_register_two.dart';
+import 'package:hevento/widgets/space_register/space_register_one.dart';
+import 'package:hevento/widgets/space_register/space_register_four.dart';
 import 'package:hevento/widgets/space_register/space_register_two.dart';
 import 'package:provider/provider.dart';
 
@@ -37,6 +39,7 @@ class _SpaceFormState extends State<SpaceForm> {
       SpaceRegisterOne(space: space),
       SpaceRegisterTwo(space: space),
       SpaceRegisterThree(space: space),
+      SpaceRegisterFour(space: space),
       FutureBuilder(
           future: Functions.loadImagesUrls(space.id, returnName: true),
           builder: (context, snapshot) {
@@ -108,11 +111,14 @@ class _SpaceFormState extends State<SpaceForm> {
                   }
                 },
               ),
-            if (step == 3)
+            if (step == 4)
               const Text(
                 "Napomena: dodavanje i brisanje slika je automatsko",
                 style: TextStyle(color: Colors.red, fontSize: 12),
               ),
+            const SizedBox(
+              height: 30,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -120,7 +126,14 @@ class _SpaceFormState extends State<SpaceForm> {
                   onPressed: () {
                     if (step > 0) setState(() => step--);
                   },
-                  icon: const Icon(Icons.arrow_circle_left_outlined),
+                  icon: const Icon(
+                    Icons.arrow_circle_left_outlined,
+                    color: darkGreen,
+                  ),
+                ),
+                Text(
+                  "Korak ${step + 1}/${steps.length}",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 IconButton(
                   disabledColor: space.id == "" && step == 2 ? Colors.grey : null,
@@ -129,11 +142,13 @@ class _SpaceFormState extends State<SpaceForm> {
                       : () {
                           if (step < steps.length - 1) setState(() => step++);
                         },
-                  icon: const Icon(Icons.arrow_circle_right_outlined),
+                  icon: const Icon(
+                    Icons.arrow_circle_right_outlined,
+                    color: darkGreen,
+                  ),
                 ),
               ],
             ),
-            Text("Korak ${step + 1}/${steps.length}"),
           ],
         ),
       ),

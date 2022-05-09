@@ -33,62 +33,65 @@ class _DashboardPagePrimaryState extends State<DashboardPagePrimary> {
                 itemCount: mySpaces.length,
                 itemBuilder: (BuildContext context, int index) {
                   Space space = mySpaces[index];
-                  return ExpansionTile(
-                    collapsedBackgroundColor: lightGreen,
-                    title: Text(space.name),
-                    subtitle: Text(space.address),
-                    trailing: SizedBox(
-                      height: 80,
-                      width: 100,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            onPressed: () async {
-                              space.hidden = !space.hidden;
-                              await space.updateSpace();
-                              setState(() {});
-                            },
-                            icon: Icon(space.hidden ? Icons.visibility_off : Icons.visibility),
-                            tooltip: "Sakrij oglas",
-                          ),
-                          TextButton(
-                            child: const Text("Uredi"),
-                            onPressed: () async => await showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (context) => AlertDialog(content: SpaceForm(space: space)),
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: ExpansionTile(
+                      collapsedBackgroundColor: lightGreen,
+                      title: Text(space.name),
+                      subtitle: Text(space.address),
+                      trailing: SizedBox(
+                        height: 80,
+                        width: 100,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                              onPressed: () async {
+                                space.hidden = !space.hidden;
+                                await space.updateSpace();
+                                setState(() {});
+                              },
+                              icon: Icon(space.hidden ? Icons.visibility_off : Icons.visibility),
+                              tooltip: "Sakrij oglas",
                             ),
-                          ),
-                        ],
+                            TextButton(
+                              child: const Text("Uredi"),
+                              onPressed: () async => await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) => AlertDialog(content: SpaceForm(space: space)),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
+                      maintainState: true,
+                      expandedAlignment: Alignment.centerLeft,
+                      childrenPadding: const EdgeInsets.only(left: 15),
+                      children: [
+                        FutureBuilder(
+                            future: Functions.getReviews(space.id),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState != ConnectionState.done) return loader;
+                              List<Review> review = snapshot.data as List<Review>;
+                              return review.isEmpty
+                                  ? const Center(child: Text("Ovaj oglas nema niti jedanu recenziju"))
+                                  : SingleChildScrollView(
+                                      controller: ScrollController(),
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: review
+                                            .map((e) => Padding(
+                                                  padding: const EdgeInsets.only(right: 10),
+                                                  child: ReviewDialog(space: space, review: e),
+                                                ))
+                                            .toList(),
+                                      ),
+                                    );
+                            }),
+                      ],
                     ),
-                    maintainState: true,
-                    expandedAlignment: Alignment.centerLeft,
-                    childrenPadding: const EdgeInsets.only(left: 15),
-                    children: [
-                      FutureBuilder(
-                          future: Functions.getReviews(space.id),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState != ConnectionState.done) return loader;
-                            List<Review> review = snapshot.data as List<Review>;
-                            return review.isEmpty
-                                ? const Center(child: Text("Ovaj oglas nema niti jedanu recenziju"))
-                                : SingleChildScrollView(
-                                    controller: ScrollController(),
-                                    scrollDirection: Axis.horizontal,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: review
-                                          .map((e) => Padding(
-                                                padding: const EdgeInsets.only(right: 10),
-                                                child: ReviewDialog(space: space, review: e),
-                                              ))
-                                          .toList(),
-                                    ),
-                                  );
-                          }),
-                    ],
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) => const Divider(

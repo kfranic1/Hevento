@@ -99,7 +99,7 @@ class _DashboardPageSecondaryState extends State<DashboardPageSecondary> {
                         todayTextStyle: TextStyle(),
                         selectedDecoration: BoxDecoration(color: lightGreen, shape: BoxShape.circle),
                         selectedTextStyle: selectedDateStyle,
-                        cellMargin: EdgeInsets.all(2),
+                        cellMargin: EdgeInsets.all(0),
                         rangeHighlightColor: lightGreen,
                       ),
                       daysOfWeekStyle: DaysOfWeekStyle(
