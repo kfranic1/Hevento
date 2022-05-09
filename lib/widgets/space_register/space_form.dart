@@ -58,7 +58,12 @@ class _SpaceFormState extends State<SpaceForm> {
       return const Center(child: Text("Prijavi se kako bi vidio nadzornu ploču."));
     }
     return Form(
-      onChanged: () => setState(() => changed = true),
+      onChanged: () => {
+        if (space.id != "")
+          setState(() {
+            changed = true;
+          })
+      },
       key: _formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: SizedBox(

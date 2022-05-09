@@ -40,6 +40,8 @@ class SpaceRegisterOne extends StatelessWidget {
             controller: space.id == "" ? TextEditingController() : null,
             decoration: const InputDecoration(hintText: "phone(optional)"),
             onChanged: (value) => space.contacts["phone"] = value,
+            validator: (value) =>
+                space.contacts.values.any((element) => element != null && element.isNotEmpty) ? null : "Potreban je barem jedan kontakt",
           ),
           TextFormField(
             initialValue: space.id == "" ? null : space.contacts["email"],
