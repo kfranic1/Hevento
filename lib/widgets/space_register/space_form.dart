@@ -9,7 +9,6 @@ import 'package:hevento/widgets/space_register/gallery_form.dart';
 import 'package:hevento/widgets/space_register/space_register_one.dart';
 import 'package:hevento/widgets/space_register/space_register_three.dart';
 import 'package:hevento/widgets/space_register/space_register_two.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class SpaceForm extends StatefulWidget {
@@ -26,8 +25,9 @@ class _SpaceFormState extends State<SpaceForm> {
   int step = 0;
   String? error;
 
+  bool changed = false;
+
   late List<Widget> steps;
-  List<XFile> newImages = [];
 
   @override
   void initState() {
@@ -45,7 +45,6 @@ class _SpaceFormState extends State<SpaceForm> {
               space: space,
               formKey: _formKey,
               images: (snapshot.data as List<String>).map((e) => CustomNetworkImage(spaceId: space.id, imageName: e)).toList(),
-              newImages: newImages,
             );
           }),
     ];
@@ -59,6 +58,7 @@ class _SpaceFormState extends State<SpaceForm> {
       return const Center(child: Text("Prijavi se kako bi vidio nadzornu ploču."));
     }
     return Form(
+      onChanged: () => setState(() => changed = true),
       key: _formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: SizedBox(
@@ -71,7 +71,7 @@ class _SpaceFormState extends State<SpaceForm> {
                 children: steps,
               ),
             ),
-            if (space.id != "" || step == 3)
+            if ((space.id == "" && step == 2) || (space.id != "" && step != 3))
               ElevatedButton(
                 child: Text(space.id == "" ? "Stvori prostor" : "Uredi prostor"),
                 onPressed: () async {
@@ -80,23 +80,28 @@ class _SpaceFormState extends State<SpaceForm> {
                       setState(() => error = "Nedostaju neki podatci ili su krivo formatirani.");
                     } else {
                       if (space.id == "") {
-                        await Space.createSpace(context.read<Person?>()!, space,
-                            images: newImages, profileImage: newImages.isEmpty ? null : newImages.first.name);
-                        List<Space> spaces = context.read<List<Space>>();
-                        if (!spaces.any((element) => element.id == space.id)) spaces.add(space);
-                        List<SpaceListItem> spaceItems = context.read<List<SpaceListItem>>();
-                        if (!spaceItems.any((element) => element.space.id == space.id)) spaceItems.add(SpaceListItem(space: space));
+                        await space.createSpace(context.read<Person?>()!);
+                        context.read<List<Space>>().add(space);
+                        context.read<List<SpaceListItem>>().add(SpaceListItem(space: space));
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Prostor uspješno stvoren.")));
+                        setState(() {
+                          step++;
+                        });
                       } else {
-                        await space.updateSpace(images: newImages);
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Promjene uspješno spremljene.")));
+                        await space.updateSpace();
+                        if (changed) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Promjene uspješno spremljene.")));
+                        Navigator.of(context).pop(changed);
                       }
-                      Navigator.of(context).pop(true);
                     }
                   } catch (e) {
                     print(e.toString());
                   }
                 },
+              ),
+            if (step == 3)
+              const Text(
+                "Napomena: dodavanje i brisanje slika je automatsko",
+                style: TextStyle(color: Colors.red, fontSize: 12),
               ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -108,15 +113,17 @@ class _SpaceFormState extends State<SpaceForm> {
                   icon: const Icon(Icons.arrow_circle_left_outlined),
                 ),
                 IconButton(
-                  onPressed: () {
-                    if (step < steps.length - 1) setState(() => step++);
-                  },
+                  disabledColor: space.id == "" && step == 2 ? Colors.grey : null,
+                  onPressed: space.id == "" && step == 2
+                      ? null
+                      : () {
+                          if (step < steps.length - 1) setState(() => step++);
+                        },
                   icon: const Icon(Icons.arrow_circle_right_outlined),
                 ),
               ],
             ),
             Text("Korak ${step + 1}/${steps.length}"),
-            //const SizedBox(height: 10),
           ],
         ),
       ),

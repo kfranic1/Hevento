@@ -14,11 +14,11 @@ abstract class Functions {
     }
   }
 
-  static Future<List<String>> loadImagesUrls(String id, {bool returnName = false}) async {
+  static Future<List<String>> loadImagesUrls(String spaceId, {bool returnName = false}) async {
     try {
       return FirebaseStorage.instance
           .ref()
-          .child(id)
+          .child(spaceId)
           .listAll()
           .then((value) async => await Future.wait(value.items.map((e) async => returnName ? e.name : await e.getDownloadURL()).toList()));
     } catch (e) {

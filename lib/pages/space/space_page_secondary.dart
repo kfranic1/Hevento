@@ -73,7 +73,6 @@ class SpacePageSecondary extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Padding(
-                  //TODO ovo sam promjenio zbog overflowa
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Column(
                     children: [

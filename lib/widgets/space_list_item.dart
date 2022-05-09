@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hevento/model/space.dart';
 import 'package:hevento/routing/custom_router_delegate.dart';
+import 'package:hevento/widgets/custom_network_image.dart';
 import 'package:provider/provider.dart';
 
 class SpaceListItem extends StatelessWidget {
@@ -34,7 +35,10 @@ class SpaceListItem extends StatelessWidget {
             children: [
               Expanded(
                 flex: 2,
-                child: space.image,
+                child: CustomNetworkImage(
+                  spaceId: space.id,
+                  imageName: space.profileImage,
+                ),
               ),
               const SizedBox(width: 20),
               Expanded(

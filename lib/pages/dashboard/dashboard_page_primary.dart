@@ -54,14 +54,10 @@ class _DashboardPagePrimaryState extends State<DashboardPagePrimary> {
                           TextButton(
                             child: const Text("Uredi"),
                             onPressed: () async => await showDialog(
+                              barrierDismissible: false,
                               context: context,
                               builder: (context) => AlertDialog(content: SpaceForm(space: space)),
-                            ).then((value) {
-                              if (value == null || (!(value as bool))) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(content: Text("Promjene su zabilježene, ali nisu spremljene.")));
-                              }
-                            }),
+                            ),
                           ),
                         ],
                       ),

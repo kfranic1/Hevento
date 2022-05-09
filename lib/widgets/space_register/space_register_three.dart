@@ -69,8 +69,8 @@ class SpaceRegisterThree extends StatelessWidget {
             decoration: const InputDecoration(hintText: "Saturday price"),
             onChanged: (value) => space.price[DateTime.saturday] = int.tryParse(value),
             validator: (value) {
-              if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
               if (space.price.values.every((element) => element == null)) return "Please define at least one price";
+              if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
               return "Pogrešan format";
             },
           ),

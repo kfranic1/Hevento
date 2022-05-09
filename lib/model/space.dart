@@ -2,14 +2,10 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:hevento/model/filter.dart';
 import 'package:hevento/model/person.dart';
 import 'package:hevento/services/collections.dart';
-import 'package:hevento/services/constants.dart';
 import 'package:hevento/services/extensions/datetime_extension.dart';
-import 'package:hevento/services/static_functions.dart';
-import 'package:hevento/widgets/custom_network_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -50,8 +46,7 @@ class Space {
   late double totalScore;
   late int numberOfReviews;
   late List<String>? tags;
-  late Widget image;
-  late String? profileImage;
+  late String profileImage;
   late bool hidden;
 
   int get minPrice =>
@@ -90,17 +85,6 @@ class Space {
       numberOfReviews = data["numberOfReviews"];
       tags = data["tags"] == null ? null : (data["tags"] as List<dynamic>).map((e) => e as String).toList();
       price = (data["price"] as Map<String, dynamic>).map((key, value) => MapEntry(int.parse(key), value == null ? null : value as int));
-      image = FutureBuilder(
-          future: Functions.getImageUrl(id, data["profileImage"]),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) return loader;
-            return Image.network(
-              snapshot.data as String,
-              height: double.infinity,
-              width: double.infinity,
-              fit: BoxFit.fill,
-            );
-          });
       hidden = data["hidden"];
       profileImage = data["profileImage"];
     } catch (e) {
@@ -128,23 +112,33 @@ class Space {
     return true;
   }
 
-  Future handleEvent(DateTime dateTime, String description, {bool remove = false}) async {
+  Future createSpace(Person appUser) async {
     try {
-      if (remove) {
-        calendar.remove(dateTime.trim());
-      } else {
-        calendar[dateTime.trim()] = description;
-      }
-      await FirebaseFirestore.instance
-          .collection(Collections.space)
-          .doc(id)
-          .update({"calendar": calendar.map((key, value) => MapEntry(key.toString(), value))});
+      await FirebaseFirestore.instance.collection(Collections.space).add({
+        "name": name,
+        "description": description,
+        "address": address,
+        "calendar": calendar.map((key, value) => MapEntry(key.toString(), value)),
+        "contacts": contacts,
+        "elements": elements,
+        "location": location = const GeoPoint(0, 0),
+        "price": price.map((key, value) => MapEntry(key.toString(), value)),
+        "numberOfPeople": numberOfPeople,
+        "owner": (owner = appUser).id,
+        "totalScore": totalScore = 0,
+        "numberOfReviews": numberOfReviews = 0,
+        "tags": tags,
+        "hidden": hidden = false,
+        "profileImage": profileImage = "",
+      }).then((value) async {
+        id = value.id;
+      });
     } catch (e) {
       print(e.toString());
     }
   }
 
-  Future updateSpace({List<XFile>? images}) async {
+  Future updateSpace() async {
     try {
       await FirebaseFirestore.instance.collection(Collections.space).doc(id).update({
         "name": name,
@@ -161,8 +155,7 @@ class Space {
         "numberOfReviews": numberOfReviews,
         "tags": tags,
         "hidden": hidden,
-      }).then((value) async {
-        if (images != null) await addImages(images);
+        "profileImage": profileImage,
       });
     } catch (e) {
       print(e.toString());
@@ -174,8 +167,8 @@ class Space {
       FirebaseFirestore.instance.runTransaction((transaction) async {
         DocumentSnapshot doc = await transaction.get(FirebaseFirestore.instance.collection(Collections.space).doc(id));
         transaction.update(FirebaseFirestore.instance.collection(Collections.space).doc(id), {
-          "totalScore": doc["totalScore"] + (rating ?? 0) - (oldRating ?? 0),
-          "numberOfReviews": doc["numberOfReviews"] +
+          "totalScore": totalScore = doc["totalScore"] + (rating ?? 0) - (oldRating ?? 0),
+          "numberOfReviews": numberOfReviews = doc["numberOfReviews"] +
               (((newReview && rating != null) || (oldRating == null && rating != null))
                   ? 1
                   : (rating == null && oldRating != null)
@@ -188,31 +181,42 @@ class Space {
     }
   }
 
-  static Future<void> createSpace(Person appUser, Space space, {List<XFile>? images, String? profileImage}) async {
+  Future handleEvent(DateTime dateTime, String description, {bool remove = false}) async {
     try {
-      await FirebaseFirestore.instance.collection(Collections.space).add({
-        "name": space.name,
-        "description": space.description,
-        "address": space.address,
-        "calendar": space.calendar.map((key, value) => MapEntry(key.toString(), value)),
-        "contacts": space.contacts,
-        "elements": space.elements,
-        "location": space.location = const GeoPoint(0, 0),
-        "price": space.price.map((key, value) => MapEntry(key.toString(), value)),
-        "numberOfPeople": space.numberOfPeople,
-        "owner": (space.owner = appUser).id,
-        "totalScore": space.totalScore = 0,
-        "numberOfReviews": space.numberOfReviews = 0,
-        "tags": space.tags,
-        "hidden": space.hidden = false,
-        "profileImage": profileImage,
-      }).then((value) async {
-        space.id = value.id;
-        space.image = CustomNetworkImage(spaceId: space.id, imageName: profileImage);
-        if (images != null) await space.addImages(images);
+      if (remove) {
+        calendar.remove(dateTime.trim());
+      } else {
+        calendar[dateTime.trim()] = description;
+      }
+      await FirebaseFirestore.instance
+          .collection(Collections.space)
+          .doc(id)
+          .update({"calendar": calendar.map((key, value) => MapEntry(key.toString(), value))});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future addImages(List<XFile> images) async {
+    try {
+      await Future.forEach(images, (XFile image) async {
+        await FirebaseStorage.instance
+            .ref()
+            .child("$id/${image.name}")
+            .putData(await image.readAsBytes(), SettableMetadata(contentType: "image/jpeg"));
       });
     } catch (e) {
       print(e.toString());
+      return;
+    }
+  }
+
+  Future removeImage(String imageName) async {
+    try {
+      await FirebaseStorage.instance.ref().child("$id/$imageName").delete();
+    } catch (e) {
+      print(e.toString());
+      return [];
     }
   }
 
@@ -224,29 +228,6 @@ class Space {
           .then((value) => value.docs.map((e) => Space(e.id).getData(e)!).toList());
       ret.shuffle();
       return ret;
-    } catch (e) {
-      print(e.toString());
-      return [];
-    }
-  }
-
-  Future addImages(List<XFile> images) async {
-    try {
-      Future.forEach(images, (XFile image) async {
-        await FirebaseStorage.instance
-            .ref()
-            .child("$id/${image.name}")
-            .putData(await image.readAsBytes(), SettableMetadata(contentType: "image/jpeg"));
-      });
-    } catch (e) {
-      print(e.toString());
-      return [];
-    }
-  }
-
-  Future removeImage(String imageName) async {
-    try {
-      await FirebaseStorage.instance.ref().child("$id/$imageName").delete();
     } catch (e) {
       print(e.toString());
       return [];

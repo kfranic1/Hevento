@@ -4,7 +4,7 @@ import 'package:hevento/services/static_functions.dart';
 
 class CustomNetworkImage extends StatelessWidget {
   final String spaceId;
-  final String? imageName;
+  final String imageName;
   const CustomNetworkImage({Key? key, required this.spaceId, required this.imageName}) : super(key: key);
 
   @override
@@ -15,7 +15,7 @@ class CustomNetworkImage extends StatelessWidget {
         if (snapshot.connectionState != ConnectionState.done) return loader;
         return Image.network(
           snapshot.data as String,
-          //height: double.infinity,
+          height: double.infinity,
           //width: double.infinity,
           fit: BoxFit.fill,
         );
