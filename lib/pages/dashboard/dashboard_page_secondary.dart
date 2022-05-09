@@ -112,45 +112,58 @@ class _DashboardPageSecondaryState extends State<DashboardPageSecondary> {
                   ),
                   const SizedBox(height: 20),
                   if (_space?.calendar[_selectedDay] != null)
-                    Row(children: [
-                      Text("${_space!.calendar[_selectedDay]}"),
-                      IconButton(
-                        onPressed: () async {
-                          await _space!.handleEvent(_selectedDay, "", remove: true);
-                          setState(() {});
-                        },
-                        icon: const Icon(Icons.close),
-                        tooltip: "Ukloni događaj",
-                      )
-                    ]),
+                    SizedBox(
+                      width: constraints.maxWidth * 0.8,
+                      child: ListTile(
+                        title: Text(
+                          "${_space!.calendar[_selectedDay]}",
+                          maxLines: 4,
+                        ),
+                        onTap: () => eventEditor().whenComplete(() => setState(() {})),
+                        trailing: IconButton(
+                          onPressed: () async {
+                            await _space!.handleEvent(_selectedDay, "", remove: true);
+                            setState(() {});
+                          },
+                          icon: const Icon(Icons.close),
+                          tooltip: "Ukloni događaj",
+                        ),
+                      ),
+                    ),
                   const SizedBox(height: 20),
                   if (_space != null)
                     ElevatedButton(
-                        onPressed: () async {
-                          await showDialog(
-                              context: context,
-                              builder: (context) {
-                                TextEditingController controller = TextEditingController();
-                                return AlertDialog(
-                                  title: Text("Dodaj opis za događaj u ${_space!.name}, ${_selectedDay.toString().substring(0, 10)}"),
-                                  content: TextFormField(
-                                    controller: controller,
-                                    maxLines: 4,
-                                  ),
-                                  actions: [
-                                    TextButton(onPressed: () => Navigator.of(context).pop(controller.text), child: const Text("Završi")),
-                                    TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text("Odustani")),
-                                  ],
-                                );
-                              }).then((value) async {
-                            if (value != null) await _space!.handleEvent(_selectedDay, value);
-                          });
-                          setState(() {});
-                        },
-                        child: Text("Dodaj događaj za ${_space!.name}"))
+                      child: Text("Dodaj događaj za ${_space!.name}"),
+                      onPressed: () => eventEditor().whenComplete(() => setState(() {})),
+                    )
                 ]),
               ),
       );
+    });
+  }
+
+  Future eventEditor() async {
+    return await showDialog(
+        context: context,
+        builder: (context) {
+          TextEditingController controller = TextEditingController()..text = _space!.calendar[_selectedDay] ?? "";
+          return SizedBox(
+            height: 250,
+            width: 250,
+            child: AlertDialog(
+              title: Text("Dodaj opis za događaj u ${_space!.name}, ${_selectedDay.toString().substring(0, 10)}"),
+              content: TextFormField(
+                controller: controller,
+                maxLength: 50,
+              ),
+              actions: [
+                TextButton(onPressed: () => Navigator.of(context).pop(controller.text), child: const Text("Završi")),
+                TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text("Odustani")),
+              ],
+            ),
+          );
+        }).then((value) async {
+      if (value != null && (value as String).isNotEmpty) await _space!.handleEvent(_selectedDay, value);
     });
   }
 }

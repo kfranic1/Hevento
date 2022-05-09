@@ -17,11 +17,12 @@ class LogInPage extends StatefulWidget {
 }
 
 class _LogInPageState extends State<LogInPage> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   String? error;
   bool _passwordVisible = false;
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -64,12 +65,12 @@ class _LogInPageState extends State<LogInPage> {
                                 color: darkGreen,
                                 size: 30,
                               ),
-                              hintText: "example@ex.com",
+                              hintText: "Korisničko ime",
                               hintStyle: TextStyle(fontWeight: FontWeight.bold),
                               enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
                               focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
                             ),
-                            controller: _emailController,
+                            controller: _usernameController,
                             keyboardType: TextInputType.emailAddress,
                           ),
                         ),
@@ -101,28 +102,33 @@ class _LogInPageState extends State<LogInPage> {
                           ),
                         ),
                         const SizedBox(height: 100),
-                        Container(
-                          height: 50,
-                          width: max(MediaQuery.of(context).size.width * 0.1, 100),
-                          decoration: BoxDecoration(color: darkGreen, borderRadius: BorderRadius.circular(10)),
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              String? result = await context.read<AuthService>().signIn(
-                                    _emailController.text,
-                                    _passwordController.text,
-                                  );
-                              if (result == null) context.read<CustomRouterDelegate>().goToLastPage();
-                              setState(() {
-                                error = result;
-                              });
-                            },
-                            child: const Text(
-                              "Prijava",
-                              style: buttonTxtStyle,
-                            ),
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(darkGreen)),
-                          ),
-                        ),
+                        loading
+                            ? loader
+                            : Container(
+                                height: 50,
+                                width: max(MediaQuery.of(context).size.width * 0.1, 100),
+                                decoration: BoxDecoration(color: darkGreen, borderRadius: BorderRadius.circular(10)),
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    setState(() {
+                                      loading = true;
+                                    });
+                                    String? result = await context.read<AuthService>().signIn(
+                                          username: _usernameController.text,
+                                          password: _passwordController.text,
+                                        );
+                                    if (result == null) context.read<CustomRouterDelegate>().goToLastPage();
+                                    setState(() {
+                                      error = result;
+                                    });
+                                  },
+                                  child: const Text(
+                                    "Prijava",
+                                    style: buttonTxtStyle,
+                                  ),
+                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(darkGreen)),
+                                ),
+                              ),
                         const SizedBox(height: 20),
                         if (error != null) Text(error!),
                       ],

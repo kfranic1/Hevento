@@ -57,11 +57,6 @@ class SpacePagePrimary extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  /*const Divider(
-                    color: darkGreen,
-                    thickness: 3,
-                    height: 20,
-                  ),*/
                   IntrinsicHeight(
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -279,7 +274,7 @@ class SpacePagePrimary extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Divider(height: 10, thickness: 2),
+                  const SizedBox(height: 20),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: FutureBuilder(

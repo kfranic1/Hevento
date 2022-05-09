@@ -25,16 +25,15 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
         child: SingleChildScrollView(
           controller: ScrollController(),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 20),
-              Center(
-                child: SizedBox(
-                  width: constraints.maxWidth * 0.8,
-                  child: TextFormField(
-                    controller: controller,
-                    decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: "Pretraži po imenu"),
-                    onChanged: (value) => setState(() => filter.name = value),
-                  ),
+              SizedBox(
+                width: constraints.maxWidth * 0.8,
+                child: TextFormField(
+                  controller: controller,
+                  decoration: const InputDecoration(prefixIcon: Icon(Icons.search), hintText: "Pretraži po imenu"),
+                  onChanged: (value) => setState(() => filter.name = value),
                 ),
               ),
               const SizedBox(height: 10),
@@ -99,93 +98,95 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                 ),
               ),
               const SizedBox(height: 20),
-              Center(
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const SizedBox(width: 15),
-                  SizedBox(
-                    width: 80,
-                    child: Text(
-                      'Ocjena' + (filter.rating == 0 ? '' : ": " + filter.rating.toString()),
-                      style: filterTxtStyle,
-                    ),
-                  ),
-                  SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                  RatingBar.builder(
-                    initialRating: filter.rating,
-                    minRating: 0,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: darkGreen,
-                    ),
-                    itemSize: 30,
-                    onRatingUpdate: (rating) {
-                      setState(() {
-                        filter.rating = rating;
-                      });
-                    },
-                  ),
-                ]),
-              ),
-              const SizedBox(height: 20),
-              Center(
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const SizedBox(width: 15),
-                  SizedBox(
-                    width: 120,
-                    child: Text(
-                      "Cijena: " + filter.price.toString() + " HRK",
-                      style: filterTxtStyle,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 250,
-                    child: Slider(
-                      activeColor: darkGreen,
-                      value: filter.price.toDouble(),
-                      min: 0,
-                      max: 5000,
-                      divisions: 20,
-                      label: filter.price.toString(),
-                      onChanged: (double value) {
-                        setState(() {
-                          filter.price = value.round();
-                        });
-                      },
-                    ),
-                  ),
-                ]),
-              ),
-              const SizedBox(height: 10),
-              Center(
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const SizedBox(width: 15),
-                  SizedBox(
-                    width: 120,
-                    child: Text(
-                      "Broj ljudi" + (filter.numberOfPeople != 0 ? ": " + filter.numberOfPeople.toString() : ""),
-                      style: filterTxtStyle,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 250,
-                    child: Slider(
-                      activeColor: darkGreen,
-                      value: filter.numberOfPeople.toDouble(),
-                      max: 300,
-                      divisions: 60,
-                      label: filter.numberOfPeople.toString(),
-                      onChanged: (double value) {
-                        setState(() {
-                          filter.numberOfPeople = value.round();
-                        });
-                      },
-                    ),
-                  ),
-                ]),
+              SizedBox(
+                width: constraints.maxWidth * 0.8,
+                child: Column(
+                  children: [
+                    Row(mainAxisSize: MainAxisSize.min, children: [
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          'Ocjena' + (filter.rating == 0 ? '' : ": " + filter.rating.toString()),
+                          style: filterTxtStyle,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: RatingBar.builder(
+                          initialRating: filter.rating,
+                          minRating: 0,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _) => const Icon(
+                            Icons.star,
+                            color: darkGreen,
+                          ),
+                          itemSize: 30,
+                          onRatingUpdate: (rating) {
+                            setState(() {
+                              filter.rating = rating;
+                            });
+                          },
+                        ),
+                      ),
+                    ]),
+                    const SizedBox(height: 20),
+                    Row(mainAxisSize: MainAxisSize.min, children: [
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          "Cijena: " + filter.price.toString() + " HRK",
+                          style: filterTxtStyle,
+                        ),
+                      ),
+                      //const Expanded(child: SizedBox()),
+                      Expanded(
+                        flex: 3,
+                        child: Slider(
+                          activeColor: darkGreen,
+                          value: filter.price.toDouble(),
+                          min: 0,
+                          max: 5000,
+                          divisions: 20,
+                          label: filter.price.toString(),
+                          onChanged: (double value) {
+                            setState(() {
+                              filter.price = value.round();
+                            });
+                          },
+                        ),
+                      ),
+                    ]),
+                    const SizedBox(height: 10),
+                    Row(mainAxisSize: MainAxisSize.min, children: [
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          "Broj ljudi" + (filter.numberOfPeople != 0 ? ": " + filter.numberOfPeople.toString() : ""),
+                          style: filterTxtStyle,
+                        ),
+                      ),
+                      //const Expanded(child: SizedBox()),
+                      Expanded(
+                        flex: 3,
+                        child: Slider(
+                          activeColor: darkGreen,
+                          value: filter.numberOfPeople.toDouble(),
+                          max: 300,
+                          divisions: 60,
+                          label: filter.numberOfPeople.toString(),
+                          onChanged: (double value) {
+                            setState(() {
+                              filter.numberOfPeople = value.round();
+                            });
+                          },
+                        ),
+                      ),
+                    ]),
+                  ],
+                ),
               ),
               const SizedBox(height: 10),
               SizedBox(
