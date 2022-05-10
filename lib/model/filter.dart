@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Filter with ChangeNotifier {
+  String? _name;
   DateTime? _selectedDay;
   int _price = 5000;
   int _numberOfPeople = 0;
@@ -15,6 +16,7 @@ class Filter with ChangeNotifier {
 
   bool notifyOnSet = false;
 
+  String? get name => _name;
   DateTime? get selectedDay => _selectedDay;
   int get price => _price;
   int get numberOfPeople => _numberOfPeople;
@@ -28,6 +30,7 @@ class Filter with ChangeNotifier {
   double get rating => _rating;
 
   void reset() {
+    _name = null;
     _selectedDay = null;
     _price = 5000;
     _numberOfPeople = 0;
@@ -39,6 +42,11 @@ class Filter with ChangeNotifier {
     _specialEffects = false;
     _smoking = false;
     _rating = 0;
+    notifyListeners();
+  }
+
+  set name(String? value) {
+    _name = value;
     notifyListeners();
   }
 

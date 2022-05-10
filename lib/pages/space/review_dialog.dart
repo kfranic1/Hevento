@@ -21,10 +21,9 @@ class _ReviewDialogState extends State<ReviewDialog> {
   late Person appUser;
   @override
   void initState() {
-    appUser = context.read<Person?>()!;
     review = widget.review ??
         Review(
-          personId: appUser.id,
+          personId: context.read<Person?>()!.id,
           spaceId: widget.space.id,
           content: null,
           rating: null,
@@ -35,50 +34,54 @@ class _ReviewDialogState extends State<ReviewDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 250,
       width: 250,
-      child: Column(children: [
-        TextFormField(
-          decoration: const InputDecoration(hintText: "Review"),
-          initialValue: review.content,
-          maxLines: 5,
-          onChanged: (value) => setState(() {
-            review.content = value;
-          }),
-          enabled: widget.editable,
-        ),
-        const SizedBox(height: 10),
-        RatingBar.builder(
-          initialRating: review.rating?.toDouble() ?? 0.0,
-          minRating: 0,
-          direction: Axis.horizontal,
-          itemCount: 5,
-          itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-          itemBuilder: (context, _) => const Icon(
-            Icons.star,
-            color: darkGreen,
-          ),
-          itemSize: 30,
-          ignoreGestures: (!widget.editable),
-          onRatingUpdate: (rating) {
-            setState(() {
-              review.rating = rating.round() == 0 ? null : rating.round();
-            });
-          },
-        ),
-        const Expanded(child: SizedBox()),
-        if (widget.editable)
-          ElevatedButton(
-            onPressed: () async => await review.createReview(widget.space).whenComplete(() {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Review succesful")));
-              Navigator.of(context).pop();
+      decoration: BoxDecoration(border: Border.all(color: darkGreen, width: 1)),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(children: [
+          TextFormField(
+            decoration: InputDecoration(hintText: widget.editable ? "Komentar(opcionalno)" : ''),
+            initialValue: review.content,
+            maxLines: 5,
+            onChanged: (value) => setState(() {
+              review.content = value;
             }),
-            child: const Text("Finish"),
+            enabled: widget.editable,
           ),
-        const SizedBox(height: 10),
-        if (review.id != null) Center(child: Text("Review was left on ${review.time.day}/${review.time.month}/${review.time.year}"))
-      ]),
+          const SizedBox(height: 10),
+          RatingBar.builder(
+            initialRating: review.rating?.toDouble() ?? 0.0,
+            minRating: 0,
+            direction: Axis.horizontal,
+            itemCount: 5,
+            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+            itemBuilder: (context, _) => const Icon(
+              Icons.star,
+              color: darkGreen,
+            ),
+            itemSize: 30,
+            ignoreGestures: (!widget.editable),
+            onRatingUpdate: (rating) {
+              setState(() {
+                review.rating = rating.round() == 0 ? null : rating.round();
+              });
+            },
+          ),
+          const Expanded(child: SizedBox()),
+          if (widget.editable)
+            ElevatedButton(
+              onPressed: () async => await review.createReview(widget.space).whenComplete(() {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Recenzija uspješno poslana.")));
+                Navigator.of(context).pop();
+              }),
+              child: const Text("Pošalji"),
+            ),
+          const SizedBox(height: 10),
+          if (review.id != null) Center(child: Text("Datum: ${review.time.day}/${review.time.month}/${review.time.year}"))
+        ]),
+      ),
     );
   }
 }

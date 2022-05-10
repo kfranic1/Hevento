@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hevento/model/space.dart';
 import 'package:hevento/routing/custom_router_delegate.dart';
+import 'package:hevento/widgets/custom_network_image.dart';
 import 'package:provider/provider.dart';
 
 class SpaceListItem extends StatelessWidget {
@@ -11,30 +12,32 @@ class SpaceListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      //added because of boxShadow offset(line 29)
+      //added because of boxShadow offset
       padding: const EdgeInsets.only(right: 3, bottom: 3),
       child: GestureDetector(
         onTap: () => context.read<CustomRouterDelegate>().goToSpace(params: {"id": space.id}),
         child: Container(
-          height: 350,
-          width: 650,
+          height: 300,
+          width: 600,
           decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.black,
+                color: Colors.black12,
                 blurRadius: 2.0,
                 spreadRadius: 0.0,
                 offset: Offset(2.0, 2.0), // shadow direction: bottom right
-              )
+              ),
             ],
           ),
           child: Row(
             children: [
               Expanded(
                 flex: 2,
-                child: space.image,
+                child: CustomNetworkImage(
+                  spaceId: space.id,
+                  imageName: space.profileImage,
+                ),
               ),
               const SizedBox(width: 20),
               Expanded(
@@ -50,7 +53,7 @@ class SpaceListItem extends StatelessWidget {
                         Row(
                           children: space.tags!
                               .map((e) => Text(
-                                    "#" + e + ' ',
+                                    e + ' ',
                                     style: const TextStyle(fontWeight: FontWeight.bold),
                                   ))
                               .toList(),
@@ -77,13 +80,16 @@ class SpaceListItem extends StatelessWidget {
                       const SizedBox(height: 15),
                       Expanded(
                         flex: 3,
-                        child: SizedBox(
-                          width: 300,
-                          child: Text(
-                            space.description,
-                            style: const TextStyle(fontSize: 14),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 6,
+                        child: SingleChildScrollView(
+                          controller: ScrollController(),
+                          child: SizedBox(
+                            width: 300,
+                            child: Text(
+                              space.description,
+                              style: const TextStyle(fontSize: 14),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 6,
+                            ),
                           ),
                         ),
                       ),

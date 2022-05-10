@@ -41,11 +41,7 @@ class _HomePagePrimaryState extends State<HomePagePrimary> {
                     columnSizes: constraints.maxWidth >= 1000 ? [1.fr, 1.fr] : [1.fr],
                     rowGap: 20, // equivalent to mainAxisSpacing
                     columnGap: 20,
-                    children: spaces
-                        .map((e) => Center(
-                              child: e,
-                            ))
-                        .toList(),
+                    children: spaces,
                   ),
                 ),
               );

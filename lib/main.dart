@@ -9,7 +9,7 @@ import 'package:hevento/routing/custom_route_information_parser.dart';
 import 'package:hevento/routing/custom_router_delegate.dart';
 import 'package:hevento/services/auth_service.dart';
 import 'package:hevento/services/constants.dart';
-import 'package:hevento/widgets/custom_divider.dart';
+import 'package:hevento/services/static_functions.dart';
 import 'package:hevento/widgets/custom_scroll_behavior.dart';
 import 'package:hevento/widgets/space_list_item.dart';
 import 'package:provider/provider.dart';
@@ -46,10 +46,9 @@ class MyApp extends StatelessWidget {
         ListenableProvider<Filter>(
           create: (context) => Filter(),
         ),
-        //FutureProvider<List<Space>?>(create: (context) => Space.getSpaces(), initialData: null)
       ],
       child: FutureBuilder(
-          future: Space.getSpaces(),
+          future: Functions.getSpaces(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return loader;
@@ -59,33 +58,6 @@ class MyApp extends StatelessWidget {
               providers: [
                 Provider<List<Space>>(create: (context) => spaces),
                 Provider<List<SpaceListItem>>(create: (context) => spaces.map((e) => SpaceListItem(space: e)).toList()),
-                Provider<AppBar>(
-                  create: (context) => AppBar(
-                    elevation: 0,
-                    automaticallyImplyLeading: false,
-                    centerTitle: false,
-                    leadingWidth: 0,
-                    title: GestureDetector(
-                      child: Image.asset('./assets/images/title.png'),
-                      onTap: () => context.read<CustomRouterDelegate>().goToHome(),
-                    ),
-                    toolbarHeight: 80,
-                    backgroundColor: lightGreen,
-                    bottom: const PreferredSize(
-                      preferredSize: Size(double.infinity, 2),
-                      child: CustomDivider(
-                        divider: Divider(
-                          thickness: 2,
-                          color: darkGreen,
-                          indent: 0,
-                          endIndent: 0,
-                          height: 2,
-                        ),
-                        right: lightGreen,
-                      ),
-                    ),
-                  ),
-                ),
               ],
               child: MaterialApp.router(
                 scrollBehavior: CustomScrollBehavior(),

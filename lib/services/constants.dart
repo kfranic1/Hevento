@@ -16,7 +16,7 @@ const TextStyle subTitleStyle = TextStyle(fontSize: 20, color: Colors.grey, font
 const TextStyle buttonTxtStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 15);
 const TextStyle todayDateStyle = TextStyle(color: Colors.white, fontSize: 16.0);
 const TextStyle selectedDateStyle = TextStyle(color: Colors.black, fontSize: 16.0);
-const TextStyle filterTxtStyle = TextStyle(fontWeight: FontWeight.bold, color: Colors.black);
+const TextStyle filterTxtStyle = TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16);
 const TextStyle dayStyle = TextStyle(fontWeight: FontWeight.bold, color: darkGreen, fontSize: 16);
 const TextStyle priceDayStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 14);
 
@@ -34,3 +34,20 @@ const Map<int, Color> darGreenColor = {
 };
 
 const MaterialColor darkGreenMaterialColor = MaterialColor(0xFF114032, darGreenColor);
+
+const List<String> months = [
+  "Siječanj",
+  "Veljača",
+  "Ožujak",
+  "Travanj",
+  "Svibanj",
+  "Lipanj",
+  "Srpanj",
+  "Kolovoz",
+  "Rujan",
+  "Listopad",
+  "Studeni",
+  "Prosinac"
+];
+
+const List<String> days = ["Pon", "Uto", "Sri", "Čet", "Pet", "Sub", "Ned"];

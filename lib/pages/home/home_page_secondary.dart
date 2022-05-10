@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hevento/model/filter.dart';
@@ -15,35 +13,62 @@ class HomePageSecondary extends StatefulWidget {
 }
 
 class _HomePageSecondaryState extends State<HomePageSecondary> {
+  TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     Filter filter = context.read<Filter>();
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
-        width: max(constraints.maxWidth * 2 / 7, 400),
+        width: 400,
         height: constraints.maxHeight,
         color: lightGreen,
         child: SingleChildScrollView(
+          controller: ScrollController(),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: constraints.maxWidth * 0.8,
+                child: TextFormField(
+                  controller: controller,
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: darkGreen,
+                      ),
+                      hintText: "Pretraži po imenu",
+                      hintStyle: TextStyle(color: darkGreen),
+                      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
+                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0))),
+                  onChanged: (value) => setState(() => filter.name = value),
+                ),
+              ),
+              const SizedBox(height: 10),
               Container(
-                width: 380,
                 height: 225,
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
+                width: constraints.maxWidth * 0.8,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 2.0,
+                      spreadRadius: 0.0,
+                      offset: Offset(2.0, 2.0), // shadow direction: bottom right
+                    ),
+                  ],
+                ),
                 child: TableCalendar(
                   availableCalendarFormats: const {CalendarFormat.month: "Month"},
                   firstDay: DateTime.now(),
                   lastDay: DateTime.now().add(const Duration(days: 365 * 3)),
-                  focusedDay: DateTime.now(),
+                  focusedDay: filter.selectedDay ?? DateTime.now(),
                   currentDay: filter.selectedDay,
                   calendarFormat: CalendarFormat.month,
+                  startingDayOfWeek: StartingDayOfWeek.monday,
                   selectedDayPredicate: (day) {
-                    // Use `selectedDayPredicate` to determine which day is currently selected.
-                    // If this returns true, then `day` will be marked as selected.
-
-                    // Using `isSameDay` is recommended to disregard
-                    // the time-part of compared DateTime objects.
                     return isSameDay(filter.selectedDay, day);
                   },
                   onDaySelected: (selectedDay, focusedDay) {
@@ -52,129 +77,119 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                     });
                   },
                   shouldFillViewport: true,
-                  headerStyle: const HeaderStyle(
-                      titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline, color: darkGreen)),
+                  headerStyle: HeaderStyle(
+                    titleTextStyle:
+                        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, decoration: TextDecoration.underline, color: darkGreen),
+                    titleTextFormatter: (DateTime date, dynamic locale) {
+                      return "${months[date.month - 1]} ${date.year}";
+                    },
+                  ),
                   calendarStyle: const CalendarStyle(
                     todayDecoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
                     todayTextStyle: TextStyle(),
                     selectedDecoration: BoxDecoration(color: lightGreen, shape: BoxShape.circle),
                     selectedTextStyle: selectedDateStyle,
-                    cellMargin: EdgeInsets.all(2),
+                    cellMargin: EdgeInsets.all(0),
                     rangeHighlightColor: lightGreen,
                   ),
-                  daysOfWeekStyle: const DaysOfWeekStyle(weekdayStyle: dayStyle, weekendStyle: dayStyle),
+                  daysOfWeekStyle: DaysOfWeekStyle(
+                      weekdayStyle: dayStyle,
+                      weekendStyle: dayStyle,
+                      dowTextFormatter: (DateTime date, dynamic locale) {
+                        return days[date.weekday - 1];
+                      }),
                 ),
               ),
               const SizedBox(height: 20),
-              Row(children: [
-                const SizedBox(width: 15),
-                filter.rating == 0
-                    ? const SizedBox(
-                        width: 80,
+              SizedBox(
+                width: constraints.maxWidth * 0.8,
+                child: Column(
+                  children: [
+                    Row(mainAxisSize: MainAxisSize.min, children: [
+                      Expanded(
+                        flex: 2,
                         child: Text(
-                          'Ocjena',
-                          style: filterTxtStyle,
-                        ),
-                      )
-                    : SizedBox(
-                        width: 80,
-                        child: Text(
-                          'Ocjena: ' + filter.rating.toString(),
+                          'Ocjena' + (filter.rating == 0 ? '' : ": " + filter.rating.toString()),
                           style: filterTxtStyle,
                         ),
                       ),
-                SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-                RatingBar.builder(
-                  initialRating: filter.rating,
-                  minRating: 0,
-                  direction: Axis.horizontal,
-                  allowHalfRating: true,
-                  itemCount: 5,
-                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => const Icon(
-                    Icons.star,
-                    color: darkGreen,
-                  ),
-                  itemSize: 30,
-                  onRatingUpdate: (rating) {
-                    setState(() {
-                      filter.rating = rating;
-                    });
-                  },
-                ),
-              ]),
-              const SizedBox(
-                height: 20,
-                child: Divider(
-                  thickness: 2,
-                  color: Colors.grey,
-                ),
-              ),
-              Row(children: [
-                const SizedBox(width: 15),
-                SizedBox(
-                  width: 120,
-                  child: Text(
-                    "Cijena: " + filter.price.toString() + " HRK",
-                    style: filterTxtStyle,
-                  ),
-                ),
-                SizedBox(
-                  width: 250,
-                  child: Slider(
-                    activeColor: darkGreen,
-                    value: filter.price.toDouble(),
-                    min: 0,
-                    max: 5000,
-                    divisions: 20,
-                    label: filter.price.toString(),
-                    onChanged: (double value) {
-                      setState(() {
-                        filter.price = value.round();
-                      });
-                    },
-                  ),
-                ),
-              ]),
-              const SizedBox(
-                height: 10,
-                child: Divider(
-                  thickness: 2,
-                  color: Colors.grey,
-                ),
-              ),
-              Row(children: [
-                const SizedBox(width: 15),
-                SizedBox(
-                  width: 120,
-                  child: Text(
-                    "Broj ljudi: " + filter.numberOfPeople.toString(),
-                    style: filterTxtStyle,
-                  ),
-                ),
-                SizedBox(
-                  width: 250,
-                  child: Slider(
-                    activeColor: darkGreen,
-                    value: filter.numberOfPeople.toDouble(),
-                    max: 300,
-                    divisions: 60,
-                    label: filter.numberOfPeople.toString(),
-                    onChanged: (double value) {
-                      setState(() {
-                        filter.numberOfPeople = value.round();
-                      });
-                    },
-                  ),
-                ),
-              ]),
-              const SizedBox(
-                height: 10,
-                child: Divider(
-                  thickness: 2,
-                  color: Colors.grey,
+                      Expanded(
+                        flex: 3,
+                        child: RatingBar.builder(
+                          initialRating: filter.rating,
+                          minRating: 0,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _) => const Icon(
+                            Icons.star,
+                            color: darkGreen,
+                          ),
+                          itemSize: 30,
+                          onRatingUpdate: (rating) {
+                            setState(() {
+                              filter.rating = rating;
+                            });
+                          },
+                        ),
+                      ),
+                    ]),
+                    const SizedBox(height: 20),
+                    Row(mainAxisSize: MainAxisSize.min, children: [
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          "Cijena: " + filter.price.toString() + " HRK",
+                          style: filterTxtStyle,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Slider(
+                          activeColor: darkGreen,
+                          value: filter.price.toDouble(),
+                          min: 0,
+                          max: 5000,
+                          divisions: 20,
+                          label: filter.price.toString(),
+                          onChanged: (double value) {
+                            setState(() {
+                              filter.price = value.round();
+                            });
+                          },
+                        ),
+                      ),
+                    ]),
+                    const SizedBox(height: 10),
+                    Row(mainAxisSize: MainAxisSize.min, children: [
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          "Broj ljudi" + (filter.numberOfPeople != 0 ? ": " + filter.numberOfPeople.toString() : ""),
+                          style: filterTxtStyle,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Slider(
+                          activeColor: darkGreen,
+                          value: filter.numberOfPeople.toDouble(),
+                          max: 300,
+                          divisions: 60,
+                          label: filter.numberOfPeople.toString(),
+                          onChanged: (double value) {
+                            setState(() {
+                              filter.numberOfPeople = value.round();
+                            });
+                          },
+                        ),
+                      ),
+                    ]),
+                  ],
                 ),
               ),
+              const SizedBox(height: 10),
               SizedBox(
                 height: 35,
                 child: CheckboxListTile(
@@ -274,20 +289,27 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                 },
               ),
               const SizedBox(height: 20),
-              Center(
-                child: ElevatedButton(
-                  child: const Text("Filtriraj pretragu"),
-                  onPressed: () => filter.apply(),
-                  style: ElevatedButton.styleFrom(primary: darkGreen),
-                ),
+              ElevatedButton(
+                child: const SizedBox(
+                    width: 100,
+                    child: Text(
+                      "Filtriraj pretragu",
+                      textAlign: TextAlign.center,
+                    )),
+                onPressed: () => filter.apply(),
               ),
               const SizedBox(height: 20),
-              //const Expanded(child: SizedBox()),
               ElevatedButton(
                 onPressed: () => setState(() {
                   filter.reset();
+                  controller.clear();
                 }),
-                child: const Text("Reset filter"),
+                child: const SizedBox(
+                    width: 100,
+                    child: Text(
+                      "Poništi filter",
+                      textAlign: TextAlign.center,
+                    )),
               ),
               const SizedBox(height: 20),
             ],

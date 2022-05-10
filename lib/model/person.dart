@@ -24,7 +24,6 @@ class Person {
       "name": person.name,
       "email": person.email,
       "username": person.username,
-      "mySpaces": List<String>.empty(),
     });
   }
 }
