@@ -32,7 +32,7 @@ class SpacePagePrimary extends StatelessWidget {
                         ),
                         const Expanded(child: SizedBox()),
                         Text(
-                          "${space.rating}/5 ",
+                          "${space.rating.toStringAsFixed(1)}/5 ",
                           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         Text(

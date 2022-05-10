@@ -68,7 +68,11 @@ class CustomRouterDelegate extends RouterDelegate<Configuration>
 
   @override
   Future<void> setNewRoutePath(Configuration configuration) async {
-    lastConfiguration = _configuration;
+    if (_configuration.pathName != null &&
+        _configuration.pathName!.removeParams() != Routes.login &&
+        _configuration.pathName!.removeParams() != Routes.register) {
+      lastConfiguration = _configuration;
+    }
     _configuration = configuration;
   }
 
