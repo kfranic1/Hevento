@@ -75,7 +75,14 @@ class _SpaceFormState extends State<SpaceForm> {
             Expanded(
               child: IndexedStack(
                 index: step,
-                children: steps.map((e) => ExcludeFocus(child: e, excluding: steps[step] != e,),).toList(),
+                children: steps
+                    .map(
+                      (e) => ExcludeFocus(
+                        child: e,
+                        excluding: steps[step] != e,
+                      ),
+                    )
+                    .toList(),
               ),
             ),
             if ((space.id != "" || step == 3))
@@ -105,7 +112,7 @@ class _SpaceFormState extends State<SpaceForm> {
                       }
                     }
                   } catch (e) {
-                    print(e.toString());
+                    //print(e.toString());
                   }
                 },
               ),

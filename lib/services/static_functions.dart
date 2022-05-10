@@ -10,7 +10,7 @@ abstract class Functions {
       Reference ref = FirebaseStorage.instance.ref().child(spaceId).child(imgName ?? "");
       return await ref.getDownloadURL();
     } catch (e) {
-      print(e.toString());
+      //print(e.toString());
       return "https://firebasestorage.googleapis.com/v0/b/hevento-7371e.appspot.com/o/123%2FtileImage.jpg?alt=media&token=7d0a4b42-1fd1-4d6b-8c94-85f2eee3db90";
     }
   }
@@ -23,7 +23,7 @@ abstract class Functions {
           .listAll()
           .then((value) async => await Future.wait(value.items.map((e) async => returnName ? e.name : await e.getDownloadURL()).toList()));
     } catch (e) {
-      print(e.toString());
+      //print(e.toString());
       return [
         "https://firebasestorage.googleapis.com/v0/b/hevento-7371e.appspot.com/o/123%2FtileImage.jpg?alt=media&token=7d0a4b42-1fd1-4d6b-8c94-85f2eee3db90"
       ];
@@ -35,7 +35,7 @@ abstract class Functions {
       return value.docs.map((e) => Review.parseToReview(e)).toList();
     });
   }
-  
+
   static Future<List<Space>> getSpaces() async {
     try {
       List<Space> ret = await FirebaseFirestore.instance
@@ -45,7 +45,7 @@ abstract class Functions {
       ret.shuffle();
       return ret;
     } catch (e) {
-      print(e.toString());
+      //print(e.toString());
       return [];
     }
   }

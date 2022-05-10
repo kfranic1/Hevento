@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hevento/services/constants.dart';
+import 'package:hevento/widgets/auth_buttons.dart';
 import 'package:hevento/widgets/custom_app_bar.dart';
 import 'package:hevento/widgets/custom_divider.dart';
 import 'package:hevento/widgets/title_image.dart';
@@ -16,30 +17,31 @@ class PageWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppBar appBar = AppBar(
-      elevation: 0,
-      automaticallyImplyLeading: false,
-      centerTitle: false,
-      leadingWidth: 0,
-      title: const TitleImage(),
-      toolbarHeight: 80,
-      backgroundColor: lightGreen,
-      bottom: const PreferredSize(
-        preferredSize: Size(double.infinity, 2),
-        child: CustomDivider(
-          divider: Divider(
-            thickness: 2,
-            color: darkGreen,
-            indent: 0,
-            endIndent: 0,
-            height: 2,
-          ),
-          right: lightGreen,
-        ),
-      ),
-    );
-    final Widget drawerWidget = SizedBox(width: 400, child: secondary);
     return LayoutBuilder(builder: (context, constraints) {
+      final AppBar appBar = AppBar(
+        //elevation: 0,
+        //automaticallyImplyLeading: false,
+        actions: [SizedBox(width: constraints.maxWidth * 0.5, child: const AuthButtons())],
+        //centerTitle: false,
+        leadingWidth: 100,
+        title: const TitleImage(),
+        toolbarHeight: 80,
+        backgroundColor: lightGreen,
+        bottom: const PreferredSize(
+          preferredSize: Size(double.infinity, 2),
+          child: CustomDivider(
+            divider: Divider(
+              thickness: 2,
+              color: darkGreen,
+              indent: 0,
+              endIndent: 0,
+              height: 2,
+            ),
+            right: lightGreen,
+          ),
+        ),
+      );
+      final Widget drawerWidget = SizedBox(width: 400, child: secondary);
       return Scaffold(
         appBar: constraints.maxWidth <= kNarrow && shouldDisplayAppBar ? appBar : null,
         endDrawer: constraints.maxWidth <= kNarrow ? drawerWidget : null,

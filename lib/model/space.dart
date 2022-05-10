@@ -88,7 +88,7 @@ class Space {
       hidden = data["hidden"];
       profileImage = data["profileImage"];
     } catch (e) {
-      print(e.toString());
+      ////print(e.toString());
       return null;
     }
     return this;
@@ -134,7 +134,7 @@ class Space {
         id = value.id;
       });
     } catch (e) {
-      print(e.toString());
+      ////print(e.toString());
     }
   }
 
@@ -158,7 +158,7 @@ class Space {
         "profileImage": profileImage,
       });
     } catch (e) {
-      print(e.toString());
+      ////print(e.toString());
     }
   }
 
@@ -177,7 +177,7 @@ class Space {
         });
       });
     } catch (e) {
-      print(e.toString());
+      //print(e.toString());
     }
   }
 
@@ -193,7 +193,7 @@ class Space {
           .doc(id)
           .update({"calendar": calendar.map((key, value) => MapEntry(key.toString(), value))});
     } catch (e) {
-      print(e.toString());
+      //print(e.toString());
     }
   }
 
@@ -210,7 +210,7 @@ class Space {
         await updateSpace();
       }
     } catch (e) {
-      print(e.toString());
+      //print(e.toString());
       return;
     }
   }
@@ -219,7 +219,7 @@ class Space {
     try {
       await FirebaseStorage.instance.ref().child("$id/$imageName").delete();
     } catch (e) {
-      print(e.toString());
+      //print(e.toString());
       return [];
     }
   }

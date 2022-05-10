@@ -67,7 +67,7 @@ class SpaceListItem extends StatelessWidget {
                       RichText(
                           text: TextSpan(
                         children: [
-                          TextSpan(text: "${space.rating}/5.0  "),
+                          TextSpan(text: "${space.rating.toStringAsFixed(1)}/5.0  "),
                           TextSpan(text: "${space.numberOfReviews} glasova", style: const TextStyle(color: Colors.grey, fontSize: 14))
                         ],
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),

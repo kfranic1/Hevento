@@ -5,6 +5,7 @@ import 'package:hevento/model/person.dart';
 import 'package:hevento/routing/custom_router_delegate.dart';
 import 'package:hevento/services/auth_service.dart';
 import 'package:hevento/services/constants.dart';
+import 'package:hevento/widgets/title_image.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -55,6 +56,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          const TitleImage(),
+                          const SizedBox(height: 30),
                           const Text(
                             "Dobro došli !",
                             style: titleStyle,
@@ -155,6 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       if (result == null) context.read<CustomRouterDelegate>().goToHome();
                                       setState(() {
                                         error = result;
+                                        loading = false;
                                       });
                                     },
                                     child: const Text(

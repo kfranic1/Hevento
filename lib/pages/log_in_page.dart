@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hevento/model/person.dart';
 import 'package:hevento/services/auth_service.dart';
 import 'package:hevento/services/constants.dart';
+import 'package:hevento/widgets/title_image.dart';
 import 'package:provider/provider.dart';
 
 import '../routing/custom_router_delegate.dart';
@@ -52,6 +53,8 @@ class _LogInPageState extends State<LogInPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        const TitleImage(),
+                        const SizedBox(height: 30),
                         const Text("Dobro došli !", style: titleStyle),
                         const Text("Prijavi se na svoj profil", style: subTitleStyle),
                         const SizedBox(height: 170),
@@ -120,6 +123,7 @@ class _LogInPageState extends State<LogInPage> {
                                     if (result == null) context.read<CustomRouterDelegate>().goToLastPage();
                                     setState(() {
                                       error = result;
+                                      loading = false;
                                     });
                                   },
                                   child: const Text(

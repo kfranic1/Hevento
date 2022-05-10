@@ -16,7 +16,7 @@ class TitleImage extends StatelessWidget {
         onHover: (value) {},
         child: GestureDetector(
           child: Image.asset(
-            './assets/images/title.png',
+            './assets/images/logo.png',
             height: 40,
             fit: BoxFit.fitHeight,
           ),
