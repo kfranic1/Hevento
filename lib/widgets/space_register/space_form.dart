@@ -10,7 +10,6 @@ import 'package:hevento/widgets/space_register/space_register_three.dart';
 import 'package:hevento/widgets/space_register/space_register_two.dart';
 import 'package:hevento/widgets/space_register/space_register_one.dart';
 import 'package:hevento/widgets/space_register/space_register_four.dart';
-import 'package:hevento/widgets/space_register/space_register_two.dart';
 import 'package:provider/provider.dart';
 
 class SpaceForm extends StatefulWidget {

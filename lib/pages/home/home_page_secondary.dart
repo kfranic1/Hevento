@@ -69,11 +69,6 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                   calendarFormat: CalendarFormat.month,
                   startingDayOfWeek: StartingDayOfWeek.monday,
                   selectedDayPredicate: (day) {
-                    // Use `selectedDayPredicate` to determine which day is currently selected.
-                    // If this returns true, then `day` will be marked as selected.
-
-                    // Using `isSameDay` is recommended to disregard
-                    // the time-part of compared DateTime objects.
                     return isSameDay(filter.selectedDay, day);
                   },
                   onDaySelected: (selectedDay, focusedDay) {
@@ -149,7 +144,6 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                           style: filterTxtStyle,
                         ),
                       ),
-                      //const Expanded(child: SizedBox()),
                       Expanded(
                         flex: 3,
                         child: Slider(
@@ -176,7 +170,6 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                           style: filterTxtStyle,
                         ),
                       ),
-                      //const Expanded(child: SizedBox()),
                       Expanded(
                         flex: 3,
                         child: Slider(

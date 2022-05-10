@@ -32,7 +32,6 @@ abstract class Functions {
 
   static Future<List<Review>> getReviews(String spaceId) async {
     return FirebaseFirestore.instance.collection(Collections.review).where("spaceId", isEqualTo: spaceId).get().then((value) {
-      //if (value.docs.isEmpty) return null;
       return value.docs.map((e) => Review.parseToReview(e)).toList();
     });
   }

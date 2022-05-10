@@ -12,7 +12,6 @@ class TitleImage extends StatelessWidget {
       color: Colors.transparent,
       shadowColor: Colors.transparent,
       child: InkWell(
-        //hoverColor: Colors.black12,
         onTap: () {},
         onHover: (value) {},
         child: GestureDetector(

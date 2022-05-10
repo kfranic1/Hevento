@@ -16,7 +16,6 @@ class CustomNetworkImage extends StatelessWidget {
         return Image.network(
           snapshot.data as String,
           height: double.infinity,
-          //width: double.infinity,
           fit: BoxFit.fill,
           loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
             if (loadingProgress == null) return child;

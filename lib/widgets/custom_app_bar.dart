@@ -31,11 +31,7 @@ class CustomAppBar extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Padding(
-                            //TODO remove 0 *
-                            padding: EdgeInsets.only(left: 0 * constraints.maxWidth * 0.02),
-                            child: const TitleImage(),
-                          ),
+                          const TitleImage(),
                           const Expanded(child: SizedBox()),
                           if (appUser == null)
                             TextButton(

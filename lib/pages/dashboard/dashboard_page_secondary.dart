@@ -76,11 +76,6 @@ class _DashboardPageSecondaryState extends State<DashboardPageSecondary> {
                               ? [(_space!.calendar[_space!.calendar.keys.firstWhere((element) => isSameDay(day, element))])]
                               : [],
                       selectedDayPredicate: (day) {
-                        // Use `selectedDayPredicate` to determine which day is currently selected.
-                        // If this returns true, then `day` will be marked as selected.
-
-                        // Using `isSameDay` is recommended to disregard
-                        // the time-part of compared DateTime objects.
                         return isSameDay(_selectedDay, day);
                       },
                       onDaySelected: (selectedDay, focusedDay) {
