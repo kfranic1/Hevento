@@ -17,8 +17,10 @@ jobs:
       - uses: subosito/flutter-action@v1
       - name: 'Run flutter pub get'
         run: flutter pub get
+      - name: 'Flutter get icon'
+        run: flutter pub run flutter_launcher_icons:main
       - name: 'Build Web App'
-        run: flutter build web --web-renderer html
+        run: flutter build web --web-renderer html --release
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
