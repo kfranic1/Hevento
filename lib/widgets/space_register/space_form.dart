@@ -76,10 +76,10 @@ class _SpaceFormState extends State<SpaceForm> {
             Expanded(
               child: IndexedStack(
                 index: step,
-                children: steps,
+                children: steps.map((e) => ExcludeFocus(child: e, excluding: steps[step] != e,),).toList(),
               ),
             ),
-            if ((space.id != "" || step == 2))
+            if ((space.id != "" || step == 3))
               ElevatedButton(
                 child: Text(space.id == ""
                     ? "Stvori oglas"
@@ -98,7 +98,6 @@ class _SpaceFormState extends State<SpaceForm> {
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Prostor uspješno stvoren.")));
                         setState(() {
                           step++;
-                          changed = true;
                         });
                       } else {
                         await space.updateSpace();
@@ -111,14 +110,12 @@ class _SpaceFormState extends State<SpaceForm> {
                   }
                 },
               ),
-            if (step == 4)
+            if (step == steps.length - 1)
               const Text(
                 "Napomena: dodavanje i brisanje slika je automatsko",
                 style: TextStyle(color: Colors.red, fontSize: 12),
               ),
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -136,16 +133,14 @@ class _SpaceFormState extends State<SpaceForm> {
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 IconButton(
-                  disabledColor: space.id == "" && step == 2 ? Colors.grey : null,
-                  onPressed: space.id == "" && step == 2
+                  color: darkGreen,
+                  disabledColor: Colors.grey,
+                  onPressed: (space.id == "" && step == 3)
                       ? null
                       : () {
                           if (step < steps.length - 1) setState(() => step++);
                         },
-                  icon: const Icon(
-                    Icons.arrow_circle_right_outlined,
-                    color: darkGreen,
-                  ),
+                  icon: const Icon(Icons.arrow_circle_right_outlined),
                 ),
               ],
             ),

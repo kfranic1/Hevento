@@ -20,6 +20,7 @@ class _DashboardPagePrimaryState extends State<DashboardPagePrimary> {
   Widget build(BuildContext context) {
     Person appUser = context.read<Person?>()!;
     List<Space> mySpaces = context.read<List<Space>>().where((element) => element.owner.id == appUser.id).toList();
+    mySpaces.sort((a, b) => a.name.compareTo(b.name));
     //? Ako zelimo da se sortira po tome jesu skriveni il ne => mySpaces.sort((a, b) => a.hidden ? 1 : 0);
     return Scaffold(
       body: Padding(
@@ -60,7 +61,7 @@ class _DashboardPagePrimaryState extends State<DashboardPagePrimary> {
                                 barrierDismissible: false,
                                 context: context,
                                 builder: (context) => AlertDialog(content: SpaceForm(space: space)),
-                              ),
+                              ).then((value) => setState(() {})),
                             ),
                           ],
                         ),

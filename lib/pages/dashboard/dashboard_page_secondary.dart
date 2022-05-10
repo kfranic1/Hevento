@@ -5,6 +5,7 @@ import 'package:hevento/services/constants.dart';
 import 'package:hevento/services/extensions/datetime_extension.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
 
 class DashboardPageSecondary extends StatefulWidget {
   const DashboardPageSecondary({Key? key}) : super(key: key);
@@ -45,7 +46,7 @@ class _DashboardPageSecondaryState extends State<DashboardPageSecondary> {
                     value: _space,
                     items: mySpaces
                         .map((space) => DropdownMenuItem<Space>(
-                              child: SizedBox(width: constraints.maxWidth * 0.8, child: Text(space.name)),
+                              child: SizedBox(width: constraints.maxWidth * 0.8 - 48, child: Text(space.name)),
                               value: space,
                             ))
                         .toList(),
@@ -54,8 +55,9 @@ class _DashboardPageSecondaryState extends State<DashboardPageSecondary> {
                         _space = space;
                       });
                     },
+                    underline: const Divider(height:10, thickness: 2, color: darkGreen),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   Container(
                     height: 225,
                     width: constraints.maxWidth * 0.8,
@@ -115,9 +117,12 @@ class _DashboardPageSecondaryState extends State<DashboardPageSecondary> {
                     SizedBox(
                       width: constraints.maxWidth * 0.8,
                       child: ListTile(
-                        title: Text(
-                          "${_space!.calendar[_selectedDay]}",
-                          maxLines: 4,
+                        title: Tooltip(
+                          message: "Uredi događaj",
+                          child: Text(
+                            "${_space!.calendar[_selectedDay]}",
+                            maxLines: 4,
+                          ),
                         ),
                         onTap: () => eventEditor().whenComplete(() => setState(() {})),
                         trailing: IconButton(
@@ -133,7 +138,7 @@ class _DashboardPageSecondaryState extends State<DashboardPageSecondary> {
                   const SizedBox(height: 20),
                   if (_space != null)
                     ElevatedButton(
-                      child: Text("Dodaj događaj za ${_space!.name}"),
+                      child: Text("${_space?.calendar[_selectedDay] != null ? "Uredi" : "Dodaj"} događaj"),
                       onPressed: () => eventEditor().whenComplete(() => setState(() {})),
                     )
                 ]),
@@ -151,7 +156,7 @@ class _DashboardPageSecondaryState extends State<DashboardPageSecondary> {
             height: 250,
             width: 250,
             child: AlertDialog(
-              title: Text("Dodaj opis za događaj u ${_space!.name}, ${_selectedDay.toString().substring(0, 10)}"),
+              title: Text("Dodaj opis za događaj u ${_space!.name}, ${DateFormat("dd/MM/yyyy").format(_selectedDay)}"),
               content: TextFormField(
                 controller: controller,
                 maxLength: 50,

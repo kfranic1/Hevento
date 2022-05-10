@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hevento/model/space.dart';
+import 'package:hevento/services/constants.dart';
 
 class SpaceRegisterFour extends StatelessWidget {
   final Space space;
@@ -12,84 +13,32 @@ class SpaceRegisterFour extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Cijene prostora"),
-          TextFormField(
-            initialValue: space.id == "" ? null : space.price[DateTime.monday]?.toString(),
-            controller: space.id == "" ? TextEditingController() : null,
-            decoration: const InputDecoration(hintText: "Monday price"),
-            onChanged: (value) => space.price[DateTime.monday] = int.tryParse(value),
-            validator: (value) {
-              if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
-              return "Pogrešan format";
-            },
+          Text(
+            "Cijene prostora",
+            style: titleStyle.copyWith(fontSize: 25),
           ),
-          TextFormField(
-            initialValue: space.id == "" ? null : space.price[DateTime.tuesday]?.toString(),
-            controller: space.id == "" ? TextEditingController() : null,
-            decoration: const InputDecoration(hintText: "Tuesday price"),
-            onChanged: (value) => space.price[DateTime.tuesday] = int.tryParse(value),
-            validator: (value) {
-              if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
-              return "Pogrešan format";
-            },
-          ),
-          TextFormField(
-            initialValue: space.id == "" ? null : space.price[DateTime.wednesday]?.toString(),
-            controller: space.id == "" ? TextEditingController() : null,
-            decoration: const InputDecoration(hintText: "Wednesday price"),
-            onChanged: (value) => space.price[DateTime.wednesday] = int.parse(value),
-            validator: (value) {
-              if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
-              return "Pogrešan format";
-            },
-          ),
-          TextFormField(
-            initialValue: space.id == "" ? null : space.price[DateTime.thursday]?.toString(),
-            controller: space.id == "" ? TextEditingController() : null,
-            decoration: const InputDecoration(hintText: "Thursday price"),
-            onChanged: (value) => space.price[DateTime.thursday] = int.tryParse(value),
-            validator: (value) {
-              if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
-              return "Pogrešan format";
-            },
-          ),
-          TextFormField(
-            initialValue: space.id == "" ? null : space.price[DateTime.friday]?.toString(),
-            controller: space.id == "" ? TextEditingController() : null,
-            decoration: const InputDecoration(hintText: "Friday price"),
-            onChanged: (value) => space.price[DateTime.friday] = int.tryParse(value),
-            validator: (value) {
-              if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
-              return "Pogrešan format";
-            },
-          ),
-          TextFormField(
-            initialValue: space.id == "" ? null : space.price[DateTime.saturday]?.toString(),
-            controller: space.id == "" ? TextEditingController() : null,
-            decoration: const InputDecoration(hintText: "Saturday price"),
-            onChanged: (value) => space.price[DateTime.saturday] = int.tryParse(value),
-            validator: (value) {
-              if (space.price.values.every((element) => element == null)) return "Please define at least one price";
-              if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
-              return "Pogrešan format";
-            },
-          ),
-          TextFormField(
-            initialValue: space.id == "" ? null : space.price[DateTime.sunday]?.toString(),
-            controller: space.id == "" ? TextEditingController() : null,
-            decoration: const InputDecoration(hintText: "Sunday price"),
-            onChanged: (value) => space.price[DateTime.sunday] = int.tryParse(value),
-            validator: (value) {
-              if (value == null || value.isEmpty || int.tryParse(value) != null) return null;
-              return "Pogrešan format";
-            },
-          ),
+          Text('', style: subTitleStyle.copyWith(fontSize: 12)),
+          const SizedBox(height: 15),
+          textFormField(DateTime.monday, "ponedjeljak"),
+          const SizedBox(height: 15),
+          textFormField(DateTime.tuesday, "utorak"),
+          const SizedBox(height: 15),
+          textFormField(DateTime.wednesday, "srijedu"),
+          const SizedBox(height: 15),
+          textFormField(DateTime.thursday, "četvrtak"),
+          const SizedBox(height: 15),
+          textFormField(DateTime.friday, "petak"),
+          const SizedBox(height: 15),
+          textFormField(DateTime.saturday, "subotu"),
+          const SizedBox(height: 15),
+          textFormField(DateTime.sunday, "nedjelju"),
           const SizedBox(height: 20),
           const Text("Dodatni podatci"),
+          const SizedBox(height: 15),
           TextFormField(
             initialValue: space.id == "" ? null : space.numberOfPeople.toString(),
             controller: space.id == "" ? TextEditingController() : null,
-            decoration: const InputDecoration(hintText: "Number of people"),
+            decoration: inputDecoration("Number of people"),
             onChanged: (value) => space.numberOfPeople = int.parse(value),
             validator: (value) {
               if (value == null || value.isEmpty) return "Polje ne smije biti prazno";
@@ -97,14 +46,38 @@ class SpaceRegisterFour extends StatelessWidget {
               return "Pogrešan format";
             },
           ),
+          const SizedBox(height: 15),
           TextFormField(
             initialValue: space.id == "" ? null : space.tags?.join(", "),
             controller: space.id == "" ? TextEditingController() : null,
-            decoration: const InputDecoration(hintText: "Tags(#party #prom #birthday #wedding...)"),
+            decoration: inputDecoration("Tags(#party #prom #birthday #wedding...)"),
             onChanged: (value) => space.tags = value.split(', '),
           ),
         ],
       ),
+    );
+  }
+
+  TextFormField textFormField(int day, String dayName) {
+    return TextFormField(
+      initialValue: space.id == "" ? null : space.price[day]?.toString(),
+      controller: space.id == "" ? TextEditingController() : null,
+      decoration: inputDecoration("Cijena za  $dayName"),
+      onChanged: (value) => space.price[day] = int.tryParse(value),
+      validator: (value) {
+        if (value != null && value.isNotEmpty && int.tryParse(value) == null) return "Pogrešan format";
+        if (day == 6 && space.price.values.every((element) => element == null)) return "Potrebno je navesti barem jednu cijenu";
+        return null;
+      },
+    );
+  }
+
+  InputDecoration inputDecoration(String hint) {
+    return InputDecoration(
+      hintText: hint,
+      hintStyle: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 12),
+      border: const OutlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
+      errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red, width: 2.0)),
     );
   }
 }

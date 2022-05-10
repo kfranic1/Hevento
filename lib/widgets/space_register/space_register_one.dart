@@ -18,6 +18,7 @@ class SpaceRegisterOne extends StatelessWidget {
             "Osnovni podatci",
             style: titleStyle.copyWith(fontSize: 25),
           ),
+          Text('', style: subTitleStyle.copyWith(fontSize: 12)),
           const SizedBox(height: 15),
           TextFormField(
             initialValue: space.id == "" ? null : space.name,
@@ -60,28 +61,12 @@ class SpaceRegisterOne extends StatelessWidget {
       case "address":
         txt = "Adresa";
         break;
-      case "phone":
-        txt = "Broj mobitela (neobavezno)";
-        break;
-      case "email":
-        txt = "Email adresa (neobavezno)";
-        break;
-      case "facebook":
-        txt = "Facebook (neobavezno)";
-        break;
-      case "instagram":
-        txt = "Instagram (neobavezno)";
-        break;
-      case "website":
-        txt = "Link web stranice (neobavezno)";
-        break;
       default:
     }
     return InputDecoration(
         hintText: txt,
         hintStyle: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 12),
-        enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
-        focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
+        border: const OutlineInputBorder(borderSide: BorderSide(color: darkGreen, width: 2.0)),
         errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red, width: 2.0)));
   }
 }

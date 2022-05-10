@@ -24,20 +24,23 @@ class _GalleryFormState extends State<GalleryForm> {
       controller: ScrollController(),
       child: Column(
         children: [
-          ElevatedButton(
-              child: const Text('Dodaj nove slike'),
-              onPressed: () async {
-                List<XFile>? newFiles = await ImagePicker().pickMultiImage(maxHeight: 1080, maxWidth: 1920);
-                if (newFiles == null) return;
-                setState(() {
-                  loading = true;
-                });
-                await widget.space.addImages(newFiles);
-                widget.images.addAll(newFiles.map((e) => CustomNetworkImage(spaceId: widget.space.id, imageName: e.name)));
-                setState(() {
-                  loading = true;
-                });
-              }),
+          Align(
+            alignment: Alignment.topCenter,
+            child: ElevatedButton(
+                child: const Text('Dodaj nove slike'),
+                onPressed: () async {
+                  List<XFile>? newFiles = await ImagePicker().pickMultiImage(maxHeight: 1080, maxWidth: 1920);
+                  if (newFiles == null) return;
+                  setState(() {
+                    loading = true;
+                  });
+                  await widget.space.addImages(newFiles);
+                  widget.images.addAll(newFiles.map((e) => CustomNetworkImage(spaceId: widget.space.id, imageName: e.name)));
+                  setState(() {
+                    loading = true;
+                  });
+                }),
+          ),
           if (widget.images.isNotEmpty)
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -65,15 +68,18 @@ class _GalleryFormState extends State<GalleryForm> {
                                 ],
                               ),
                               if (widget.space.profileImage == e.imageName)
-                                const Text(
-                                  "Glavna slika",
-                                  style: TextStyle(color: darkGreen),
+                                TextButton(
+                                  child: const Text(
+                                    "Glavna slika",
+                                    style: TextStyle(color: darkGreen, fontSize: 15),
+                                  ),
+                                  onPressed: () {},
                                 )
                               else
                                 TextButton(
                                   child: const Text(
                                     "Postavi kao glavnu sliku",
-                                    style: TextStyle(color: Colors.black),
+                                    style: TextStyle(color: Colors.black, fontSize: 15),
                                   ),
                                   onPressed: () => setState(() {
                                     widget.space.profileImage = e.imageName;

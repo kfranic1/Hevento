@@ -48,9 +48,10 @@ class SpacePagePrimary extends StatelessWidget {
                     child: ListView.separated(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) => SizedBox(
+                      itemBuilder: (context, index) => Image.network(
+                        ids[index],
                         height: 300,
-                        child: Image.network(ids[index]),
+                        fit: BoxFit.fitHeight,
                       ),
                       separatorBuilder: (context, index) => const SizedBox(width: 10),
                       itemCount: ids.length,
