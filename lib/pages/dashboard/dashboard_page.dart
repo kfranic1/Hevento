@@ -14,7 +14,7 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Person? appUser = context.watch<Person?>();
     if (appUser == null) {
-      WidgetsBinding.instance?.addPostFrameCallback((_) => context.read<CustomRouterDelegate>().goToLogin());
+      WidgetsBinding.instance.addPostFrameCallback((_) => context.read<CustomRouterDelegate>().goToLogin());
       return loader;
     }
     return const PageWrapper(

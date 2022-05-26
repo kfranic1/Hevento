@@ -46,7 +46,7 @@ class CustomRouterDelegate extends RouterDelegate<Configuration>
                   try {
                     return SpacePage(space: context.read<List<Space>>().firstWhere((element) => element.id == _configuration.pathParams!["id"]));
                   } catch (e) {
-                    WidgetsBinding.instance?.addPostFrameCallback((Duration duration) => goToHome());
+                    WidgetsBinding.instance.addPostFrameCallback((Duration duration) => goToHome());
                     return const HomePage();
                   }
                 case Routes.register:

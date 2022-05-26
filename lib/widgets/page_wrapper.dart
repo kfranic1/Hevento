@@ -19,10 +19,7 @@ class PageWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       final AppBar appBar = AppBar(
-        //elevation: 0,
-        //automaticallyImplyLeading: false,
-        actions: [SizedBox(width: constraints.maxWidth * 0.5, child: const AuthButtons())],
-        //centerTitle: false,
+        actions: constraints.maxWidth <= kNarrow ? null : [SizedBox(width: constraints.maxWidth * 0.5, child: const AuthButtons())],
         leadingWidth: 100,
         title: const TitleImage(),
         toolbarHeight: 80,
@@ -41,7 +38,18 @@ class PageWrapper extends StatelessWidget {
           ),
         ),
       );
-      final Widget drawerWidget = SizedBox(width: 400, child: secondary);
+      final Widget drawerWidget = SizedBox(
+        width: 400,
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 82,
+              child: AuthButtons(),
+            ),
+            if (secondary != null) Expanded(child: secondary!),
+          ],
+        ),
+      );
       return Scaffold(
         appBar: constraints.maxWidth <= kNarrow && shouldDisplayAppBar ? appBar : null,
         endDrawer: constraints.maxWidth <= kNarrow ? drawerWidget : null,

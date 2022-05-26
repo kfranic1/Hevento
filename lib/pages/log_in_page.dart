@@ -6,7 +6,6 @@ import 'package:hevento/model/person.dart';
 import 'package:hevento/services/auth_service.dart';
 import 'package:hevento/services/constants.dart';
 import 'package:hevento/widgets/page_wrapper.dart';
-import 'package:hevento/widgets/title_image.dart';
 import 'package:provider/provider.dart';
 
 import '../routing/custom_router_delegate.dart';
@@ -30,7 +29,7 @@ class _LogInPageState extends State<LogInPage> {
   Widget build(BuildContext context) {
     Person? appUser = context.watch<Person?>();
     if (appUser != null) {
-      WidgetsBinding.instance?.addPostFrameCallback((_) => context.read<CustomRouterDelegate>().goToLastPage());
+      WidgetsBinding.instance.addPostFrameCallback((_) => context.read<CustomRouterDelegate>().goToLastPage());
       return loader;
     }
     return PageWrapper(
