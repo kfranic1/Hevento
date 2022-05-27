@@ -19,7 +19,6 @@ class SpacePageSecondary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Person? appUser = context.read<Person?>();
     DateTime? selectedDay = context.read<Filter>().selectedDay;
     return LayoutBuilder(
       builder: (context, constraints) => Container(
@@ -166,27 +165,29 @@ class SpacePageSecondary extends StatelessWidget {
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () async => await showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    content: SizedBox(
-                      height: 250,
-                      child: appUser == null
-                          ? const Center(child: Text("Potrebno je biti prijavljen kako bi ostavio recenziju."))
-                          : appUser.id == space.owner.id
-                              ? const Center(child: Text("Ne možeš ostaviti recenziju na vlastiti oglas."))
-                              : FutureBuilder(
-                                  future: Review.getReview(personId: appUser.id, spaceId: space.id),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState != ConnectionState.done) return loader;
-                                    return ReviewDialog(
-                                      space: space,
-                                      review: snapshot.hasData ? snapshot.data as Review : null,
-                                      editable: true,
-                                    );
-                                  }),
-                    ),
-                  ),
-                ),
+                    context: context,
+                    builder: (context) {
+                      Person? appUser = context.watch<Person?>();
+                      return AlertDialog(
+                        content: SizedBox(
+                          height: 250,
+                          child: appUser == null
+                              ? const Center(child: Text("Potrebno je biti prijavljen kako bi ostavio recenziju."))
+                              : appUser.id == space.owner.id
+                                  ? const Center(child: Text("Ne možeš ostaviti recenziju na vlastiti oglas."))
+                                  : FutureBuilder(
+                                      future: Review.getReview(personId: appUser.id, spaceId: space.id),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState != ConnectionState.done) return loader;
+                                        return ReviewDialog(
+                                          space: space,
+                                          review: snapshot.hasData ? snapshot.data as Review : null,
+                                          editable: true,
+                                        );
+                                      }),
+                        ),
+                      );
+                    }),
                 child: const Text("Napiši recenziju"),
               ),
             ],
