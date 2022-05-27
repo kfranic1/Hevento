@@ -46,7 +46,7 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
               ),
               const SizedBox(height: 10),
               Container(
-                height: 225,
+                height: 250,
                 width: constraints.maxWidth * 0.8,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -96,7 +96,7 @@ class _HomePageSecondaryState extends State<HomePageSecondary> {
                       weekdayStyle: dayStyle,
                       weekendStyle: dayStyle,
                       dowTextFormatter: (DateTime date, dynamic locale) {
-                        return days[date.weekday - 1];
+                        return daysShort[date.weekday - 1];
                       }),
                 ),
               ),

@@ -32,7 +32,7 @@ class SpacePageSecondary extends StatelessWidget {
             children: [
               const SizedBox(height: 20),
               Container(
-                height: 225,
+                height: 250,
                 width: constraints.maxWidth * 0.8,
                 decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
                 child: TableCalendar(
@@ -63,7 +63,7 @@ class SpacePageSecondary extends StatelessWidget {
                     weekdayStyle: dayStyle,
                     weekendStyle: dayStyle,
                     dowTextFormatter: (DateTime date, dynamic locale) {
-                      return days[date.weekday - 1];
+                      return daysShort[date.weekday - 1];
                     },
                   ),
                 ),
@@ -74,75 +74,90 @@ class SpacePageSecondary extends StatelessWidget {
                 child: Column(
                   children: [
                     if (space.contacts["email"] != null)
-                      GestureDetector(
-                        onTap: () async => await launchUrl(Uri.parse("mailto:${space.contacts["email"]}")),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.mail,
-                              color: darkGreen,
-                            ),
-                            Text(' ' + space.contacts["email"]!)
-                          ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: GestureDetector(
+                          onTap: () async => await launchUrl(Uri.parse("mailto:${space.contacts["email"]}")),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.mail,
+                                color: darkGreen,
+                              ),
+                              Text(' ' + space.contacts["email"]!)
+                            ],
+                          ),
                         ),
                       ),
                     if (space.contacts["phone"] != null)
-                      GestureDetector(
-                        onTapDown: (details) async {
-                          if (kIsWeb) {
-                            Clipboard.setData(ClipboardData(text: space.contacts["phone"]));
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Broj kopiran u međuspremnik")));
-                          } else {
-                            await launchUrl(Uri.parse("tel:${space.contacts["phone"]}"));
-                          }
-                        },
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.phone,
-                              color: darkGreen,
-                            ),
-                            Text(' ' + space.contacts["phone"]!)
-                          ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: GestureDetector(
+                          onTapDown: (details) async {
+                            if (kIsWeb) {
+                              Clipboard.setData(ClipboardData(text: space.contacts["phone"]));
+                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Broj kopiran u međuspremnik")));
+                            } else {
+                              await launchUrl(Uri.parse("tel:${space.contacts["phone"]}"));
+                            }
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.phone,
+                                color: darkGreen,
+                              ),
+                              Text(' ' + space.contacts["phone"]!),
+                            ],
+                          ),
                         ),
                       ),
                     if (space.contacts["facebook"] != null)
-                      GestureDetector(
-                        onTap: () async => await launchUrl(Uri.parse("https:${space.contacts["facebook"]}")),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              FontAwesomeIcons.facebook,
-                              color: darkGreen,
-                            ),
-                            Text(' ' + space.contacts["facebook"]!)
-                          ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: GestureDetector(
+                          onTap: () async => await launchUrl(Uri.parse("https://${space.contacts["facebook"]}")),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                FontAwesomeIcons.facebook,
+                                color: darkGreen,
+                              ),
+                              Text(' ' + space.contacts["facebook"]!)
+                            ],
+                          ),
                         ),
                       ),
                     if (space.contacts["instagram"] != null)
-                      GestureDetector(
-                        onTap: () async => await launchUrl(Uri.parse("https:${space.contacts["instagram"]}")),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              FontAwesomeIcons.instagram,
-                              color: darkGreen,
-                            ),
-                            Text(' ' + space.contacts["instagram"]!)
-                          ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: GestureDetector(
+                          onTap: () async => await launchUrl(Uri.parse("https://${space.contacts["instagram"]}")),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                FontAwesomeIcons.instagram,
+                                color: darkGreen,
+                              ),
+                              Text(' ' + space.contacts["instagram"]!)
+                            ],
+                          ),
                         ),
                       ),
                     if (space.contacts["website"] != null)
-                      GestureDetector(
-                        onTap: () async => await launchUrl(Uri.parse("https:${space.contacts["website"]}")),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.web,
-                              color: darkGreen,
-                            ),
-                            Text(' ' + space.contacts["website"]!)
-                          ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: GestureDetector(
+                          onTap: () async => await launchUrl(Uri.parse("https://${space.contacts["website"]}")),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.web,
+                                color: darkGreen,
+                              ),
+                              Text(' ' + space.contacts["website"]!)
+                            ],
+                          ),
                         ),
                       ),
                   ],

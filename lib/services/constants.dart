@@ -50,4 +50,5 @@ const List<String> months = [
   "Prosinac"
 ];
 
-const List<String> days = ["Pon", "Uto", "Sri", "Čet", "Pet", "Sub", "Ned"];
+const List<String> daysShort = ["Pon", "Uto", "Sri", "Čet", "Pet", "Sub", "Ned"];
+const List<String> daysLong = ["Ponedjeljak", "Utorak", "Srijeda", "Četvrtak", "Petak", "Subota", "Nedjelja"];

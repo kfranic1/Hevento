@@ -12,15 +12,11 @@ class TitleImage extends StatelessWidget {
       color: Colors.transparent,
       shadowColor: Colors.transparent,
       child: InkWell(
-        onTap: () {},
-        onHover: (value) {},
-        child: GestureDetector(
-          child: Image.asset(
-            './assets/images/logo.png',
-            height: 40,
-            fit: BoxFit.fitHeight,
-          ),
-          onTap: () => context.read<CustomRouterDelegate>().goToHome(),
+        onTap: () => context.read<CustomRouterDelegate>().goToHome(),
+        child: Image.asset(
+          './assets/images/logo.png',
+          height: 40,
+          fit: BoxFit.fitHeight,
         ),
       ),
     );

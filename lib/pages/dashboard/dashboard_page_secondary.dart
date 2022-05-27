@@ -55,7 +55,7 @@ class _DashboardPageSecondaryState extends State<DashboardPageSecondary> {
                         _space = space;
                       });
                     },
-                    underline: const Divider(height:10, thickness: 2, color: darkGreen),
+                    underline: const Divider(height: 10, thickness: 2, color: darkGreen),
                   ),
                   const SizedBox(height: 10),
                   Container(
@@ -103,7 +103,7 @@ class _DashboardPageSecondaryState extends State<DashboardPageSecondary> {
                           weekdayStyle: dayStyle,
                           weekendStyle: dayStyle,
                           dowTextFormatter: (DateTime date, dynamic locale) {
-                            return days[date.weekday - 1];
+                            return daysShort[date.weekday - 1];
                           }),
                     ),
                   ),

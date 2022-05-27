@@ -41,35 +41,43 @@ class _ReviewDialogState extends State<ReviewDialog> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(children: [
-          TextFormField(
-            decoration: InputDecoration(hintText: widget.editable ? "Komentar(opcionalno)" : ''),
-            initialValue: review.content,
-            maxLines: 5,
-            onChanged: (value) => setState(() {
-              review.content = value;
-            }),
-            enabled: widget.editable,
+          SizedBox(
+            height: 120,
+            child: SingleChildScrollView(
+              child: TextFormField(
+                decoration: InputDecoration(hintText: widget.editable ? "Komentar(opcionalno)" : ''),
+                initialValue: review.content,
+                maxLines: null,
+                onChanged: (value) => setState(() {
+                  review.content = value;
+                }),
+                enabled: widget.editable,
+              ),
+            ),
           ),
           const SizedBox(height: 10),
-          RatingBar.builder(
-            initialRating: review.rating?.toDouble() ?? 0.0,
-            minRating: 0,
-            direction: Axis.horizontal,
-            itemCount: 5,
-            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-            itemBuilder: (context, _) => const Icon(
-              Icons.star,
-              color: darkGreen,
+          Expanded(
+            child: Center(
+              child: RatingBar.builder(
+                initialRating: review.rating?.toDouble() ?? 0.0,
+                minRating: 0,
+                direction: Axis.horizontal,
+                itemCount: 5,
+                itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                itemBuilder: (context, _) => const Icon(
+                  Icons.star,
+                  color: darkGreen,
+                ),
+                itemSize: 30,
+                ignoreGestures: (!widget.editable),
+                onRatingUpdate: (rating) {
+                  setState(() {
+                    review.rating = rating.round() == 0 ? null : rating.round();
+                  });
+                },
+              ),
             ),
-            itemSize: 30,
-            ignoreGestures: (!widget.editable),
-            onRatingUpdate: (rating) {
-              setState(() {
-                review.rating = rating.round() == 0 ? null : rating.round();
-              });
-            },
           ),
-          const Expanded(child: SizedBox()),
           if (widget.editable)
             ElevatedButton(
               onPressed: () async => await review.createReview(widget.space).whenComplete(() {

@@ -61,8 +61,8 @@ class SpacePagePrimary extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          flex: 2,
+                        SizedBox(
+                          width: 180,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -73,185 +73,48 @@ class SpacePagePrimary extends StatelessWidget {
                                   collapsedBackgroundColor: lightGreen,
                                   title: const Text("Cijene (HRK)"),
                                   children: [
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          child: Text("Ponedjeljak", style: priceDayStyle),
-                                          width: 80,
-                                        )),
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          width: 10,
-                                        )),
-                                        TextSpan(text: "${space.price[DateTime.monday] ?? "Ne iznajmulje se"}")
-                                      ])),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          child: Text("Utorak", style: priceDayStyle),
-                                          width: 80,
-                                        )),
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          width: 10,
-                                        )),
-                                        TextSpan(text: "${space.price[DateTime.tuesday] ?? "Ne iznajmulje se"} ")
-                                      ])),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          child: Text("Srijeda", style: priceDayStyle),
-                                          width: 80,
-                                        )),
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          width: 10,
-                                        )),
-                                        TextSpan(text: "${space.price[DateTime.wednesday] ?? "Ne iznajmulje se"} ")
-                                      ])),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          child: Text("Četvrtak", style: priceDayStyle),
-                                          width: 80,
-                                        )),
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          width: 10,
-                                        )),
-                                        TextSpan(text: "${space.price[DateTime.thursday] ?? "Ne iznajmulje se"} ")
-                                      ])),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          child: Text("Petak", style: priceDayStyle),
-                                          width: 80,
-                                        )),
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          width: 10,
-                                        )),
-                                        TextSpan(text: "${space.price[DateTime.friday] ?? "Ne iznajmulje se"} ")
-                                      ])),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          child: Text("Subota", style: priceDayStyle),
-                                          width: 80,
-                                        )),
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          width: 10,
-                                        )),
-                                        TextSpan(text: "${space.price[DateTime.saturday] ?? "Ne iznajmulje se"} ")
-                                      ])),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: RichText(
-                                          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          child: Text("Nedjelja", style: priceDayStyle),
-                                          width: 80,
-                                        )),
-                                        const WidgetSpan(
-                                            child: SizedBox(
-                                          width: 10,
-                                        )),
-                                        TextSpan(text: "${space.price[DateTime.sunday] ?? "Ne iznajmulje se"}")
-                                      ])),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
+                                    for (int i = 0; i < daysLong.length; i++)
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 5),
+                                        child: Row(
+                                          children: [
+                                            SizedBox(
+                                              child: Text(daysLong[i], style: priceDayStyle),
+                                              width: 80,
+                                            ),
+                                            Expanded(
+                                              child: Center(
+                                                child: Text("${space.price[i + 1] ?? "Ne iznajmulje se"}"),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                   ],
                                 ),
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
+                              const SizedBox(height: 10),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: ExpansionTile(
                                   collapsedBackgroundColor: lightGreen,
                                   title: const Text("Info"),
                                   children: [
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
+                                    const SizedBox(height: 5),
                                     infoText("music", context),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
+                                    const SizedBox(height: 5),
                                     infoText("waiter", context),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
+                                    const SizedBox(height: 5),
                                     infoText("drinks", context),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
+                                    const SizedBox(height: 5),
                                     infoText("food", context),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
+                                    const SizedBox(height: 5),
                                     infoText("security", context),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
+                                    const SizedBox(height: 5),
                                     infoText("specialEffects", context),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
+                                    const SizedBox(height: 5),
                                     infoText("smoking", context),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
+                                    const SizedBox(height: 5),
                                   ],
                                 ),
                               )
@@ -312,30 +175,32 @@ class SpacePagePrimary extends StatelessWidget {
         break;
       default:
     }
-    return Align(
-      alignment: Alignment.topLeft,
-      child: RichText(
-          text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-        WidgetSpan(
-            child: SizedBox(
-          child: Text(
-            showData,
-            style: priceDayStyle,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        children: [
+          SizedBox(
+            child: Text(
+              showData,
+              style: priceDayStyle,
+            ),
+            width: 80,
           ),
-          width: 60,
-        )),
-        WidgetSpan(child: SizedBox(width: MediaQuery.of(context).size.width * 0.1)),
-        WidgetSpan(
-            child: space.elements[data] == true
-                ? const Icon(
-                    Icons.check,
-                    color: darkGreen,
-                  )
-                : const Icon(
-                    Icons.cancel,
-                    color: lightGreen,
-                  ))
-      ])),
+          Expanded(
+            child: Center(
+              child: space.elements[data] == true
+                  ? const Icon(
+                      Icons.check,
+                      color: darkGreen,
+                    )
+                  : const Icon(
+                      Icons.cancel,
+                      color: lightGreen,
+                    ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
