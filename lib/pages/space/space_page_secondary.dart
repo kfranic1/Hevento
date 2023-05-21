@@ -94,7 +94,7 @@ class SpacePageSecondary extends StatelessWidget {
                         child: GestureDetector(
                           onTapDown: (details) async {
                             if (kIsWeb) {
-                              Clipboard.setData(ClipboardData(text: space.contacts["phone"]));
+                              Clipboard.setData(ClipboardData(text: space.contacts["phone"] ?? ''));
                               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Broj kopiran u međuspremnik")));
                             } else {
                               await launchUrl(Uri.parse("tel:${space.contacts["phone"]}"));
