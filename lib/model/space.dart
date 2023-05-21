@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:hevento/model/filter.dart';
+import 'package:hevento/model/filter.dart' as filter;
 import 'package:hevento/model/person.dart';
 import 'package:hevento/services/collections.dart';
 import 'package:hevento/services/extensions/datetime_extension.dart';
@@ -94,7 +94,7 @@ class Space {
     return this;
   }
 
-  bool pass(Filter filter) {
+  bool pass(filter.Filter filter) {
     if (filter.name != null && filter.name!.isNotEmpty && !name.toLowerCase().contains(filter.name!.toLowerCase())) return false;
     if (hidden) return false;
     if (filter.price * 1.1 < minPrice) return false;
